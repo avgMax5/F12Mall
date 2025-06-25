@@ -6,13 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter 
-@Setter
+@Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class EducationRequest {
     private String schoolName;
     private String status;
@@ -21,7 +19,7 @@ public class EducationRequest {
     private String startDate;
     private String endDate;
 
-    public Education toEntity(String userId, String startDate, String endDate) {
+    public Education toEntity(String userId) {
         return Education.builder()
             .userId(userId)
             .schoolName(schoolName)

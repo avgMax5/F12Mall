@@ -18,7 +18,9 @@ import com.avgmax.user.dto.response.UserSignupResponse;
 import com.avgmax.user.service.AuthService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -27,8 +29,11 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<UserLoginResponse> login(@RequestBody UserLoginRequest request, HttpSession session) {
+        log.info("로그인 시도: {}", request.getUsername());
+
         User user = authService.login(request.getUsername(), request.getPassword());
         session.setAttribute("user", user);
+
         return ResponseEntity.status(HttpStatus.OK)
             .body(UserLoginResponse.of(true, session.getId()));
     }

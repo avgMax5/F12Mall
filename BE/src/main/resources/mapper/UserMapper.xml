@@ -3,14 +3,14 @@
 <mapper namespace="com.avgmax.user.mapper.UserMapper">
 
     <insert id="insert" parameterType="com.avgmax.user.domain.User">
-        INSERT INTO user (NAME, EMAIL, USERNAME, PWD, IMAGE, MONEY, CREATED_AT, UPDATED_AT) 
-        VALUES (#{name}, #{email}, #{userName}, #{password}, #{imageUrl}, #{money}, #{CREATED_AT}, #{UPDATED_AT})
+        INSERT INTO USER (USER_ID, NAME, EMAIL, USERNAME, PWD, IMAGE, MONEY, CREATED_AT, UPDATED_AT) 
+        VALUES (#{userId}, #{name}, #{email}, #{username}, #{password}, #{imageUrl}, #{money}, #{createdAt}, #{updatedAt})
     </insert>
 
     <select id="selectByUsername" parameterType="String" resultType="com.avgmax.user.domain.User">
-        SELECT NAME, EMAIL, USERNAME, PWD, IMAGE, MONEY
-        FROM user 
-        WHERE USERNAME == #{username}
+        SELECT USER_ID, NAME, EMAIL, USERNAME, PWD, IMAGE, MONEY
+        FROM USER
+        WHERE USERNAME = #{username}
     </select>
     
 </mapper>

@@ -6,13 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter 
-@Setter
+@Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class CareerRequest {
     private String companyName;
     private String status;
@@ -21,7 +19,7 @@ public class CareerRequest {
     private String startDate; 
     private String endDate;
 
-    public Career toEntity(String userId, String startDate, String endDate) {
+    public Career toEntity(String userId) {
         return Career.builder()
             .userId(userId)
             .companyName(companyName)

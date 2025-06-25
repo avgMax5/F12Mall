@@ -1,7 +1,5 @@
 package com.avgmax.user.service;
 
-import java.util.stream.Collectors;
-
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +9,7 @@ import com.avgmax.user.dto.response.UserSignupResponse;
 import com.avgmax.user.exception.PasswordMismatchException;
 import com.avgmax.user.exception.UserNotFoundException;
 import com.avgmax.user.mapper.CareerMapper;
+import com.avgmax.user.mapper.CertificationMapper;
 import com.avgmax.user.mapper.EducationMapper;
 import com.avgmax.user.mapper.UserMapper;
 
@@ -23,6 +22,8 @@ public class AuthService {
     private final UserMapper userMapper;
     private final CareerMapper careerMapper;
     private final EducationMapper educationMapper;
+    private final CertificationMapper certificationMapper;
+    
 
     public UserSignupResponse createUser(UserSignupRequest request) {
         User user = request.toEntity(passwordEncoder);
@@ -30,14 +31,18 @@ public class AuthService {
 
         String userId = user.getUserId();
 
-        request.getCareer().stream()
-            .map(c -> careerMapper.insert(c.toEntity(userId, c.getStartDate(), c.getEndDate())))
-            .collect(Collectors.toList());
+        request.getCareer().forEach(c -> {
+            careerMapper.insert(c.toEntity(userId));
+        });
 
-        request.getEducation().stream()
-            .map(e -> educationMapper.insert(e.toEntity(userId, e.getStartDate(), e.getEndDate())))
-            .collect(Collectors.toList());
+        request.getEducation().forEach(e -> {
+            educationMapper.insert(e.toEntity(userId));
+        });
 
+        request.getCertificateUrl().forEach(c -> {
+            certificationMapper.insert(c.toEntity(userId));
+        });
+        
         return UserSignupResponse.of(true);
     }
 

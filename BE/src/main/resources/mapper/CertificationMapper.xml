@@ -3,8 +3,8 @@
 <mapper namespace="com.avgmax.user.mapper.CertificationMapper">
 
     <insert id="insert" parameterType="com.avgmax.user.domain.Certification">
-        INSERT INTO certification (CERTIFICATION_ID, USER_ID, CERTIFICATE_URL, CREATED_AT, UPDATED_AT) 
-        VALUES (#{CERTIFICATION_ID}, #{USER_ID}, #{CERTIFICATE_URL}, #{CREATED_AT}, #{UPDATED_AT})
+        INSERT INTO CERTIFICATION (CERTIFICATION_ID, USER_ID, CERTIFICATE_URL, CREATED_AT, UPDATED_AT) 
+        VALUES (#{certificationId}, #{userId}, #{certificateUrl}, #{createdAt}, #{updatedAt})
     </insert>
     
 </mapper>

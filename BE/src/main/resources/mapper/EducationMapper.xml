@@ -3,8 +3,8 @@
 <mapper namespace="com.avgmax.user.mapper.EducationMapper">
 
     <insert id="insert" parameterType="com.avgmax.user.domain.Education">
-        INSERT INTO education (EDUCATION_ID, USER_ID, SCHOOL_NAME, STATUS, MAJOR, START_DATE, END_DATE, CERTIFICATE_URL, CREATED_AT, UPDATED_AT) 
-        VALUES (#{EDUCATION_ID}, #{USER_ID}, #{SCHOOL_NAME}, #{STATUS}, #{MAJOR}, #{START_DATE}, #{END_DATE}, #{CERTIFICATE_URL}, #{CREATED_AT}, #{UPDATED_AT})
+        INSERT INTO EDUCATION (EDUCATION_ID, USER_ID, SCHOOL_NAME, STATUS, MAJOR, START_DATE, END_DATE, CERTIFICATE_URL, CREATED_AT, UPDATED_AT) 
+        VALUES (#{educationId}, #{userId}, #{schoolName}, #{status}, #{major}, #{startDate}, #{endDate}, #{certificateUrl}, #{createdAt}, #{updatedAt})
     </insert>
 
 </mapper>

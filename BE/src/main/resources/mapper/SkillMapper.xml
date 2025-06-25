@@ -3,8 +3,8 @@
 <mapper namespace="com.avgmax.user.mapper.SkillMapper">
 
     <insert id="insert" parameterType="com.avgmax.user.domain.Skill">
-        INSERT INTO skill (USER_ID, SKILL_ID, CREATED_AT, UPDATED_AT) 
-        VALUES (#{USER_ID}, #{SKILL_ID}, #{CREATED_AT}, #{UPDATED_AT})
+        INSERT INTO SKILL (USER_ID, SKILL_ID, CREATED_AT, UPDATED_AT) 
+        VALUES (#{userId}, #{skillId}, #{createdAt}, #{updatedAt})
     </insert>
     
 </mapper>

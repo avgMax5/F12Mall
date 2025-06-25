@@ -6,11 +6,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.avgmax.user.domain.User;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserSignupRequest {
     private String image;
     private String username;
@@ -21,7 +25,7 @@ public class UserSignupRequest {
     private String bio;
     private List<String> stack;
     private String resume;
-    private List<String> certificateUrl;
+    private List<CertificationRequest> certificateUrl;
     private String github;
     private String sns;
     private String blog;

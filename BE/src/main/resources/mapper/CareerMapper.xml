@@ -3,8 +3,8 @@
 <mapper namespace="com.avgmax.user.mapper.CareerMapper">
 
     <insert id="insert" parameterType="com.avgmax.user.domain.Career">
-        INSERT INTO career (CAREER_ID, USER_ID, COMPANY_NAME, STATUS, POSITION, START_DATE, END_DATE, CERTIFICATION_URL, CREATED_AT, UPDATED_AT) 
-        VALUES (#{CAREER_ID}, #{USER_ID}, #{COMPANY_NAME}, #{STATUS}, {POSITION}, #{START_DATE}, #{END_DATE}, #{CERTIFICATION_URL}, #{CREATED_AT}, #{UPDATED_AT})
+        INSERT INTO CAREER (CAREER_ID, USER_ID, COMPANY_NAME, STATUS, POSITION, START_DATE, END_DATE, CERTIFICATE_URL, CREATED_AT, UPDATED_AT) 
+        VALUES (#{careerId}, #{userId}, #{companyName}, #{status}, #{position}, #{startDate}, #{endDate}, #{certificateUrl}, #{createdAt}, #{updatedAt})
     </insert>
 
 </mapper>

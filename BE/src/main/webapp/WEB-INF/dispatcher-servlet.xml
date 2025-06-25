@@ -9,15 +9,14 @@
                       http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
 <resources mapping="/resources/**" location="/resources/" />
-<resources mapping="/uploads/**" location="file:/usr/local/tomcat/webapps/ROOT/uploads/" />
+<!-- <resources mapping="/uploads/**" location="file:/usr/local/tomcat/webapps/ROOT/uploads/" /> -->
 
 <!-- @RequestMapping 처리 -->
 <annotation-driven />
 
 <!-- Mapper Scanner -->
 <beans:bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-  <beans:property name="basePackage" value="com.avgmax.user.mapper" />
-  <beans:property name="basePackage" value="com.avgmax.trade.mapper" />
+  <beans:property name="basePackage" value="com.avgmax.user.mapper, com.avgmax.trade.mapper" />
 </beans:bean>
 
 <!-- @Controller 스캔 -->

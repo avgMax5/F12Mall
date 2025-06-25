@@ -1,0 +1,29 @@
+services:
+  tomcat:
+    build: ./BE
+    ports:
+      - "8080:8080" # 접속 포트 변경 원할 경우 왼쪽 8080을 수정 (8090 등 원하는 포트로)
+    depends_on:
+      - mariadb
+    environment:
+      - TZ=Asia/Seoul
+    networks:
+      - backend
+  mariadb:
+    image: mariadb:10.6
+    container_name: mariadb
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: 1234
+      MARIADB_DATABASE: testdb
+      MARIADB_USER: HJH
+      MARIADB_PASSWORD: HJH
+      TZ: Asia/Seoul
+    ports:
+      - "3306:3306"
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
