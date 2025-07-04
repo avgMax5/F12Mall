@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.avgmax.trade.domain.Order;
 import com.avgmax.trade.dto.query.OrderWithUserAndCoinQuery;
+import com.avgmax.trade.dto.query.OrderWithCoinQuery;
 
 public interface OrderMapper {
     void insert(Order order);
@@ -19,4 +20,5 @@ public interface OrderMapper {
     List<Order> selectAllByUserIdAndCoinId(@Param("userId") String userId, @Param("coinId") String coinId);
     void delete(String orderId);
     void updateQuantity(Order order);
+    List<OrderWithCoinQuery> selectOrderBookByCoinId(String coinId);
 }
