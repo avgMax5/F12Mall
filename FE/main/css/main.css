@@ -501,6 +501,7 @@
     position: relative;
     display: block;
     font-family: "KIMM_L";
+    z-index: 999;
 }
 
 .box-sort .sort-toggle {

@@ -154,7 +154,6 @@ async function submitSignup(userData) {
         
         if (!response.ok) {
             const errorText = await response.text();
-
             throw new Error(`요청 실패: ${response.status} ${response.statusText} ${errorText}`);
         }
         const data = await response.json();

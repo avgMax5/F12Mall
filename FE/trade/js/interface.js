@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const totalPriceInput = document.querySelector('.total-price input');
 
   // 수수료 상수
-  const FEE_RATE = 1;
+  const FEE_RATE = 0.05;
 
   // input 값을 가져올 때 빈 값이면 0을 반환하는 함수
   const getInputValue = inputElement => {
@@ -23,10 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const quantity = parseNumberFromString(quantityInput.value);
     const orderPrice = parseNumberFromString(orderPriceInput.value);
 
-    const isBuyMode = document.querySelector('.container-interface').classList.contains('buy-mode');
-    const totalPrice = isBuyMode 
-      ? quantity * orderPrice * (1 + FEE_RATE / 100)
-      : quantity * orderPrice;
+    const totalPrice = quantity * orderPrice * (1 + FEE_RATE);
 
     // 총액을 포맷팅하여 표시
     totalPriceInput.value = totalPrice.toLocaleString('ko-KR');

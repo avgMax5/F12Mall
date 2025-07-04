@@ -16,6 +16,17 @@ function handleLogin() {
     submitLogin(loginData);
 }
 
+function showFailAlert() {
+    if (document.querySelector('.fail-alert-modal')) return;
+    fetch('/common/modal/fail-modal.html')
+        .then(res => res.text())
+        .then(html => {
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = html;
+            document.body.appendChild(wrapper);
+        });
+}
+
 async function submitLogin(loginData) {
     try {
         const response = await fetch(API_LOGIN_URL, {
@@ -41,7 +52,8 @@ async function submitLogin(loginData) {
         
     } catch (err) {
         console.error('로그인 실패:', err);
-        alert(`로그인에 실패했습니다: ${err.message}`);
+        // alert(`로그인에 실패했습니다: ${err.message}`);
+        showFailAlert();
     }
 }
 

@@ -179,7 +179,3 @@
 .sell-mode .box-order-btn > .order-btn:hover {
   background-color: #0069d9;
 }
-
-.sell-mode .box-fee-info {
-  display: none;
-}
