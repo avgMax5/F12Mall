@@ -66,4 +66,24 @@
         WHERE ORDER_ID = #{orderId}
     </update>
 
+    <select id="selectOrderBookByCoinId" parameterType="string" resultType="com.avgmax.trade.dto.query.OrderWithCoinQuery">
+        SELECT
+            r.COIN_ID AS COIN_ID,
+            r.UNIT_PRICE AS UNIT_PRICE,
+            r.ORDER_TYPE AS ORDER_TYPE,
+            r.quantity AS QUANTITY,
+            ((c.CURRENT_PRICE - c.CLOSING_PRICE) / c.CLOSING_PRICE * 100) AS FLUCTUATION_RATE
+        FROM (
+            SELECT
+                COIN_ID,
+                UNIT_PRICE,
+                ORDER_TYPE,
+                SUM(QUANTITY) AS quantity
+            FROM `ORDER`
+            WHERE COIN_ID = #{coinId}
+            GROUP BY COIN_ID, UNIT_PRICE, ORDER_TYPE
+        ) AS r
+        JOIN COIN c ON c.COIN_ID = r.COIN_ID
+        ORDER BY r.COIN_ID, r.UNIT_PRICE;
+    </select>
 </mapper>
