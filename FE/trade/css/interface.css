@@ -21,14 +21,14 @@
 
 .box-type-controller > button.active {
   color: #00ff2f;
-  border-top: 0.1rem solid #00ff2f;
-  border-right: 0.1rem solid #00ff2f;
-  border-left: 0.1rem solid #00ff2f;
+  border-top: 0.07rem solid #00ff2f;
+  border-right: 0.07rem solid #00ff2f;
+  border-left: 0.07rem solid #00ff2f;
 }
 
 .box-type-controller > button.deactive {
   color: #ffffff;
-  border-bottom: 0.1rem solid #00ff2f;
+  border-bottom: 0.07rem solid #00ff2f;
   transition: all 0.3s ease;
 }
 
@@ -43,9 +43,9 @@
   flex-direction: column;
   gap: 0.4rem;
   padding: 1rem 1.8rem;
-  border-right: 0.1rem solid #00ff2f;
-  border-bottom: 0.1rem solid #00ff2f;
-  border-left: 0.1rem solid #00ff2f;
+  border-right: 0.07rem solid #00ff2f;
+  border-bottom: 0.07rem solid #00ff2f;
+  border-left: 0.07rem solid #00ff2f;
 }
 
 .box-order-item {
@@ -137,10 +137,22 @@
   font-family: 'KIMM_L';
 }
 
+.box-order-error-message {
+  height: 1rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.box-order-error-message > span {
+  font-size: 0.6rem;
+  color: #f45353;
+  font-family: 'KIMM_L';
+}
+
 .container-interface > div:nth-child(2) .box-order-btn {
   display: flex;
   gap: 1rem;
-  padding-top: 1rem;
 }
 
 .box-order-btn > button {
@@ -178,4 +190,8 @@
 
 .sell-mode .box-order-btn > .order-btn:hover {
   background-color: #0069d9;
+}
+
+.sell-mode .box-fee-info {
+  display: none;
 }

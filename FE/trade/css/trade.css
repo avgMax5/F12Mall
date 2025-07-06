@@ -72,12 +72,10 @@ canvas {
 
 .container-orderbook {
   flex: 5;
-  background-color: rgba(217, 217, 217, 0.36);
 }
 
 /* For visualization */
-.container-chart,
-.container-orderbook {
+.container-chart {
   border: 1px solid #444;
   color: #eee;
   display: flex;
