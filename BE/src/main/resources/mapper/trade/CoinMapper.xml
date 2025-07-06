@@ -21,7 +21,25 @@
         JOIN USER u ON c.CREATOR_ID = u.USER_ID
     </select>
 
-    <select id="selectWithCreatorWithProfileById" resultType="com.avgmax.trade.dto.query.CoinWithCreatorWithProfileQuery">
+    <select id="selectWithCreatorWithProfileById" parameterType="String" resultType="com.avgmax.trade.dto.query.CoinWithCreatorWithProfileQuery">
+        SELECT
+            c.COIN_ID AS COIN_ID,
+            c.CREATOR_ID AS CREATOR_ID,
+            c.CURRENT_PRICE AS CURRENT_PRICE,
+            (c.CURRENT_PRICE - c.CLOSING_PRICE) AS CHANGE_PRICE,
+            ((c.CURRENT_PRICE - c.CLOSING_PRICE) / c.CLOSING_PRICE * 100) AS FLUCTUATION_RATE,
+            u.NAME AS CREATOR_NAME,
+            u.USERNAME AS CREATOR_USERNAME,
+            u.IMAGE AS CREATOR_IMAGE,
+            p.POSITION AS PROFILE_POSITION,
+            p.BIO AS PROFILE_BIO
+        FROM COIN c
+        JOIN USER u ON c.CREATOR_ID = u.USER_ID
+        JOIN PROFILE p ON u.USER_ID = p.USER_ID
+        WHERE c.COIN_ID = #{coinId}
+    </select>
+    
+    <select id="selectAllWithCreatorWithProfile" resultType="com.avgmax.trade.dto.query.CoinWithCreatorWithProfileQuery">
         SELECT
             c.COIN_ID AS COIN_ID,
             c.CREATOR_ID AS CREATOR_ID,

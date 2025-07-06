@@ -28,4 +28,17 @@ public class ClosingPrice extends BaseTimeEntity {
     private BigDecimal buyQuantity;
 
     private BigDecimal sellQuantity;
+
+    public static ClosingPrice init(String coinId) {
+        return ClosingPrice.builder()
+                .coinId(coinId)
+                .unitPrice(BigDecimal.valueOf(1000))
+                .tradeDate(LocalDateTime.now().minusDays(1))
+                .highPrice(BigDecimal.valueOf(1000))
+                .lowPrice(BigDecimal.ZERO)
+                .buyQuantity(BigDecimal.ZERO)
+                .sellQuantity(BigDecimal.ZERO)
+                .build();
+        
+    }
 }

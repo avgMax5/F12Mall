@@ -4,9 +4,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import com.avgmax.trade.dto.response.TradeFetchResponse;
-import com.avgmax.trade.dto.response.TradeSurgingResponse;
 import org.springframework.http.HttpStatus;
+import com.avgmax.trade.domain.enums.CoinFilter;
+import com.avgmax.trade.dto.response.CoinFetchResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,21 +50,25 @@ public class TradeController {
         return ResponseEntity.ok(tradeService.getMyList(userId, coinId));
     }
 
-    // Top 5 Surging 조회
-    @GetMapping("/surging")
-    public ResponseEntity<List<TradeSurgingResponse>> getSurgingCoin() {
-        return ResponseEntity.ok(tradeService.getSurgingCoins());
-    }
-
     // 차트 조회
     @GetMapping("/{coinId}/chart")
     public ResponseEntity<List<ChartResponse>> getChartData(@PathVariable String coinId) {
+        log.info("GET 차트 조회: {}", coinId);
         return ResponseEntity.ok(tradeService.getChartData(coinId));
     }
 
-    // 실시간 코인 정보 조회
+    // 메인 페이지 특정 코인 DB 조회
     @GetMapping("/{coinId}")
-    public ResponseEntity<TradeFetchResponse> getTradeFetch(@PathVariable String coinId) {
-        return ResponseEntity.ok(tradeService.getTradeFetch(coinId));
+    public ResponseEntity<CoinFetchResponse> getCoinFetch(@PathVariable String coinId) {
+        log.info("GET 특정 코인 DB 조회: {}", coinId);
+        return ResponseEntity.ok(tradeService.getCoinFetch(coinId));
+    }
+
+    // 메인 페이지 코인 DB 조회
+    @GetMapping
+    public ResponseEntity<List<CoinFetchResponse>> getCoinFetchList(@RequestParam(required = false, defaultValue = "all") String filter) {
+        log.info("GET 코인 DB 조회");
+        CoinFilter coinFilter = CoinFilter.from(filter);
+        return ResponseEntity.ok(tradeService.getCoinFetchList(coinFilter));
     }
 }

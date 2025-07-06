@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @Getter
 @Builder
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class TradeFetchResponse {
+public class CoinFetchResponse {
 
     private String coinName; //user
     private String userName; //user
@@ -27,16 +27,16 @@ public class TradeFetchResponse {
     private String position; //profile
     private String bio; //profile
 
-    public static TradeFetchResponse from(CoinWithCreatorWithProfileQuery coin, TradeGroupByCoinQuery tradeByCoin) {
-        return TradeFetchResponse.builder()
+    public static CoinFetchResponse from(CoinWithCreatorWithProfileQuery coin, TradeGroupByCoinQuery trade) {
+        return CoinFetchResponse.builder()
                 .coinName(coin.getCreatorUsername())
                 .userName(coin.getCreatorName())
                 .currentPrice(coin.getCurrentPrice())
                 .changePrice(coin.getChangePrice())
                 .fluctuationRate(coin.getFluctuationRate())
-                .tradeVolume(tradeByCoin.getTradeVolume())
-                .lowestPrice(tradeByCoin.getLowestPrice())
-                .highestPrice(tradeByCoin.getHighestPrice())
+                .tradeVolume(trade.getTradeVolume())
+                .lowestPrice(trade.getLowestPrice())
+                .highestPrice(trade.getHighestPrice())
                 .profileImage(coin.getCreatorImage())
                 .position(coin.getProfilePosition())
                 .bio(coin.getProfileBio())

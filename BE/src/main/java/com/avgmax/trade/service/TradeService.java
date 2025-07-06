@@ -4,12 +4,13 @@ import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.avgmax.trade.domain.enums.CoinFilter;
 import com.avgmax.trade.dto.query.CoinWithCreatorWithProfileQuery;
 import com.avgmax.trade.dto.query.TradeGroupByCoinQuery;
-import com.avgmax.trade.dto.response.TradeFetchResponse;
-import com.avgmax.trade.dto.response.TradeSurgingResponse;
+import com.avgmax.trade.dto.response.CoinFetchResponse;
 import com.avgmax.trade.mapper.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,7 +62,7 @@ public class TradeService {
     @Transactional
     public SuccessResponse cancelOrder(String userId, String coinId, String orderId) {
         Order order = orderMapper.selectByOrderId(orderId)
-            .orElseThrow(() -> TradeException.of(ErrorCode.ORDER_NOT_FOUND));
+                .orElseThrow(() -> TradeException.of(ErrorCode.ORDER_NOT_FOUND));
         order.validateOwnership(userId, coinId);
         orderMapper.delete(orderId);
         return SuccessResponse.of(true);
@@ -71,16 +72,7 @@ public class TradeService {
     public List<OrderResponse> getMyList(String userId, String coinId) {
         List<Order> orders = orderMapper.selectAllByUserId(userId);
         return orders.stream()
-            .map(OrderResponse::from)
-            .collect(Collectors.toList());
-    }
-
-    @Transactional(readOnly = true)
-    public List<TradeSurgingResponse> getSurgingCoins() {
-        return coinMapper.selectAllWithCreator().stream()
-                .map(TradeSurgingResponse::from)
-                .sorted(Comparator.comparing(TradeSurgingResponse::getFluctuationRate).reversed())
-                .limit(5)
+                .map(OrderResponse::from)
                 .collect(Collectors.toList());
     }
 
@@ -89,20 +81,9 @@ public class TradeService {
         return ChartResponse.from(closingPriceMapper.selectBycoinIdDuring180(coinId));
     }
 
-    @Transactional(readOnly = true)
-    public TradeFetchResponse getTradeFetch(String coinId) {
-        CoinWithCreatorWithProfileQuery coin = coinMapper.selectWithCreatorWithProfileById(coinId)
-                .orElseThrow(() -> UserException.of(ErrorCode.COIN_INFO_NOT_FOUND));
-
-        TradeGroupByCoinQuery tradeByCoin = tradeMapper.selectTradeGroupById(coinId)
-                .orElse(TradeGroupByCoinQuery.init(coinId));
-
-        return TradeFetchResponse.from(coin, tradeByCoin);
-    }
-
     private User updateUserMoney(String userId, OrderType orderType, BigDecimal amount) {
         User user = userMapper.selectByUserId(userId)
-            .orElseThrow(() -> UserException.of(ErrorCode.USER_NOT_FOUND));
+                .orElseThrow(() -> UserException.of(ErrorCode.USER_NOT_FOUND));
         user.processOrderAmount(orderType, amount);
         userMapper.updateMoney(user);
         return user;
@@ -117,7 +98,7 @@ public class TradeService {
 
     private void processBuyOrder(Order buyOrder) {
         updateUserMoney(buyOrder.getUserId(), OrderType.BUY, OrderType.BUY.calculateExecuteAmount(buyOrder.getQuantity(), buyOrder.getUnitPrice()));
-        
+
         BigDecimal remainingQuantity = buyOrder.getQuantity();
         List<Order> sellOrders = orderMapper.selectSellOrdersByCoinId(buyOrder.getCoinId(), buyOrder.getUnitPrice());
 
@@ -131,7 +112,7 @@ public class TradeService {
 
     private void processSellOrder(Order sellOrder) {
         validateUserCoinQuantity(sellOrder.getUserId(), sellOrder.getCoinId(), sellOrder.getQuantity());
-        
+
         BigDecimal remainingQuantity = sellOrder.getQuantity();
         List<Order> matchingBuyOrders = orderMapper.selectBuyOrdersByCoinId(sellOrder.getCoinId(), sellOrder.getUnitPrice());
 
@@ -149,16 +130,16 @@ public class TradeService {
             log.info("같은 유저 주문은 매칭 불가: userId={}", buyOrder.getUserId());
             return remainingQuantity;
         }
-        
+
         BigDecimal tradableQuantity = remainingQuantity.min(matchedOrder.getQuantity());
-        
+
         // 체결 기록 생성
         Trade trade = Trade.of(requestType, buyOrder, sellOrder, tradableQuantity);
         tradeMapper.insert(trade);
 
         // 현재가 갱신
         updateCurrentPrice(matchedOrder.getCoinId(), matchedOrder.getUnitPrice());
-        
+
         // 비교 주문 수량 갱신
         updateOrderQuentity(matchedOrder, matchedOrder.getQuantity().subtract(tradableQuantity));
 
@@ -201,6 +182,50 @@ public class TradeService {
             userCoinMapper.insert(UserCoin.of(userId, trade.getCoinId(), trade.getQuantity(), trade.getUnitPrice()));
         } else {
             throw TradeException.of(ErrorCode.USER_COIN_NOT_FOUND);
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public CoinFetchResponse getCoinFetch(String coinId) {
+        CoinWithCreatorWithProfileQuery coin = coinMapper.selectWithCreatorWithProfileById(coinId)
+                .orElseThrow(() -> UserException.of(ErrorCode.COIN_INFO_NOT_FOUND));
+
+        TradeGroupByCoinQuery trade = tradeMapper.selectTradeGroupById(coinId)
+                .orElse(TradeGroupByCoinQuery.init(coinId));
+
+        return CoinFetchResponse.from(coin, trade);
+    }
+
+    @Transactional(readOnly = true)
+    public List<CoinFetchResponse> getCoinFetchList(CoinFilter filter) {
+        List<CoinWithCreatorWithProfileQuery> coins = coinMapper.selectAllWithCreatorWithProfile();
+        Map<String, TradeGroupByCoinQuery> tradeMap = tradeMapper.selectAllTradeGroupByCoin().stream()
+                .collect(Collectors.toMap(TradeGroupByCoinQuery::getCoinId,t -> t));
+
+        List<CoinFetchResponse> responseList = coins.stream()
+                .map(coin -> {
+                    TradeGroupByCoinQuery trade = tradeMap.getOrDefault(
+                            coin.getCoinId(),
+                            TradeGroupByCoinQuery.init(coin.getCoinId())
+                    );
+                    return CoinFetchResponse.from(coin, trade);
+                })
+                .collect(Collectors.toList());
+
+        switch (filter) {
+            case SURGING:
+                return responseList.stream()
+                        .sorted(Comparator.comparing(CoinFetchResponse::getFluctuationRate).reversed())
+                        .limit(5)
+                        .collect(Collectors.toList());
+            case PRICE:
+                return responseList.stream()
+                        .sorted(Comparator.comparing(CoinFetchResponse::getCurrentPrice).reversed())
+                        .limit(5)
+                        .collect(Collectors.toList());
+            case ALL:
+            default:
+                return responseList;
         }
     }
 }

@@ -14,4 +14,5 @@ public interface TradeMapper {
     List<Trade> selectByUserId(String userId);
     void delete(String tradeId);
     Optional<TradeGroupByCoinQuery> selectTradeGroupById(String coinId);
+    List<TradeGroupByCoinQuery> selectAllTradeGroupByCoin();
 }
