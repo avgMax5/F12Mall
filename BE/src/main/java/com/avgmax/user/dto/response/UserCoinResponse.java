@@ -5,11 +5,14 @@ import java.math.RoundingMode;
 
 import com.avgmax.trade.dto.query.UserCoinWithCoinWithCreatorQuery;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class UserCoinResponse {
     private String coinId; // coinId
     private String coinName; // creatorUsername
