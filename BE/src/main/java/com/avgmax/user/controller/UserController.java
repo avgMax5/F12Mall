@@ -1,6 +1,8 @@
 package com.avgmax.user.controller;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -39,16 +41,40 @@ public class UserController {
          UserInformResponse response = userService.getUserInform(userId);
          return ResponseEntity.ok(response);
    }
-
+   
    // 사용자 파일 업로드
-   @PostMapping("/me/uploads")
-   public ResponseEntity<List<String>> uploadFiles(
-         HttpSession session,
-         @RequestParam("file") List<MultipartFile> files) {
+   @PostMapping("/upload")
+   public ResponseEntity<Map<String, List<String>>> uploadFiles(
+         @RequestParam(value = "profile", required = false) List<MultipartFile> profile,
+         @RequestParam(value = "resume", required = false) List<MultipartFile> resume,
+         @RequestParam(value = "certification", required = false) List<MultipartFile> certification,
+         @RequestParam(value = "education", required = false) List<MultipartFile> education,
+         @RequestParam(value = "career", required = false) List<MultipartFile> career
+   ) {
+      Map<String, List<String>> result = new HashMap<>();
 
-      String userId = (String) session.getAttribute("user");
-      List<String> urls = fileService.uploadForUser(userId, files);
-      return ResponseEntity.ok(urls);
+      if (profile != null && !profile.isEmpty()) {
+         result.put("profile", fileService.uploadForUser(profile));
+         log.info("upload profile file");
+      }
+      if (resume != null && !resume.isEmpty()) {
+         result.put("resume", fileService.uploadForUser(resume));
+         log.info("upload resume file");
+      }
+      if (certification != null && !certification.isEmpty()) {
+         result.put("certification", fileService.uploadForUser(certification));
+         log.info("upload certification file");
+      }
+      if (education != null && !education.isEmpty()) {
+         result.put("education", fileService.uploadForUser(education));
+         log.info("upload education file");
+      }
+      if (career != null && !career.isEmpty()) {
+         result.put("career", fileService.uploadForUser(career));
+         log.info("upload career file");
+      }
+
+      return ResponseEntity.ok(result);
    }
 
    // 보유 코인 목록 조회

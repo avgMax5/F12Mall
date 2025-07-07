@@ -9,12 +9,15 @@ import com.avgmax.trade.domain.UserCoin;
 import com.avgmax.user.domain.User;
 import com.avgmax.user.domain.Profile;
 import com.avgmax.user.dto.data.LinkData;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class UserSignupRequest {
     private String image;
     private String username;

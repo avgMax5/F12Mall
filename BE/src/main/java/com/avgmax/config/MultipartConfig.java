@@ -11,7 +11,8 @@ public class MultipartConfig {
     @Bean
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver resolver = new CommonsMultipartResolver();
-        resolver.setMaxUploadSize(10 * 1024 * 1024); // 10MB 
+        resolver.setMaxUploadSizePerFile(5 * 1024 * 1024); // 파일 하나당 5MB 제한
+        resolver.setMaxUploadSize(25 * 1024 * 1024);       // 전체 요청은 20MB까지
         resolver.setDefaultEncoding("UTF-8");
         return resolver;
     }
