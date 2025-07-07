@@ -1,6 +1,8 @@
 package com.avgmax.user.service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.avgmax.trade.mapper.ClosingPriceMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,6 +13,7 @@ import com.avgmax.trade.domain.ClosingPrice;
 import com.avgmax.trade.domain.Coin;
 import com.avgmax.trade.domain.UserCoin;
 import com.avgmax.user.domain.User;
+import com.avgmax.user.domain.UserSkill;
 import com.avgmax.user.dto.request.UserSignupRequest;
 import com.avgmax.user.dto.response.UserLoginResponse;
 import com.avgmax.user.dto.response.UserSignupResponse;
@@ -20,18 +23,22 @@ import com.avgmax.user.mapper.CareerMapper;
 import com.avgmax.user.mapper.CertificationMapper;
 import com.avgmax.user.mapper.EducationMapper;
 import com.avgmax.user.mapper.UserMapper;
+import com.avgmax.user.mapper.UserSkillMapper;
 import com.avgmax.user.mapper.ProfileMapper;
 import com.avgmax.trade.mapper.CoinMapper;
 import com.avgmax.trade.mapper.UserCoinMapper;
 import com.avgmax.global.exception.ErrorCode;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+    private final UserSkillMapper userSkillMapper;
     private final CareerMapper careerMapper;
     private final ProfileMapper profileMapper;
     private final EducationMapper educationMapper;
@@ -50,6 +57,16 @@ public class AuthService {
 
             // 프로필 정보 저장
             profileMapper.insert(request.toProfile(userId));
+
+            // 스킬 정보 저장
+            List<String> skillIds = userSkillMapper.selectByStack(request.getStack());
+            log.info(skillIds.toString());
+            List<UserSkill> userSkills = skillIds.stream()
+                .map(skillId -> UserSkill.of(
+                    userId, 
+                    skillId))
+                .collect(Collectors.toList());
+            for (UserSkill userSkill : userSkills) {userSkillMapper.insert(userSkill);}
 
             // 경력 정보 저장
             request.getCareer().forEach(career -> 
