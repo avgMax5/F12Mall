@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CoinFetchResponse {
 
+    private String coinId; //coin
     private String coinName; //user
     private String userName; //user
     private BigDecimal currentPrice; //coin
@@ -29,6 +30,7 @@ public class CoinFetchResponse {
 
     public static CoinFetchResponse from(CoinWithCreatorWithProfileQuery coin, TradeGroupByCoinQuery trade) {
         return CoinFetchResponse.builder()
+                .coinId(coin.getCoinId())
                 .coinName(coin.getCreatorUsername())
                 .userName(coin.getCreatorName())
                 .currentPrice(coin.getCurrentPrice())

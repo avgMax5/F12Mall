@@ -47,8 +47,24 @@
 
 .box-price-change {
   font-size: 1.2rem;
-  color: #e01200;
-  text-shadow: 0 0 8px #e01200;
+}
+
+/* 상승 시 스타일 */
+.box-price-change.up {
+    color: #e01200;
+}
+
+.box-price-change.up {
+    text-shadow: 0 0 8px #e01200;
+}
+
+/* 하락 시 스타일 */
+.box-price-change.down {
+    color: #1376ee;
+}
+
+.box-price-change.down {
+    text-shadow: 0 0 8px #1376ee;
 }
 
 .box-price-change > span.change-ratio {

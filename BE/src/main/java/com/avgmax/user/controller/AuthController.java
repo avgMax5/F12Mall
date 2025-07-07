@@ -42,6 +42,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<UserSignupResponse> signup(@RequestBody UserSignupRequest request) {
+        log.info("회원가입 시도: {}", request.getUsername());
         return ResponseEntity.status(HttpStatus.OK).body(authService.createUser(request));
     }
 
