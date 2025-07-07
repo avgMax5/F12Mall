@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - 페이지를 찾을 수 없습니다</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+
+        .error-container {
+            background: white;
+            border-radius: 20px;
+            padding: 60px 40px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .error-code {
+            font-size: 120px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .error-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .error-message {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        }
+
+        .back-button:active {
+            transform: translateY(0);
+        }
+
+        .icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            color: #667eea;
+        }
+
+        @media (max-width: 480px) {
+            .error-container {
+                padding: 40px 20px;
+            }
+            
+            .error-code {
+                font-size: 80px;
+            }
+            
+            .error-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="icon">🔒</div>
+        <div class="error-code">401</div>
+        <h1 class="error-title">인증되지 않은 접근입니다</h1>
+        <p class="error-message">
+            이 페이지에 접근하려면 로그인이 필요합니다.<br>
+            계정 정보를 확인하고 다시 시도해주세요.
+        </p>
+        <button class="back-button" onclick="goBack()">돌아가기</button>
+    </div>
+
+    <script>
+        function goBack() {
+            // if (document.referrer) {
+            //     // 이전 페이지가 있으면 이전 페이지로 이동
+            //     window.location.href = '/';
+            // } else {
+            //     // 이전 페이지가 없으면 홈페이지로 이동
+            //     window.location.href = '/';
+            // }
+            window.location.href = '/';
+        }
+
+        // 키보드 이벤트 (ESC 키로 뒤로가기)
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                goBack();
+            }
+        });
+    </script>
+</body>
+</html>
