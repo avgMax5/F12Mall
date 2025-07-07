@@ -39,6 +39,6 @@ public class ClosingPrice extends BaseTimeEntity {
                 .buyQuantity(BigDecimal.ZERO)
                 .sellQuantity(BigDecimal.ZERO)
                 .build();
-        
+
     }
 }

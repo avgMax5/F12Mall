@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AuthFilter implements Filter {
 
     private static final Set<String> EXCLUDE_PATHS = Set.of(
-        "/auth/login", "/auth/signup"
+        "/auth/login", "/auth/signup", "/auth/check-username", "/users/upload"
     );
 
     @Override

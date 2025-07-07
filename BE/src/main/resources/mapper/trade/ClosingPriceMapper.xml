@@ -3,8 +3,8 @@
 <mapper namespace="com.avgmax.trade.mapper.ClosingPriceMapper">
 
     <insert id="insert" parameterType="com.avgmax.trade.domain.ClosingPrice">
-        INSERT INTO CLOSING_PRICE (USER_COIN_ID, HOLDER_ID, COIN_ID, HOLD_QUANTITY, BUY_PRICE, CREATED_AT, UPDATED_AT)
-        VALUES (#{userCoinId}, #{holderId}, #{coinId}, #{holdQuantity}, #{buyPrice}, #{createdAt}, #{updatedAt})
+        INSERT INTO CLOSING_PRICE (CLOSING_PRICE_ID, COIN_ID, UNIT_PRICE, TRADE_DATE, HIGH_PRICE, LOW_PRICE, BUY_QUANTITY, SELL_QUANTITY, CREATED_AT, UPDATED_AT)
+        VALUES (#{closingPriceId}, #{coinId}, #{unitPrice}, #{tradeDate}, #{highPrice}, #{lowPrice}, #{buyQuantity}, #{sellQuantity}, #{createdAt}, #{updatedAt})
     </insert>
 
     <select id="selectBycoinId" parameterType="String" resultType="com.avgmax.trade.domain.ClosingPrice">

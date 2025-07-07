@@ -72,8 +72,8 @@ public class AuthService {
             userCoinMapper.insert(userCoin);
 
             // 종가 정보 초기화
-            // ClosingPrice closingPrice = ClosingPrice.init(coin.getCoinId());
-            // closingPriceMapper.insert(closingPrice);
+            ClosingPrice closingPrice = ClosingPrice.init(coin.getCoinId());
+            closingPriceMapper.insert(closingPrice);
             
             return UserSignupResponse.of(true, "회원가입 성공", userId);
         } catch (Exception e) {
