@@ -31,7 +31,7 @@
 
 .box-live-price {
   color: #66ff66;
-  text-shadow: 0 0 0.5rem #00ff2f;
+  text-shadow: 0 0 8px #00ff2f;
   text-align: start;
   position: relative;
   transition: all 0.3s ease;
@@ -48,7 +48,7 @@
 .box-price-change {
   font-size: 1.2rem;
   color: #e01200;
-  text-shadow: 0 0 0.5rem #e01200;
+  text-shadow: 0 0 8px #e01200;
 }
 
 .box-price-change > span.change-ratio {
