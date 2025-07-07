@@ -1,11 +1,11 @@
-import { CONFIG } from '/config.js';
+// import { CONFIG } from '../config.js';
 
 document.addEventListener("DOMContentLoaded", () => {
-  
+
   const includeTarget = document.querySelector("#include-header");
-  
+
   if (includeTarget) {
-    fetch("/common/header/header.html")
+    fetch("../common/header/header.html")
       .then((res) => res.text())
       .then((data) => {
         includeTarget.innerHTML = data;
@@ -18,21 +18,21 @@ document.addEventListener("DOMContentLoaded", () => {
               const boxMenu = document.getElementById("box-menu");
 
               if (profileImg && boxMenu) {
-                
+
                 // 기존 이벤트 리스너 제거 (중복 방지)
                 profileImg.removeEventListener("click", handleProfileClick);
                 document.removeEventListener("click", handleDocumentClick);
-                
+
                 // 새로운 이벤트 리스너 추가
                 profileImg.addEventListener("click", handleProfileClick);
                 document.addEventListener("click", handleDocumentClick);
-                
+
                 const mypageElement = document.querySelector(".mymenu");
                 if (mypageElement) {
                   mypageElement.removeEventListener("click", handleMypageClick);
                   mypageElement.addEventListener("click", handleMypageClick);
                 }
-                
+
                 // observer 중지 (한 번만 실행)
                 observer.disconnect();
               }
@@ -51,10 +51,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const boxMenu = document.getElementById("box-menu");
 
         if (profileImg && boxMenu) {
-          
+
           profileImg.addEventListener("click", handleProfileClick);
           document.addEventListener("click", handleDocumentClick);
-          
+
           const mypageElement = document.querySelector(".mymenu");
           if (mypageElement) {
             mypageElement.addEventListener("click", handleMypageClick);
@@ -82,7 +82,7 @@ function handleProfileClick(e) {
 function handleDocumentClick(event) {
   const profileImg = document.getElementById("profile-img");
   const boxMenu = document.getElementById("box-menu");
-  
+
   if (profileImg && boxMenu && !profileImg.contains(event.target) && !boxMenu.contains(event.target)) {
     boxMenu.classList.add("hidden");
   }
