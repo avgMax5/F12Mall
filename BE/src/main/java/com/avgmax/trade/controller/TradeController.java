@@ -4,15 +4,21 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.HttpStatus;
 import com.avgmax.trade.domain.enums.CoinFilter;
 import com.avgmax.trade.dto.response.CoinFetchResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import com.avgmax.trade.dto.request.OrderRequest;
 import com.avgmax.trade.dto.response.ChartResponse;
 import com.avgmax.trade.dto.response.OrderResponse;
+import com.avgmax.trade.dto.response.TradeFetchResponse;
+import com.avgmax.trade.dto.response.TradeSurgingResponse;
+
+import com.avgmax.trade.service.OrderBookService;
 import com.avgmax.trade.service.TradeService;
 
 import lombok.RequiredArgsConstructor;
@@ -24,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class TradeController {
     private final TradeService tradeService;
+    private final OrderBookService orderBookService;
 
     // 주문 요청
     @PostMapping("/{coinId}/orders")
@@ -70,5 +77,13 @@ public class TradeController {
         log.info("GET 코인 DB 조회");
         CoinFilter coinFilter = CoinFilter.from(filter);
         return ResponseEntity.ok(tradeService.getCoinFetchList(coinFilter));
+    }
+
+    // 현재 거래상황 조회
+    @GetMapping(value = "/{coinId}/orders/orderbook", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter  getOrderBook(HttpSession session, @PathVariable String coinId) {
+        String sessionId = session.getId();
+        log.debug("SSE 연결 요청: session={}, coin={}", sessionId, coinId);
+        return orderBookService.connectOrderBookSse(sessionId, coinId);
     }
 }

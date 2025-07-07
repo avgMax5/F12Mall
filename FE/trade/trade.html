@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>F12_All-Trade</title>
     <link rel="stylesheet" href="/trade/css/trade.css" />
-    <link rel="stylesheet" href="/trade/css/background.css" />
     <link rel="stylesheet" href="/trade/css/profile.css" />
     <link rel="stylesheet" href="/trade/css/live.css" />
     <link rel="stylesheet" href="/trade/css/chart.css" />
     <link rel="stylesheet" href="/trade/css/interface.css" />
+    <link rel="stylesheet" href="/trade/css/orderbook.css" />
     <link rel="stylesheet" href="/fonts.css" />
     <script src="/trade/js/trade.js"></script>
     <script src="/trade/js/profile.js"></script>
@@ -18,6 +18,7 @@
     <script type="module" src="/hook/ChartAPI.js"></script>
     <script type="module" src="/trade/js/chart.js"></script>
     <script src="/trade/js/interface.js"></script>
+    <script src="/trade/js/orderbook.js"></script>
   </head>
   <body>
     <canvas id="trade-background"></canvas>
@@ -49,12 +50,18 @@
             </div>
             <div class="container-live">
               <div class="box-live-price">
-                <span><span id="current-price">100000</span>KRW<span class="live-indicator"></span></span>
+                <span
+                  ><span id="current-price">100000</span>KRW<span
+                    class="live-indicator"
+                  ></span
+                ></span>
               </div>
               <div class="box-price-change">
                 <span class="price-direction">▲</span>
                 <span id="daily-change" class="change-amount">500</span>
-                <span class="change-ratio">(<span id="fluctuation-rate">+ 50.00</span>%)</span>
+                <span class="change-ratio"
+                  >(<span id="fluctuation-rate">+ 50.00</span>%)</span
+                >
               </div>
             </div>
           </div>
@@ -86,7 +93,7 @@
               <div class="box-order-item quantity">
                 <label>주문 수량</label>
                 <div class="input-group">
-                  <input id="order_fis" type="text" placeholder="0" />
+                  <input id="order-fis" type="text" placeholder="0" />
                   <span>FIS</span>
                 </div>
               </div>
@@ -109,12 +116,20 @@
               <div class="box-order-item total-price">
                 <label>주문 총액</label>
                 <div class="input-group">
-                  <input id="order-total" type="text" placeholder="0" readonly />
+                  <input
+                    id="order-total"
+                    type="text"
+                    placeholder="0"
+                    readonly
+                  />
                   <span>원</span>
                 </div>
               </div>
               <div class="box-fee-info">
-                <span>수수료 <span id="fee-rate">0.05</span>%</span>
+                <span>수수료 <span id="fee-rate">1</span>%</span>
+              </div>
+              <div class="box-order-error-message">
+                <span>보유 금액이 부족합니다</span>
               </div>
               <div class="box-order-btn">
                 <button class="reset-btn">
@@ -126,7 +141,355 @@
               </div>
             </div>
           </div>
-          <div class="container-orderbook">container-orderbook</div>
+          <div class="container-orderbook orderbook-mode">
+            <div class="box-list-controller">
+              <button class="orderbook-btn active">
+                <span>OrderBook</span>
+              </button>
+              <button class="myorderlist-btn deactive">
+                <span>MyOrderList</span>
+              </button>
+            </div>
+            <div class="box-content orderbook-content">
+              <div class="orderbook-row">
+                <div class="ordered-quantity">
+                  <span>45</span>
+                </div>
+                <div class="ordered-price">
+                  <span>1050</span>
+                </div>
+                <div class="fluctuation-rate"><span>+5.00</span>%</div>
+              </div>
+              <div class="orderbook-row">
+                <div class="ordered-quantity">
+                  <span>23</span>
+                </div>
+                <div class="ordered-price">
+                  <span>1040</span>
+                </div>
+                <div class="fluctuation-rate"><span>+4.00</span>%</div>
+              </div>
+              <div class="orderbook-row">
+                <div class="ordered-quantity">
+                  <span>67</span>
+                </div>
+                <div class="ordered-price">
+                  <span>1030</span>
+                </div>
+                <div class="fluctuation-rate"><span>+3.00</span>%</div>
+              </div>
+              <div class="orderbook-row">
+                <div class="ordered-quantity">
+                  <span>12</span>
+                </div>
+                <div class="ordered-price">
+                  <span>1020</span>
+                </div>
+                <div class="fluctuation-rate"><span>+2.00</span>%</div>
+              </div>
+              <div class="orderbook-row">
+                <div class="ordered-quantity">
+                  <span>89</span>
+                </div>
+                <div class="ordered-price">
+                  <span>1010</span>
+                </div>
+                <div class="fluctuation-rate"><span>+1.00</span>%</div>
+              </div>
+              <div class="orderbook-row current-price">
+                <div class="ordered-quantity">
+                  <span>100</span>
+                </div>
+                <div class="ordered-price">
+                  <span>1000</span>
+                </div>
+                <div class="fluctuation-rate"><span>0.00</span>%</div>
+              </div>
+              <div class="orderbook-row">
+                <div class="ordered-quantity">
+                  <span>34</span>
+                </div>
+                <div class="ordered-price">
+                  <span>990</span>
+                </div>
+                <div class="fluctuation-rate"><span>-1.00</span>%</div>
+              </div>
+              <div class="orderbook-row">
+                <div class="ordered-quantity">
+                  <span>78</span>
+                </div>
+                <div class="ordered-price">
+                  <span>980</span>
+                </div>
+                <div class="fluctuation-rate"><span>-2.00</span>%</div>
+              </div>
+              <div class="orderbook-row">
+                <div class="ordered-quantity">
+                  <span>56</span>
+                </div>
+                <div class="ordered-price">
+                  <span>970</span>
+                </div>
+                <div class="fluctuation-rate"><span>-3.00</span>%</div>
+              </div>
+              <div class="orderbook-row">
+                <div class="ordered-quantity">
+                  <span>91</span>
+                </div>
+                <div class="ordered-price">
+                  <span>960</span>
+                </div>
+                <div class="fluctuation-rate"><span>-4.00</span>%</div>
+              </div>
+              <div class="orderbook-row">
+                <div class="ordered-quantity">
+                  <span>15</span>
+                </div>
+                <div class="ordered-price">
+                  <span>950</span>
+                </div>
+                <div class="fluctuation-rate"><span>-5.00</span>%</div>
+              </div>
+              <div class="orderbook-row">
+                <div class="ordered-quantity">
+                  <span>10</span>
+                </div>
+                <div class="ordered-price">
+                  <span>940</span>
+                </div>
+                <div class="fluctuation-rate"><span>-6.00</span>%</div>
+              </div>
+              <div class="orderbook-row">
+                <div class="ordered-quantity">
+                  <span>10</span>
+                </div>
+                <div class="ordered-price">
+                  <span>930</span>
+                </div>
+                <div class="fluctuation-rate"><span>-7.00</span>%</div>
+              </div>
+              <div class="orderbook-row">
+                <div class="ordered-quantity">
+                  <span>10</span>
+                </div>
+                <div class="ordered-price">
+                  <span>920</span>
+                </div>
+                <div class="fluctuation-rate"><span>-8.00</span>%</div>
+              </div>
+            </div>
+            <div class="box-content myorderlist-content">
+              <div class="myorderlist-col">
+                <div class="ordered-time-col">
+                  <span>주문시간</span>
+                </div>
+                <div class="order-type-col">
+                  <span>구분</span>
+                </div>
+                <div class="ordered-quantity-col">
+                  <span>수량</span><span>(FIS)</span>
+                </div>
+                <div class="ordered-price-col">
+                  <span>단가</span><span>(WON)</span>
+                </div>
+                <div class="order-total-col">
+                  <span>정산금액</span>
+                </div>
+              </div>
+              <div class="myorderlist-data">
+                <div class="myorderlist-row sell">
+                  <div class="ordered-time-row">
+                    <span class="order-date">2025.06.11</span>
+                    <span class="order-time">14:00</span>
+                  </div>
+                  <div class="order-type-row">
+                    <span class="order-type">SELL</span>
+                  </div>
+                  <div class="ordered-quantity-row">
+                    <span class="ordered-quantity">30</span>
+                  </div>
+                  <div class="ordered-price-row">
+                    <span class="ordered-price">3,100</span>
+                  </div>
+                  <div class="order-total-row">
+                    <span class="order-total">+93,000</span>
+                    <button class="cancel-btn">주문취소</button>
+                  </div>
+                </div>
+                <div class="myorderlist-row buy">
+                  <div class="ordered-time-row">
+                    <span class="order-date">2025.06.11</span>
+                    <span class="order-time">13:55</span>
+                  </div>
+                  <div class="order-type-row">
+                    <span class="order-type">BUY</span>
+                  </div>
+                  <div class="ordered-quantity-row">
+                    <span class="ordered-quantity">15</span>
+                  </div>
+                  <div class="ordered-price-row">
+                    <span class="ordered-price">3,050</span>
+                  </div>
+                  <div class="order-total-row">
+                    <span class="order-total">-45,750</span>
+                    <button class="cancel-btn">주문취소</button>
+                  </div>
+                </div>
+                <div class="myorderlist-row sell">
+                  <div class="ordered-time-row">
+                    <span class="order-date">2025.06.11</span>
+                    <span class="order-time">13:45</span>
+                  </div>
+                  <div class="order-type-row">
+                    <span class="order-type">SELL</span>
+                  </div>
+                  <div class="ordered-quantity-row">
+                    <span class="ordered-quantity">25</span>
+                  </div>
+                  <div class="ordered-price-row">
+                    <span class="ordered-price">3,080</span>
+                  </div>
+                  <div class="order-total-row">
+                    <span class="order-total">+77,000</span>
+                    <button class="cancel-btn">주문취소</button>
+                  </div>
+                </div>
+                <div class="myorderlist-row buy">
+                  <div class="ordered-time-row">
+                    <span class="order-date">2025.06.11</span>
+                    <span class="order-time">13:30</span>
+                  </div>
+                  <div class="order-type-row">
+                    <span class="order-type">BUY</span>
+                  </div>
+                  <div class="ordered-quantity-row">
+                    <span class="ordered-quantity">40</span>
+                  </div>
+                  <div class="ordered-price-row">
+                    <span class="ordered-price">3,020</span>
+                  </div>
+                  <div class="order-total-row">
+                    <span class="order-total">-120,800</span>
+                    <button class="cancel-btn">주문취소</button>
+                  </div>
+                </div>
+                <div class="myorderlist-row sell">
+                  <div class="ordered-time-row">
+                    <span class="order-date">2025.06.11</span>
+                    <span class="order-time">13:15</span>
+                  </div>
+                  <div class="order-type-row">
+                    <span class="order-type">SELL</span>
+                  </div>
+                  <div class="ordered-quantity-row">
+                    <span class="ordered-quantity">20</span>
+                  </div>
+                  <div class="ordered-price-row">
+                    <span class="ordered-price">3,150</span>
+                  </div>
+                  <div class="order-total-row">
+                    <span class="order-total">+63,000</span>
+                    <button class="cancel-btn">주문취소</button>
+                  </div>
+                </div>
+                <div class="myorderlist-row buy">
+                  <div class="ordered-time-row">
+                    <span class="order-date">2025.06.11</span>
+                    <span class="order-time">13:00</span>
+                  </div>
+                  <div class="order-type-row">
+                    <span class="order-type">BUY</span>
+                  </div>
+                  <div class="ordered-quantity-row">
+                    <span class="ordered-quantity">35</span>
+                  </div>
+                  <div class="ordered-price-row">
+                    <span class="ordered-price">3,000</span>
+                  </div>
+                  <div class="order-total-row">
+                    <span class="order-total">-105,000</span>
+                    <button class="cancel-btn">주문취소</button>
+                  </div>
+                </div>
+                <div class="myorderlist-row sell">
+                  <div class="ordered-time-row">
+                    <span class="order-date">2025.06.11</span>
+                    <span class="order-time">12:45</span>
+                  </div>
+                  <div class="order-type-row">
+                    <span class="order-type">SELL</span>
+                  </div>
+                  <div class="ordered-quantity-row">
+                    <span class="ordered-quantity">50</span>
+                  </div>
+                  <div class="ordered-price-row">
+                    <span class="ordered-price">3,200</span>
+                  </div>
+                  <div class="order-total-row">
+                    <span class="order-total">+160,000</span>
+                    <button class="cancel-btn">주문취소</button>
+                  </div>
+                </div>
+                <div class="myorderlist-row buy">
+                  <div class="ordered-time-row">
+                    <span class="order-date">2025.06.11</span>
+                    <span class="order-time">12:30</span>
+                  </div>
+                  <div class="order-type-row">
+                    <span class="order-type">BUY</span>
+                  </div>
+                  <div class="ordered-quantity-row">
+                    <span class="ordered-quantity">45</span>
+                  </div>
+                  <div class="ordered-price-row">
+                    <span class="ordered-price">2,950</span>
+                  </div>
+                  <div class="order-total-row">
+                    <span class="order-total">-132,750</span>
+                    <button class="cancel-btn">주문취소</button>
+                  </div>
+                </div>
+                <div class="myorderlist-row sell">
+                  <div class="ordered-time-row">
+                    <span class="order-date">2025.06.11</span>
+                    <span class="order-time">12:15</span>
+                  </div>
+                  <div class="order-type-row">
+                    <span class="order-type">SELL</span>
+                  </div>
+                  <div class="ordered-quantity-row">
+                    <span class="ordered-quantity">60</span>
+                  </div>
+                  <div class="ordered-price-row">
+                    <span class="ordered-price">3,180</span>
+                  </div>
+                  <div class="order-total-row">
+                    <span class="order-total">+190,800</span>
+                    <button class="cancel-btn">주문취소</button>
+                  </div>
+                </div>
+                <div class="myorderlist-row buy">
+                  <div class="ordered-time-row">
+                    <span class="order-date">2025.06.11</span>
+                    <span class="order-time">12:00</span>
+                  </div>
+                  <div class="order-type-row">
+                    <span class="order-type">BUY</span>
+                  </div>
+                  <div class="ordered-quantity-row">
+                    <span class="ordered-quantity">55</span>
+                  </div>
+                  <div class="ordered-price-row">
+                    <span class="ordered-price">2,900</span>
+                  </div>
+                  <div class="order-total-row">
+                    <span class="order-total">-159,500</span>
+                    <button class="cancel-btn">주문취소</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
