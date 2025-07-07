@@ -1,24 +1,55 @@
-.width {
+/* 공통 */
+.border {
+    border: 1px solid #00ff2f;
+}
+
+/* body */
+html {
+    font-size: 16px;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    background: black;
+    overflow: hidden;
+    margin: 0;
+}
+
+/* canvas {
+    position: absolute;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+} */
+
+#wrapper {
     position: relative;
-    justify-content: center;
-    /* 수정 코드 */
-    display: flex;
-    align-items: center;
-    flex-direction: column;
     width: 100%;
-    height: calc(100vh - 100px);
-    min-width: 375px;
-    /* 아이폰 se 기준 */
+    min-width: 393px;
+    max-width: 270rem;
+}
+
+.width {
+    width: 90%;
+    display: grid;
+    grid-template-columns: 2;
+    padding: 4rem 0;
+    place-items: center;
+    place-content: center;
+    margin: 0 auto;
     font-family: 'KIMM_B';
-    font-size: 12.5px;
+    font-size: 0.78rem;
 }
 
 .section-top {
-    width: 1366px;
-    height: 333px;
-    display: flex;
-    gap: 32px;
-    margin-bottom: 32px;
+    width: 85.25rem;
+    height: 20.375rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.75rem;
+    padding-bottom: 2rem;
+    padding-top: 0.5rem;
 }
 
 /*-------------------- 
@@ -26,7 +57,7 @@
 --------------------*/
 
 .section-top .container-left {
-    width: 276px;
+    width: 17.25rem;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -35,7 +66,7 @@
 /* sursing-header */
 .section-top .container-left .box-surging-header {
     width: 100%;
-    height: 28px;
+    height: 1.75rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -46,7 +77,7 @@
     padding: 0;
     margin: 0;
     text-align: left;
-    font-size: 18px;
+    font-size: 1.125rem;
     color: #00FF2F;
     text-shadow: 0 0 27px rgba(102, 255, 102, 0.25);
 }
@@ -54,7 +85,7 @@
 /* surging-body */
 .section-top .container-left .box-surging-body {
     width: 100%;
-    height: 305px;
+    height: 19.0625rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -69,13 +100,14 @@
     align-items: center;
     padding: 0;
     margin: 0;
-    gap: 10px;
+    gap: 0.625rem;
     list-style: none;
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 .box-surging-body .surging-entry {
-    width: 242px;
-    height: 42px;
+    width: 15.125rem;
+    height: 2.625rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -89,13 +121,13 @@
 .surging-entry .entry-left {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding-left: 4px;
+    gap: 0.5rem;
+    padding-left: 0.25rem;
 }
 
 .entry-left>.entry-trophy {
-    width: 30px;
-    height: 30px;
+    width: 1.875rem;
+    height: 1.875rem;
     display: block;
 }
 
@@ -104,8 +136,7 @@
     color: #ffffff;
     align-items: center;
     line-height: 1;
-    gap: 0px;
-    font-size: 15px;
+    font-size: 0.9375rem;
 }
 
 .rank-1 .entry-left>.entry-trophy {
@@ -160,20 +191,20 @@
 
 .surging-entry .entry-right {
     display: flex;
-    font-size: 14px;
+    font-size: 0.875rem;
     color: #E01200;
     align-items: center;
-    padding-right: 4px;
+    padding-right: 0.25rem;
     white-space: nowrap;
 }
 
 .entry-right>.entry-change.up::before {
     content: "▲";
-    font-size: 8px;
+    font-size: 0.5rem;
     display: inline-block;
     vertical-align: middle;
-    margin-bottom: 3px;
-    padding-right: 3px;
+    margin-bottom: 0.1875rem;
+    padding-right: 0.1875rem;
 }
 
 /*---------------------- 
@@ -181,7 +212,7 @@
 ----------------------*/
 
 .section-top .container-right {
-    width: 1058px;
+    width: 66.125rem;
     display: flex;
     flex-direction: column;
 }
@@ -189,7 +220,7 @@
 /* carousel-header */
 .section-top .container-right .box-carousel-header {
     width: 100%;
-    height: 28px;
+    height: 1.75rem;
     display: flex;
     align-items: center;
     justify-content: left;
@@ -197,8 +228,9 @@
 
 .box-carousel-header .carousel-title {
     width: 100%;
+    /* height: 100%; */
     margin: 0;
-    font-size: 18px;
+    font-size: 1.125rem;
     color: #00FF2F;
     text-shadow: 0 0 30px rgba(102, 255, 102, 0.25);
 }
@@ -206,7 +238,7 @@
 /* carousel-body */
 .section-top .container-right .box-carousel-body {
     width: 100%;
-    height: 305px;
+    height: 19.0625rem;
     overflow: hidden;
     position: relative;
     background-color: rgba(75, 75, 75, 0.36);
@@ -236,12 +268,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 2.875em;
+    gap: 1.65rem;
+
 }
 
 .box-carousel-body .carousel-cap-cards .cap-card {
-    width: 155px;
-    height: 240px;
+    width: 11.0625rem;
+    height: 16.25rem;
     margin: 0;
     border: 1px solid #00FF2F;
     background-color: rgba(0, 0, 0, 0.95);
@@ -256,7 +289,7 @@
 
 .cap-card .card-top {
     width: 100%;
-    height: 23px;
+    height: 1.4375rem;
     display: flex;
     align-items: center;
     border-bottom: 1px solid #00FF2F;
@@ -271,18 +304,18 @@
 }
 
 .card-label>.card-coin-name {
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: #FFFFFF;
 }
 
 .card-label>.card-author {
-    font-size: 8px;
+    font-size: 0.5rem;
     color: #C8C8C8;
 }
 
 .cap-card .card-bot {
     width: 100%;
-    height: 217px;
+    height: 14.75rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -294,12 +327,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0.5em 1em;
-    gap: 0.5em;
+    padding: 0.5rem 1rem;
+    gap: 0.5rem;
 }
 
 .card-info>.card-role {
-    font-size: 6px;
+    font-size: 0.375rem;
     width: 100%;
     text-align: left;
     font-family: "KIMM_L";
@@ -318,12 +351,12 @@
     flex-direction: column;
     align-items: center;
     box-sizing: border-box;
-    padding: 0.9em 0.6em;
+    padding: 0.9rem 0.6rem;
 }
 
 .card-price>.card-change.up {
     width: 100%;
-    font-size: 11px;
+    font-size: 0.6875rem;
     color: #E01200;
     display: flex;
     justify-content: flex-end;
@@ -332,15 +365,15 @@
 
 .card-price>.card-change.up::before {
     content: "▲";
-    font-size: 6px;
-    padding-right: 3px;
+    font-size: 0.375rem;
+    padding-right: 0.1875rem;
     display: inline-block;
     position: relative;
-    top: -2px;
+    top: -0.125rem;
 }
 
 .card-change.up>.change-percent {
-    font-size: 7.5px;
+    font-size: 0.46875rem;
 }
 
 .card-price>div:nth-child(2) {
@@ -355,18 +388,18 @@
 }
 
 .card-price>.price-icon>svg {
-    width: 12px;
-    height: 12px;
-    margin-bottom: 1.5px;
+    width: 0.75rem;
+    height: 0.75rem;
+    margin-bottom: 0.09375rem;
 }
 
 .price-icon>text {
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: #000000;
 }
 
 .price-icon>.price-amount {
-    font-size: 16px;
+    font-size: 1rem;
     color: #00FF2F;
 }
 
@@ -377,7 +410,6 @@
     justify-content: center;
     align-items: center;
     background-color: rgba(0, 0, 0, 0.85);
-    padding: 1em;
 }
 
 .carousel-banner img {
@@ -387,25 +419,24 @@
 
 /* carousel indicator */
 .box-carousel-body .carousel-indicator {
-    width: 82px;
-    height: 15px;
+    width: 5.125rem;
+    height: 0.8rem;
     left: 50%;
     transform: translateX(-50%);
-    bottom: 0.5em;
+    bottom: 0.3em;
     background-color: rgba(0, 0, 0, 0.9);
-    border-radius: 1em;
-    box-shadow: 0 0.1875em 0.1875em 0 rgba(0, 0, 0, 0.25);
+    border-radius: 1rem;
+    box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.25);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1em;
+    gap: 1rem;
     position: absolute;
     z-index: 1;
-
-
 }
 
 .carousel-indicator>.dot {
+    /* position: absolute; */
     width: 0.5em;
     height: 0.5em;
     background-color: #FFFFFF;
@@ -423,9 +454,9 @@
 
 .section-bottom {
     width: 85.375rem;
-    height: 34.75rem;
+    height: 50rem;
     background-color: rgba(0, 0, 0, 0.7);
-    box-shadow: 0 0 1.5rem 0 rgba(0, 255, 47, 0.8);
+    box-shadow: 0 0 24px 0 rgba(0, 255, 47, 0.8);
 }
 
 .section-bottom .container-top {
@@ -442,7 +473,7 @@
 .section-bottom .container-top .box-search {
     width: 23.125rem;
     height: 2.5rem;
-    background-color: rgba(0, 0, 0, 0.95);
+    background-color: #000000f2;
     border: 1px solid #00FF2F;
     box-shadow: 0 0 5px rgba(0, 255, 47, 0.25);
     box-sizing: border-box;
@@ -454,12 +485,13 @@
 }
 
 .box-search .search-input {
+    padding: 0.75rem;
     height: 100%;
     background: transparent;
     border: none;
     outline: none;
     font-size: 1rem;
-    color: #FFFFFF;
+    color: #00FF2F;
     flex: 1;
 }
 
@@ -481,7 +513,7 @@
     width: 1.5625rem;
     height: 1.5625rem;
     stroke: #00FF2F;
-    stroke-width: 1px;
+    stroke-width: 0.0625rem;
     stroke-linecap: round;
     stroke-linejoin: round;
     vertical-align: middle;
@@ -512,7 +544,7 @@
     font-size: 0.875rem;
     color: #00FF2F;
     cursor: pointer;
-    padding: 10px;
+    padding: 0.625rem;
     font-family: "KIMM_L";
     box-sizing: border-box;
     position: relative;
@@ -530,7 +562,7 @@
 
 .sort-toggle .sort-icon {
     position: absolute;
-    right: 0.75em;
+    right: 0.75rem;
     top: 50%;
     transform: translateY(-60%);
 }
@@ -544,7 +576,7 @@
     position: absolute;
     top: 100%;
     left: 0;
-    width: 150px;
+    width: 9.375rem;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -552,7 +584,7 @@
     border-top: none;
     box-sizing: border-box;
     display: none;
-    z-index: 10;
+    z-index: 20;
 }
 
 .container-top .box-sort .sort-menu.active {
@@ -588,7 +620,7 @@
 /* view radio */
 .section-bottom .container-top .box-view {
     display: flex;
-    gap: 2px;
+    gap: 0.125rem;
 }
 
 .box-view input[type="radio"] {
@@ -602,19 +634,26 @@
     align-items: center;
     justify-content: center;
     background-color: transparent;
-    transition: all 0.2s ease-in-out;
 }
 
 .view-toggle svg {
+    fill: none;
+    stroke: #00FF2F;
+    transition: fill 0.2s ease;
     display: block;
 }
 
-input[type="radio"]#view-card:checked+label,
+input#view-card:checked+label[for="view-card"] svg,
+input#view-list:checked+label[for="view-list"] svg {
+    fill: #00FF2F;
+}
+
+/* input[type="radio"]#view-card:checked+label,
 input[type="radio"]#view-list:checked+label {
     border: 1px solid #00FF2F;
     background-color: rgba(0, 255, 47, 0.1);
     box-shadow: 0 0 5px rgba(0, 255, 47, 0.25);
-}
+} */
 
 /*--------------------------------------
 sect-bot : card-view (container-bottom)
@@ -622,13 +661,14 @@ sect-bot : card-view (container-bottom)
 
 .section-bottom .container-bottom {
     width: 100%;
-    height: 31rem;
+    height: 40rem;
     overflow-y: auto;
     scrollbar-width: none;
     box-sizing: border-box;
     display: flex;
     justify-content: center;
     align-items: flex-start;
+    padding-bottom: 10rem;
 }
 
 .section-bottom .container-bottom::-webkit-scrollbar {
@@ -642,7 +682,7 @@ sect-bot : card-view (container-bottom)
     justify-content: center;
     grid-template-columns: repeat(3, 22.25rem);
     grid-auto-rows: auto;
-    gap: 3rem 4.5rem;
+    gap: 2rem 4.5rem;
     box-sizing: border-box;
     margin-top: 1rem;
     margin-bottom: 1rem;
@@ -659,7 +699,7 @@ sect-bot : card-view (container-bottom)
 .card-view:hover {
     transform: scale(1.03);
     box-shadow: 0 0 30px rgba(0, 255, 47, 1);
-    z-index: 1;
+    z-index: 3;
 }
 
 .card-view .card-profile {
@@ -675,13 +715,13 @@ sect-bot : card-view (container-bottom)
 
 .card-profile .card-thumbnail {
     flex-shrink: 0;
-    width: 105px;
-    height: 105px;
+    width: 6.5625rem;
+    height: 6.5625rem;
 }
 
 .card-thumbnail img {
-    width: 105px;
-    height: 105px;
+    width: 6.5625rem;
+    height: 6.5625rem;
 }
 
 .card-view .card-info {
@@ -696,12 +736,12 @@ sect-bot : card-view (container-bottom)
 }
 
 .info-meta .info-coin-name {
-    font-size: 22px;
+    font-size: 1.375rem;
     color: #FFFFFF;
 }
 
 .info-author {
-    font-size: 12px;
+    font-size: 0.75rem;
     color: #C8C8C8;
 }
 
@@ -719,15 +759,15 @@ sect-bot : card-view (container-bottom)
 }
 
 .info-change .change-amount {
-    font-size: 16px;
+    font-size: 1rem;
     margin-right: 0.25rem;
     display: inline-flex;
     align-items: center;
 }
 
 .info-change .change-percent {
-    margin-top: 1px;
-    font-size: 11px;
+    margin-top: 0.0625rem;
+    font-size: 0.6875rem;
 }
 
 .info-change.up {
@@ -756,15 +796,15 @@ sect-bot : card-view (container-bottom)
 }
 
 .card-price svg {
-    width: 20px;
-    height: 20px;
+    width: 1.25rem;
+    height: 1.25rem;
     display: inline-block;
     vertical-align: middle;
-    margin-bottom: 1.5px;
+    margin-bottom: 0.09375rem;
 }
 
 .card-price>.price-amount {
-    font-size: 24px;
+    font-size: 1.5rem;
     color: #00FF2F;
 }
 
@@ -795,6 +835,7 @@ sect-bot : list-view (container-bottom)
 
 /* table list */
 .box-coin-list .table-body {
+    margin-top: 0.75rem;
     flex: 1;
     overflow-y: auto;
     scrollbar-width: none;
@@ -815,6 +856,10 @@ sect-bot : list-view (container-bottom)
 
 .table-row:hover {
     background-color: rgba(0, 255, 47, 0.05);
+}
+
+.table-row:hover .col-coin {
+    color: #00FF2F;
 }
 
 /* table title style */
@@ -905,4 +950,39 @@ sect-bot : list-view (container-bottom)
 .table-row .col-rate.down,
 .table-row .col-low {
     color: #1376EE;
+}
+
+.sortable {
+    cursor: pointer;
+    gap: 0.5rem;
+}
+
+.sortable:hover {
+    color: #00FF2F;
+}
+
+.sort-arrow {
+    stroke: #B3FFC7;
+    fill: #B3FFC7;
+    transition: stroke 0.2s ease;
+}
+
+.sortable.asc .sort-arrow .arrow-up {
+    fill: #1376EE;
+    stroke: #1376EE;
+}
+
+.sortable.desc .sort-arrow .arrow-down {
+    fill: #E01200;
+    stroke: #E01200;
+}
+
+.sort-arrow .arrow-up,
+.sort-arrow .arrow-down {
+    stroke-opacity: 0.6;
+}
+
+.sortable.asc .arrow-up,
+.sortable.desc .arrow-down {
+    stroke-opacity: 1;
 }
