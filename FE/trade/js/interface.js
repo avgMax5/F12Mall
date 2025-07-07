@@ -1,169 +1,286 @@
+import { createOrder } from '/hook/trade/postOrder.js';
+import { getUserInform } from '/hook/user/getProfile.js';
+import { getUserCoins } from '/hook/user/getUserCoins.js';
+import { tradeCoinId } from '/trade/js/trade.js';
+
 document.addEventListener('DOMContentLoaded', () => {
+  // DOM 요소
+  const containerInterface = document.querySelector('.container-interface');
   const quantityInput = document.querySelector('.quantity input');
   const orderPriceInput = document.querySelector('.order-price input');
   const totalPriceInput = document.querySelector('.total-price input');
+  const orderPriceLabel = document.querySelector('.order-price label');
+  const availableAmount = document.querySelector('.available span');
+  const quantityUnit = document.querySelector('.quantity .input-group span');
+  const buyButton = document.querySelector('.sell-type-btn');
+  const sellButton = document.querySelector('.buy-type-btn');
+  const orderButton = document.querySelector('.order-btn span');
+  const resetBtn = document.querySelector('.reset-btn');
+  const quickOrderBtns = document.querySelectorAll('.quick-orders button');
+  const orderErrorMessage = document.querySelector('.box-order-error-message span');
 
-  // 수수료 상수
+  // 상수
   const FEE_RATE = 1;
+  const MAX_ORDER_QUANTITY = 1000;
+  const PRICE_UNIT = 100;
 
-  // input 값을 가져올 때 빈 값이면 0을 반환하는 함수
-  const getInputValue = inputElement => {
-    const value = inputElement.value.trim();
-    return value === '' ? '0' : value;
+  // 사용자 정보 상태
+  let userMoney = 0;
+  let userCoins = [];
+
+  // 사용자 코인 정보 가져오기
+  const fetchUserCoins = async () => {
+    try {
+      userCoins = await getUserCoins();
+      console.log('사용자 코인 정보:', userCoins);
+    } catch (error) {
+      console.error('사용자 코인 정보 조회 실패:', error);
+      alert('사용자 코인 정보를 불러오는데 실패했습니다.');
+    }
   };
 
-  // 숫자 문자열에서 쉼표 제거하고 숫자로 변환하는 함수
+  // 현재 코인의 보유 수량 가져오기
+  const getCurrentCoinHoldQuantity = () => {
+    console.log('현재 거래 코인 ID:', tradeCoinId);
+    const currentCoin = userCoins.find(coin => coin.coin_id === tradeCoinId);
+    console.log('현재 거래 코인 정보:', currentCoin);
+    return currentCoin ? currentCoin.hold_quantity : 0;
+  };
+
+  // 사용자 정보 가져오기
+  const fetchUserInform = async () => {
+    try {
+      const userInfo = await getUserInform();
+      userMoney = userInfo.money;
+      updateAvailableAmount();
+    } catch (error) {
+      console.error('사용자 정보 조회 실패:', error);
+      alert('사용자 정보를 불러오는데 실패했습니다.');
+    }
+  };
+
+  // 사용 가능 금액/수량 업데이트
+  const updateAvailableAmount = () => {
+    if (containerInterface.classList.contains('buy-mode')) {
+      console.log('매수 모드');
+      availableAmount.textContent = `₩ ${formatNumber(userMoney)}`;
+    } else {
+      console.log('매도 모드');
+      const holdQuantity = getCurrentCoinHoldQuantity();
+      availableAmount.textContent = `${holdQuantity} 개`;
+    }
+  };
+
+  // totalPriceInput을 읽기 전용으로 설정
+  totalPriceInput.readOnly = true;
+
+  // 숫자 처리 유틸리티 함수
   const parseNumberFromString = str => {
-    const cleanStr = str.replace(/,/g, '');
+    const cleanStr = (str || '').toString().replace(/[^0-9]/g, '');
     return cleanStr === '' ? 0 : parseInt(cleanStr, 10);
   };
 
-  // 총액 자동 계산 함수
+  const formatNumber = value => {
+    return parseNumberFromString(value).toLocaleString('ko-KR');
+  };
+
+  // 입력 필드 포맷팅
+  const formatInputValue = inputElement => {
+    const value = parseNumberFromString(inputElement.value);
+    
+    // 수량 입력 필드인 경우
+    if (inputElement === quantityInput && value > MAX_ORDER_QUANTITY) {
+      orderErrorMessage.textContent = `구매할 수 있는 코인은 최대 ${MAX_ORDER_QUANTITY}개입니다.`;
+      inputElement.value = formatNumber(MAX_ORDER_QUANTITY);
+      return;
+    }
+    
+    // 가격 입력 필드인 경우
+    if (inputElement === orderPriceInput) {
+      // 입력 중에는 100원 단위 체크를 하지 않음
+      inputElement.value = value === 0 ? '' : formatNumber(value);
+      return;
+    }
+
+    inputElement.value = value === 0 ? '' : formatNumber(value);
+    orderErrorMessage.textContent = '';
+  };
+
+  // 주문 유효성 검사
+  const validateOrder = (orderFis, orderPrice) => {
+    const parsedFis = parseNumberFromString(orderFis);
+    const parsedPrice = parseNumberFromString(orderPrice);
+    const totalPrice = parsedFis * parsedPrice;
+
+    if (!parsedFis || parsedFis <= 0) {
+      orderErrorMessage.textContent = '유효한 주문 수량을 입력해주세요.';
+      throw new Error('유효한 주문 수량을 입력해주세요.');
+    }
+    if (parsedFis > MAX_ORDER_QUANTITY) {
+      orderErrorMessage.textContent = `구매할 수 있는 코인은 최대 ${MAX_ORDER_QUANTITY}개입니다.`;
+      throw new Error(`구매할 수 있는 코인은 최대 ${MAX_ORDER_QUANTITY}개입니다.`);
+    }
+    if (!parsedPrice || parsedPrice <= 0) {
+      orderErrorMessage.textContent = '유효한 주문 가격을 입력해주세요.';
+      throw new Error('유효한 주문 가격을 입력해주세요.');
+    }
+    if (parsedPrice % PRICE_UNIT !== 0) {
+      orderErrorMessage.textContent = '가격은 100원 단위로만 입력 가능합니다.';
+      throw new Error('가격은 100원 단위로만 입력 가능합니다.');
+    }
+    if (containerInterface.classList.contains('buy-mode') && totalPrice > userMoney) {
+      orderErrorMessage.textContent = '주문 가능 금액을 초과했습니다.';
+      throw new Error('주문 가능 금액을 초과했습니다.');
+    }
+    orderErrorMessage.textContent = '';
+    return true;
+  };
+
+  // 입력 필드 초기화
+  const resetInputs = () => {
+    quantityInput.value = '0';
+    orderPriceInput.value = '0';
+    totalPriceInput.value = '0';
+    orderErrorMessage.textContent = '';
+  };
+
+  // 총액 계산
   const calculateTotalPrice = () => {
     const quantity = parseNumberFromString(quantityInput.value);
     const orderPrice = parseNumberFromString(orderPriceInput.value);
-
-    const isBuyMode = document.querySelector('.container-interface').classList.contains('buy-mode');
+    const isBuyMode = containerInterface.classList.contains('buy-mode');
+    
     const totalPrice = isBuyMode 
       ? quantity * orderPrice * (1 + FEE_RATE / 100)
       : quantity * orderPrice;
 
-    // 총액을 포맷팅하여 표시
-    totalPriceInput.value = totalPrice.toLocaleString('ko-KR');
+    totalPriceInput.value = formatNumber(totalPrice);
   };
 
-  // 주문 요청 시 모든 input 값을 검증하고 기본값 적용
-  const validateAndPrepareOrderData = () => {
-    const quantity = getInputValue(quantityInput);
-    const orderPrice = getInputValue(orderPriceInput);
-    const totalPrice = getInputValue(totalPriceInput);
+  // 주문 모드 전환
+  const switchOrderMode = isBuyMode => {
+    containerInterface.classList.toggle('buy-mode', isBuyMode);
+    containerInterface.classList.toggle('sell-mode', !isBuyMode);
+    buyButton.classList.toggle('active', isBuyMode);
+    buyButton.classList.toggle('deactive', !isBuyMode);
+    sellButton.classList.toggle('active', !isBuyMode);
+    sellButton.classList.toggle('deactive', isBuyMode);
 
-    // 빈 값이면 0으로 설정
-    if (quantityInput.value.trim() === '') {
-      quantityInput.value = '0';
+    orderPriceLabel.textContent = isBuyMode ? '매수 가격' : '매도 가격';
+    quantityUnit.textContent = isBuyMode ? 'FIS' : '개';
+    orderButton.textContent = isBuyMode ? '매수' : '매도';
+
+    updateAvailableAmount();
+    resetInputs();
+  };
+
+  // 주문 처리
+  const processOrder = async (orderFis, orderPrice) => {
+    try {
+      validateOrder(orderFis, orderPrice);
+      
+      const orderType = containerInterface.classList.contains('buy-mode')
+        ? 'BUY'
+        : 'SELL';
+      const response = await createOrder(
+        tradeCoinId,
+        orderType,
+        orderFis,
+        orderPrice
+      );
+
+      return { success: true, data: response };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message || '주문 처리에 실패했습니다.',
+      };
     }
-    if (orderPriceInput.value.trim() === '') {
-      orderPriceInput.value = '0';
+  };
+
+  // 퀵 오더 처리
+  const handleQuickOrder = increment => {
+    const currentPrice = parseNumberFromString(orderPriceInput.value);
+    const newPrice = currentPrice + parseInt(increment);
+    const roundedPrice = Math.floor(newPrice / PRICE_UNIT) * PRICE_UNIT;
+    if (roundedPrice > 0) {
+      orderPriceInput.value = formatNumber(roundedPrice);
+      calculateTotalPrice();
     }
-    if (totalPriceInput.value.trim() === '') {
-      totalPriceInput.value = '0';
-    }
-
-    return {
-      quantity: quantity,
-      orderPrice: orderPrice,
-      totalPrice: totalPrice,
-    };
   };
 
-  const formatNumber = inputElement => {
-    // 1. 숫자 이외의 문자 제거하고 숫자로 변환
-    let value = inputElement.value.replace(/[^0-9]/g, '');
+  // 이벤트 리스너 설정
+  const initializeEventListeners = () => {
+    // 입력 필드 이벤트
+    [quantityInput, orderPriceInput].forEach(input => {
+      input?.addEventListener('input', () => {
+        formatInputValue(input);
+        calculateTotalPrice();
+        try {
+          validateOrder(quantityInput.value, orderPriceInput.value);
+        } catch (error) {
+          // 유효성 검사 실패 시 에러 메시지는 validateOrder에서 설정됨
+        }
+      });
 
-    // 2. 빈 문자열이면 0으로 처리
-    if (value === '') {
-      inputElement.value = '0';
-      return;
-    }
+      // 포커스 아웃 시 추가 검증
+      input?.addEventListener('blur', () => {
+        if (input === orderPriceInput && input.value) {
+          const price = parseNumberFromString(input.value);
+          const roundedPrice = Math.floor(price / PRICE_UNIT) * PRICE_UNIT;
+          input.value = formatNumber(roundedPrice);
+          calculateTotalPrice();
+          orderErrorMessage.textContent = '';
+        }
+      });
+    });
 
-    // 3. 숫자로 변환
-    const numberValue = parseInt(value, 10);
+    // 주문 타입 전환 버튼
+    buyButton?.addEventListener('click', () => switchOrderMode(true));
+    sellButton?.addEventListener('click', () => switchOrderMode(false));
 
-    // 4. 세 자리마다 쉼표 추가
-    inputElement.value = numberValue.toLocaleString('ko-KR');
+    // 주문 버튼
+    orderButton?.parentElement?.addEventListener('click', async () => {
+      const orderFis = parseNumberFromString(quantityInput.value);
+      const orderPrice = parseNumberFromString(orderPriceInput.value);
+
+      const result = await processOrder(orderFis, orderPrice);
+      
+      if (result.success) {
+        console.log('주문이 성공적으로 처리되었습니다:', result.data);
+        alert('주문이 성공적으로 처리되었습니다.');
+        resetInputs();
+        // 주문 성공 후 사용자 정보와 코인 정보 갱신
+        await Promise.all([
+          fetchUserInform(),
+          fetchUserCoins()
+        ]);
+      } else {
+        console.error('주문 처리 실패:', result.error);
+        alert(result.error);
+      }
+    });
+
+    // 초기화 버튼
+    resetBtn?.addEventListener('click', resetInputs);
+
+    // 퀵 오더 버튼
+    quickOrderBtns.forEach(btn => {
+      btn.addEventListener('click', () =>
+        handleQuickOrder(parseInt(btn.value))
+      );
+    });
   };
 
-  if (orderPriceInput) {
-    orderPriceInput.addEventListener('input', () => {
-      formatNumber(orderPriceInput);
-      calculateTotalPrice(); // 총액 재계산
-    });
-    // 초기 로딩 시에도 포맷팅 적용
-    formatNumber(orderPriceInput);
-  }
-
-  if (totalPriceInput) {
-    // 주문 총액은 자동 계산되므로 readonly 상태 유지
-    formatNumber(totalPriceInput);
-  }
-
-  if (quantityInput) {
-    quantityInput.addEventListener('input', () => {
-      formatNumber(quantityInput);
-      calculateTotalPrice(); // 총액 재계산
-    });
-    // 초기 로딩 시에도 포맷팅 적용
-    formatNumber(quantityInput);
-  }
-
-  // 초기 총액 계산
-  calculateTotalPrice();
-
-  // TODO: 주문 수량과 매수 가격에 따라 주문 총액을 계산하고 포맷팅하는 로직 추가 필요
-
-  // Order type switching
-  const containerInterface = document.querySelector('.container-interface');
-  const buyButton = document.querySelector('.sell-type-btn'); // 매수 버튼
-  const sellButton = document.querySelector('.buy-type-btn'); // 매도 버튼
-  const orderButton = document.querySelector('.order-btn span');
-  const orderPriceLabel = document.querySelector('.order-price label');
-  const availableAmount = document.querySelector('.available span');
-  const quantityUnit = document.querySelector('.quantity .input-group span');
-
-  const switchToBuyMode = () => {
-    containerInterface.classList.add('buy-mode');
-    containerInterface.classList.remove('sell-mode');
-    buyButton.classList.add('active');
-    buyButton.classList.remove('deactive');
-    sellButton.classList.remove('active');
-    sellButton.classList.add('deactive');
-
-    orderPriceLabel.textContent = '매수 가격';
-    availableAmount.textContent = '₩ 1,311,000'; // 예시 데이터
-    quantityUnit.textContent = 'FIS';
-    orderButton.textContent = '매수';
+  // 초기화
+  const initialize = async () => {
+    await Promise.all([
+      fetchUserInform(),
+      fetchUserCoins()
+    ]); // 사용자 정보와 코인 정보를 동시에 가져오기
+    initializeEventListeners();
+    switchOrderMode(true);
   };
 
-  const switchToSellMode = () => {
-    containerInterface.classList.remove('buy-mode');
-    containerInterface.classList.add('sell-mode');
-    buyButton.classList.remove('active');
-    buyButton.classList.add('deactive');
-    sellButton.classList.add('active');
-    sellButton.classList.remove('deactive');
-
-    orderPriceLabel.textContent = '매도 가격';
-    availableAmount.textContent = '17 개'; // 예시 데이터
-    quantityUnit.textContent = '개';
-    orderButton.textContent = '매도';
-  };
-
-  buyButton.addEventListener('click', switchToBuyMode);
-  sellButton.addEventListener('click', switchToSellMode);
-
-  // 주문 버튼 클릭 이벤트
-  const orderBtn = document.querySelector('.order-btn');
-  if (orderBtn) {
-    orderBtn.addEventListener('click', () => {
-      const orderData = validateAndPrepareOrderData();
-      console.log('주문 데이터:', orderData);
-
-      // 여기에 실제 주문 API 호출 로직을 추가할 수 있습니다
-      // 예: sendOrderRequest(orderData);
-    });
-  }
-
-  // 초기화 버튼 클릭 이벤트
-  const resetBtn = document.querySelector('.reset-btn');
-  if (resetBtn) {
-    resetBtn.addEventListener('click', () => {
-      if (quantityInput) quantityInput.value = '';
-      if (orderPriceInput) orderPriceInput.value = '';
-      if (totalPriceInput) totalPriceInput.value = '';
-      calculateTotalPrice(); // 초기화 후 총액 재계산
-    });
-  }
-
-  // 초기 상태 설정 (buy-mode가 기본이라고 가정)
-  switchToBuyMode();
+  initialize();
 });

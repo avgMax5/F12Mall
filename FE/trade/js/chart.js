@@ -308,8 +308,7 @@ document.querySelectorAll('.chart-header .tab').forEach((btn) => {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-    const params = new URLSearchParams(window.location.search);
-    const coinId = params.get('coinId');
+    const coinId = window.tradeCoinId;
 
     (async (coinId) => {
         const result = await getChartRows(coinId);

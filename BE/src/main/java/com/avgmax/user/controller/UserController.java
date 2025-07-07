@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,18 +33,20 @@ public class UserController {
    private final FileService fileService;
 
    // 프로필 조회
-   @GetMapping("/{userId}/profile")
-   public ResponseEntity<UserInformResponse> getUserInform(@PathVariable String userId) {
+   @GetMapping("/me/profile")
+   public ResponseEntity<UserInformResponse> getUserInform(HttpSession session) {
+         String userId = (String) session.getAttribute("user");
          UserInformResponse response = userService.getUserInform(userId);
          return ResponseEntity.ok(response);
    }
 
    // 사용자 파일 업로드
-   @PostMapping("/{userId}/uploads")
+   @PostMapping("/me/uploads")
    public ResponseEntity<List<String>> uploadFiles(
-         @PathVariable String userId,
+         HttpSession session,
          @RequestParam("file") List<MultipartFile> files) {
 
+      String userId = (String) session.getAttribute("user");
       List<String> urls = fileService.uploadForUser(userId, files);
       return ResponseEntity.ok(urls);
    }

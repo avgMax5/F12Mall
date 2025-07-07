@@ -3,13 +3,11 @@ package com.avgmax.trade.service;
 import com.avgmax.trade.sse.EmitterRegistry;
 import com.avgmax.trade.dto.query.OrderWithCoinQuery;
 import com.avgmax.trade.dto.response.OrderBookResponse;
-import com.avgmax.global.exception.ErrorCode;
 import com.avgmax.trade.mapper.*;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -17,7 +15,6 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-import com.avgmax.trade.exception.TradeException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,9 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class OrderBookService {
     private final OrderMapper orderMapper;
-    private final TradeMapper tradeMapper;
     private final EmitterRegistry emitterRegistry;
-    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
     public SseEmitter connectOrderBookSse(String sessionId, String coinId) {
         log.debug("sessionId = {} SSE 연결 시도 -> coinId = {}", sessionId, coinId); 
