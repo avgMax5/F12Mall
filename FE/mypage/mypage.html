@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/mypage/css/mypage.css" />
+    <link rel="stylesheet" href="/mypage/css/media.css" />
     <link rel="stylesheet" href="/fonts.css" />
     <link rel="icon" href="/favicon.png" />
     <title>mypage</title>
@@ -15,11 +16,15 @@
       <div class="width">
         <!-- section : left  -->
         <div class="section-left">
-          <div class="container-profile border">
+          <div class="container-profile border media-border-none">
             <div class="box-contents">
-              <div id="image"></div>
-              <div id="name">홍민우</div>
-              <div id="username">밍밍코인</div>
+              <div class="media-profile-left-row">
+                <div id="image"></div>
+                <div class="media-name-container">
+                  <div id="name">홍민우</div>
+                  <div id="username">밍밍코인</div>
+                </div>
+              </div>
               <div id="position">Backend Engineer</div>
               <div id="email">shalshal@gmail.com</div>
               <div id="stack-container">
@@ -30,25 +35,29 @@
               <div id="link-container">
                 <!-- 깃허브 링크,이미지 / 벨로그 링크.이미지 -->
                 <div class="link"></div>
+                <div class="link"></div>
+                <div class="link"></div>
               </div>
             </div>
-            <div class="detail-btn">DETAIL</div>
+            <div class="detail-btn media-display-none">DETAIL</div>
           </div>
-          <div class="container-ratio border">
-            <div>MyCoin Ratio</div>
-            <div class="box-ratio-bar"></div>
-            <div class="box-coins">
-              <div class="coin-element"></div>
+          <div class="media-profile-right-row">
+            <div class="container-ratio border media-border-none">
+              <div class="media-border-none">MyCoin Ratio</div>
+              <div class="box-ratio-bar"></div>
+              <div class="box-coins">
+                <div class="coin-element"></div>
+              </div>
             </div>
           </div>
         </div>
         <!-- section : right -->
         <div class="section-right">
           <div class="container-information">
-            <div class="border right-title">Coin Information</div>
-            <div class="box-main border">
-              <div class="main-left border">
-                <div class="left-top">
+            <div class="border section-right-title">Coin Information</div>
+            <div class="box-inform-main border">
+              <div class="main-left border media-border-none">
+                <div class="left-top media-display-none">
                   <span id="coin_id">밍밍코인</span>
                   <svg
                     fill="#fff"
@@ -101,7 +110,9 @@
                       <span>총 보유 자산 : </span><span>₩</span
                       ><span>320,000</span>
                     </div>
-                    <div>+150,000 (9%)</div>
+                    <div id="valuation-rate">
+                      +150,000 <span>(</span>9<span>%)</span>
+                    </div>
                   </div>
                   <div class="graph-container">
                     <div id="graph"></div>
@@ -115,24 +126,29 @@
                 </div>
               </div>
             </div>
-            <div class="container-list-coins">
-              <div class="border right-title">List of Coins</div>
-              <div class="box-main border">
-                <div class="total-info">
-                  <div><span id="total-coins">38</span><span>FIS</span></div>
-                  <div>
-                    <span>₩</span><span id="total-coin-price">300,000</span>
-                  </div>
+          </div>
+          <div class="container-list-coins">
+            <div class="border section-right-title">List of Coins</div>
+            <div class="box-list-main border">
+              <div class="total-info">
+                <div><span id="total-coins">38</span><span>FIS</span></div>
+                <div>
+                  <span>₩</span><span id="total-coin-price">300,000</span>
                 </div>
-                <div class="coin-list">
-                  <div class="coin-item"></div>
-                  <div class="coin-item"></div>
-                  <div class="coin-item"></div>
-                  <div class="coin-item"></div>
-                  <div class="coin-item"></div>
-                  <div class="coin-item"></div>
-                  <div class="coin-item"></div>
-                </div>
+              </div>
+              <div class="coin-list">
+                <div class="coin-item"></div>
+                <div class="coin-item"></div>
+                <div class="coin-item"></div>
+                <div class="coin-item"></div>
+                <div class="coin-item"></div>
+                <div class="coin-item"></div>
+                <div class="coin-item"></div>
+                <div class="coin-item"></div>
+                <div class="coin-item"></div>
+                <div class="coin-item"></div>
+                <div class="coin-item"></div>
+                <div class="coin-item"></div>
               </div>
             </div>
           </div>
@@ -143,6 +159,7 @@
     <script src="/mypage/js/background.js"></script>
     <script type="module" src="/common/header/header.js"></script>
     <script src="/mypage/js/coin.js"></script>
-    <script src="/mypage/js/coinelement.js"></script>
+    <script src="/mypage/js/coinElement.js"></script>
+    <script src="/mypage/js/mobile.js"></script>
   </body>
 </html>
