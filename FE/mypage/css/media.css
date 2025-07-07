@@ -1,0 +1,185 @@
+/* 모바일 */
+@media (max-width: 767px) {
+  html {
+    font-size: 9px;
+  }
+  .header {
+    top: 0.4rem;
+    left: 0;
+    background: none !important;
+  }
+  .width {
+    display: block;
+    width: 100%;
+    padding: 0;
+  }
+  .section-right-title {
+    padding: 0.6rem 0;
+    width: 100%;
+    color: #ffbb00;
+    font-size: 1rem;
+  }
+  .media-border-none {
+    border: none !important;
+  }
+  .media-display-none {
+    display: none;
+  }
+  .container-profile,
+  .container-ratio,
+  .section-right {
+    background-color: unset;
+  }
+
+  /* 모바일 상단 부분*/
+  .section-left {
+    display: flex;
+    box-sizing: border-box;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 33%;
+    border-radius: 0px 0px 30px 30px;
+    box-shadow: 0px 6px 10px 5px #00ff0069;
+    background-color: #3d3d3d;
+  }
+  .section-left .media-profile-right-row {
+    /* display: grid;
+    height: 80%; */
+    height: 50%;
+    margin-top: 4.2rem;
+  }
+  .main-left {
+    width: 90%;
+    height: 40%;
+    font-size: 1.2rem;
+    color: #fff;
+  }
+  .container-profile {
+    margin-top: 3.1rem;
+    margin-right: 1rem;
+  }
+  .container-profile .box-contents .media-profile-left-row {
+    display: flex;
+    gap: 1rem;
+    height: 70%;
+    margin-bottom: 1.2rem;
+  }
+  .box-contents .media-profile-left-row #image {
+    width: 13rem;
+  }
+  .container-profile .box-contents #position {
+    margin-top: 2rem;
+  }
+  .media-name-container {
+    display: block;
+    width: 12rem;
+  }
+  .section-right {
+    height: calc(85vh - 20rem);
+    margin-top: 2rem;
+  }
+  .container-ratio {
+    height: 100%;
+  }
+  .container-ratio .box-ratio-bar {
+    margin: 0.2rem;
+  }
+  .container-ratio .box-coins {
+    width: 95%;
+    margin-top: 1rem;
+  }
+  .container-information {
+    height: 38%;
+    background-color: #000000ab;
+  }
+  .container-information > .box-inform-main {
+    display: block;
+  }
+  .box-list-main {
+    background-color: #000000ab;
+    height: 84%;
+  }
+  .box-list-main .coin-list {
+    width: 90%;
+    margin-top: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  }
+  /* 코인 */
+  .box-list-main .coin-list .coin {
+    position: relative;
+    height: 6.6rem;
+    margin-bottom: 1rem;
+  }
+  .coin .info-container {
+    display: inline-block;
+  }
+  .coin .result-container {
+    display: inline-block;
+    position: absolute;
+    right: 0rem;
+    bottom: 1.4rem;
+  }
+}
+
+/* 테블릿 */
+@media (min-width: 768px) and (max-width: 1199px) {
+  html {
+    font-size: 11px;
+  }
+  .container-list-coins {
+    margin-top: 2rem;
+    height: 50%;
+  }
+  .box-contents #stack-container .stack {
+    font-size: 0.5rem;
+  }
+  .total-money-container #valuation-rate {
+    height: 2rem;
+    line-height: 2rem;
+    font-size: 1rem;
+    margin-top: 25%;
+  }
+  .total-money-container .line {
+    font-size: 1rem;
+  }
+  .box-list-main {
+    height: 52%;
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1700px) {
+  html {
+    font-size: 16px;
+  }
+  .box-contents #stack-container .stack {
+    font-size: 0.5rem;
+  }
+  .box-inform-main .main-left {
+    font-size: 0.8rem;
+  }
+  .total-money-container #valuation-rate {
+    height: 2rem;
+    line-height: 2rem;
+    font-size: 1rem;
+    margin-top: 25%;
+  }
+  .total-money-container .line {
+    font-size: 0.8rem;
+  }
+}
+
+@media (min-width: 1701px) {
+  html {
+    font-size: 18px;
+  }
+  .width {
+    grid-template-columns: 2.5fr 6fr;
+  }
+  .container-profile .box-contents #position {
+    margin-top: 1.6rem;
+  }
+  .box-list-main {
+    height: 100%;
+  }
+}
