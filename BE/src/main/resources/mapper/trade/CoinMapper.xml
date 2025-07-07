@@ -11,7 +11,7 @@
         SELECT * FROM COIN WHERE COIN_ID = #{coinId}
     </select>
 
-    <select id="selectAllWithCreator" resultType="com.avgmax.trade.dto.query.CoinWithCreatorQuery">
+    <!-- <select id="selectAllWithCreator" resultType="com.avgmax.trade.dto.query.CoinWithCreatorQuery">
         SELECT
             c.COIN_ID AS COIN_ID,
             c.CURRENT_PRICE AS CURRENT_PRICE,
@@ -19,7 +19,7 @@
             u.USERNAME AS CREATOR_USERNAME
         FROM COIN c
         JOIN USER u ON c.CREATOR_ID = u.USER_ID
-    </select>
+    </select> -->
 
     <select id="selectWithCreatorWithProfileById" parameterType="String" resultType="com.avgmax.trade.dto.query.CoinWithCreatorWithProfileQuery">
         SELECT

@@ -1,10 +1,9 @@
 import { CONFIG } from '/config.js';
 
+const toNullIfEmpty = (value) => value.trim() === '' ? null : value;
 const API_SIGNUP_URL = `${CONFIG.API_BASE_URL}/auth/signup`;
 
 document.addEventListener('DOMContentLoaded', function() {
-    
-
     const signupForm = document.getElementById('signupForm');
     if (signupForm) {
         signupForm.addEventListener('submit', function(e) {
@@ -160,6 +159,7 @@ async function submitSignup(userData) {
 
         alert('회원가입이 완료되었습니다!');
         document.getElementById('signupForm').reset();
+        window.location.href = '/login';
     } catch (err) {
         console.error('회원가입 실패:', err);
         alert(`회원가입에 실패했습니다: ${err.message}`);

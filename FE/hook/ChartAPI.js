@@ -18,8 +18,9 @@ async function getChartRows(coinId) {
         if (!response.ok) {
             console.log(response.status);
             if (response.status === 401) {
-                window.location.href = "/error401";
+                window.location.href = "/__unauthorized__";
             }
+            
             const errorText = await response.text();
             throw new Error(`요청 실패: ${response.status} ${response.statusText} ${errorText}`);
         }

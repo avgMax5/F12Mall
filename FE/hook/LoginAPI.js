@@ -1,7 +1,5 @@
 import { CONFIG } from '/config.js';
 
-const toNullIfEmpty = (value) => value.trim() === '' ? null : value;
-
 const API_LOGIN_URL = `${CONFIG.API_BASE_URL}/auth/login`;
 
 function handleLogin() {
@@ -35,6 +33,7 @@ async function submitLogin(loginData) {
                 'Content-Type': 'application/json'
             },
             credentials: 'include',
+            cache: 'no-cache',
             body: JSON.stringify(loginData)
         });
         
@@ -44,15 +43,8 @@ async function submitLogin(loginData) {
         }
         
         const data = await response.json();
-        
-        console.log('로그인 성공', data);
-        alert('로그인 성공');
-        
         window.location.href = '/main';
-        
     } catch (err) {
-        console.error('로그인 실패:', err);
-        // alert(`로그인에 실패했습니다: ${err.message}`);
         showFailAlert();
     }
 }
