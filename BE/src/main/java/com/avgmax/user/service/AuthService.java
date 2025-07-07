@@ -2,10 +2,12 @@ package com.avgmax.user.service;
 
 import java.util.Optional;
 
+import com.avgmax.trade.mapper.ClosingPriceMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.avgmax.trade.domain.ClosingPrice;
 import com.avgmax.trade.domain.Coin;
 import com.avgmax.trade.domain.UserCoin;
 import com.avgmax.user.domain.User;
@@ -36,6 +38,7 @@ public class AuthService {
     private final CertificationMapper certificationMapper;
     private final CoinMapper coinMapper;
     private final UserCoinMapper userCoinMapper;
+    private final ClosingPriceMapper closingPriceMapper;
 
     @Transactional
     public UserSignupResponse createUser(UserSignupRequest request) {
@@ -67,6 +70,10 @@ public class AuthService {
             // 사용자 코인 정보 저장
             UserCoin userCoin = request.toUserCoin(userId, coin.getCoinId());
             userCoinMapper.insert(userCoin);
+
+            // 종가 정보 초기화
+            ClosingPrice closingPrice = ClosingPrice.init(coin.getCoinId());
+            closingPriceMapper.insert(closingPrice);
             
             return UserSignupResponse.of(true, "회원가입 성공", userId);
         } catch (Exception e) {
@@ -77,7 +84,7 @@ public class AuthService {
     @Transactional(readOnly = true)
     public UserLoginResponse login(String username, String rawPassword) {
         User user = userMapper.selectByUsername(username)
-            .orElseThrow(() -> UserException.of(ErrorCode.USER_NOT_FOUND));
+                .orElseThrow(() -> UserException.of(ErrorCode.USER_NOT_FOUND));
         user.validatePassword(rawPassword, passwordEncoder);
         return UserLoginResponse.of(true, user.getUserId());
     }
