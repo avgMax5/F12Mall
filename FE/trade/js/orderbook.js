@@ -1,6 +1,8 @@
 import { tradeCoinId } from '/trade/js/trade.js';
 import { getOrderbook } from '/hook/trade/getOrderbook.js';
 import { getMyOrderList } from '/hook/trade/getMyOrderList.js';
+import { cancelOrder } from '/hook/trade/deleteOrder.js';
+import { fetchUserInform, fetchUserCoins } from '/trade/js/interface.js';
 
 const COLOR = {
     BLUE: '#1376ee',
@@ -8,12 +10,17 @@ const COLOR = {
     WHITE: '#FFFFFF'
 };
 
+// OrderbookManager 인스턴스를 저장할 변수
+let orderbookManagerInstance = null;
+
 class OrderbookManager {
     constructor() {
         this.elements = null;
         this.currentMode = null;
         this.orderbookStream = null;
         this.init();
+        // 싱글톤 인스턴스 저장
+        orderbookManagerInstance = this;
     }
 
     /////////////  Orderbook  //////////////
@@ -250,6 +257,23 @@ class OrderbookManager {
             </div>
         `;
 
+        // 주문 취소 버튼 이벤트 리스너 추가
+        const cancelBtn = row.querySelector('.cancel-btn');
+        cancelBtn.addEventListener('click', async () => {
+            try {
+                await cancelOrder(tradeCoinId, order.order_id);
+                alert('주문이 취소되었습니다.');
+                await Promise.all([
+                    this.updateMyOrderList(),
+                    fetchUserInform(),
+                    fetchUserCoins()
+                ]);
+            } catch (error) {
+                console.error('주문 취소 중 오류 발생:', error);
+                alert('주문 취소에 실패했습니다.');
+            }
+        });
+
         return row;
     }
 
@@ -293,6 +317,13 @@ class OrderbookManager {
 
 // 싱글톤 인스턴스 생성
 new OrderbookManager();
+
+// updateMyOrderList 함수 export
+export const updateMyOrderList = async () => {
+    if (orderbookManagerInstance) {
+        await orderbookManagerInstance.updateMyOrderList();
+    }
+};
 
 // 정렬 관련 코드 추가
 function initializeSorting() {
@@ -365,23 +396,6 @@ function sortOrders(column) {
   
   // DOM 업데이트
   orders.forEach(order => orderList.appendChild(order));
-}
-
-// 주문 목록이 업데이트될 때마다 원래 순서 저장
-function saveOriginalOrder() {
-  const orders = document.querySelectorAll('.myorderlist-data > div');
-  orders.forEach((order, index) => {
-    order.dataset.originalIndex = index;
-  });
-}
-
-// 기존 주문 목록 업데이트 함수 수정
-function updateOrderList(orders) {
-  const orderListContainer = document.querySelector('.myorderlist-data');
-  // 기존 코드...
-  
-  // 원래 순서 저장
-  saveOriginalOrder();
 }
 
 // 페이지 로드 시 정렬 기능 초기화

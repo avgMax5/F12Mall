@@ -48,7 +48,7 @@
         FROM `ORDER`
         WHERE COIN_ID = #{coinId}
         AND ORDER_TYPE = 'SELL'
-        AND UNIT_PRICE &lt;= #{orderPrice} <!-- 매수 가격 이하의 매도 주문 -->
+        AND UNIT_PRICE &lt;= #{orderPrice} <!-- 매수 가격 이하(<=)의 매도 주문 -->
         ORDER BY UNIT_PRICE DESC, CREATED_AT ASC <!-- 높은 가격부터 낮은 가격 순, 같은 가격은 오래된 순 -->
     </select>
 
@@ -57,7 +57,7 @@
         FROM `ORDER`
         WHERE COIN_ID = #{coinId}
         AND ORDER_TYPE = 'BUY'
-        AND UNIT_PRICE &gt;= #{orderPrice} <!-- 매도 가격 이상의 매수 주문 -->
+        AND UNIT_PRICE &gt;= #{orderPrice} <!-- 매도 가격 이상(>=)의 매수 주문 -->
         ORDER BY UNIT_PRICE ASC, CREATED_AT ASC <!-- 낮은 가격부터 높은 가격 순, 같은 가격은 오래된 순 -->
     </select>
 

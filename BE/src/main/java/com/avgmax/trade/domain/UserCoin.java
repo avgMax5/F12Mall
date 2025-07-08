@@ -4,7 +4,8 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 import com.avgmax.global.base.BaseTimeEntity;
-import com.avgmax.trade.domain.enums.OrderType;
+import com.avgmax.global.exception.ErrorCode;
+import com.avgmax.trade.exception.TradeException;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,22 +33,25 @@ public class UserCoin extends BaseTimeEntity {
     @Builder.Default
     private BigDecimal totalBuyAmount = new BigDecimal(1000000);
 
-    public void processCoin(OrderType orderType, BigDecimal quantity, BigDecimal unitPrice) {
-        BigDecimal amount = unitPrice.multiply(quantity);
-        this.holdQuantity = orderType == OrderType.BUY ? 
-            this.holdQuantity.add(quantity) : 
-            this.holdQuantity.subtract(quantity);
-        this.totalBuyAmount = orderType == OrderType.BUY ? 
-            this.totalBuyAmount.add(amount) : 
-            this.totalBuyAmount.subtract(amount);
+    public void plusUserCoin(BigDecimal quantity, BigDecimal unitPrice) {
+        this.holdQuantity = this.holdQuantity.add(quantity);
+        this.totalBuyAmount = this.totalBuyAmount.add(unitPrice.multiply(quantity));
     }
 
-    public static UserCoin of(String holderId, String coinId, BigDecimal quantity, BigDecimal unitPrice) {
+    public void minusUserCoin(BigDecimal quantity, BigDecimal unitPrice) {
+        if (this.holdQuantity.compareTo(quantity) < 0) {
+            throw TradeException.of(ErrorCode.INSUFFICIENT_COIN_QUANTITY);
+        }
+        this.holdQuantity = this.holdQuantity.subtract(quantity);
+        this.totalBuyAmount = this.totalBuyAmount.subtract(unitPrice.multiply(quantity));
+    }
+
+    public static UserCoin init(String holderId, String coinId) {
         return UserCoin.builder()
             .holderId(holderId)
             .coinId(coinId)
-            .holdQuantity(quantity)
-            .totalBuyAmount(unitPrice.multiply(quantity))
+            .holdQuantity(BigDecimal.ZERO)
+            .totalBuyAmount(BigDecimal.ZERO)
             .build();
     }
 }
