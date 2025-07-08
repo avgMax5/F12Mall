@@ -40,6 +40,7 @@
         FROM `ORDER`
         WHERE USER_ID = #{userId}
         AND COIN_ID = #{coinId}
+        ORDER BY CREATED_AT DESC
     </select>
 
     <select id="selectSellOrdersByCoinId" resultType="com.avgmax.trade.domain.Order">

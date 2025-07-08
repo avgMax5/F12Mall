@@ -15,6 +15,7 @@ import lombok.Getter;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class UserCoinResponse {
     private String coinId; // coinId
+    private String creatorId; // userId
     private String coinName; // creatorUsername
     private String creatorName; // creatorName
     private BigDecimal holdQuantity; // 보유 수량 => holdQuantity
@@ -40,6 +41,7 @@ public class UserCoinResponse {
     
         return UserCoinResponse.builder()
             .coinId(userCoin.getCoinId())
+            .creatorId(userCoin.getCreatorId())
             .coinName(userCoin.getCreatorUsername())
             .creatorName(userCoin.getCreatorName())
             .holdQuantity(userCoin.getHoldQuantity())

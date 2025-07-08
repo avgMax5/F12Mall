@@ -70,7 +70,7 @@ public class TradeService {
 
     @Transactional(readOnly = true)
     public List<OrderResponse> getMyList(String userId, String coinId) {
-        List<Order> orders = orderMapper.selectAllByUserId(userId);
+        List<Order> orders = orderMapper.selectAllByUserIdAndCoinId(userId, coinId);
         return orders.stream()
                 .map(OrderResponse::from)
                 .collect(Collectors.toList());
@@ -163,11 +163,6 @@ public class TradeService {
 
     private BigDecimal executeMatch(OrderType requestType, Order buyOrder, Order sellOrder, BigDecimal remainingQuantity) {
         Order matchedOrder = (requestType == OrderType.BUY) ? sellOrder : buyOrder;
-        if (buyOrder.getUserId().equals(sellOrder.getUserId())) {
-            log.info("같은 유저 주문은 매칭 불가: userId={}", buyOrder.getUserId());
-            return remainingQuantity;
-        }
-
         BigDecimal tradableQuantity = remainingQuantity.min(matchedOrder.getQuantity());
 
         // 체결 기록 생성
@@ -210,8 +205,9 @@ public class TradeService {
         String userId = orderType == OrderType.BUY ? trade.getBuyUserId() : trade.getSellUserId();
         Optional<UserCoin> userCoin = userCoinMapper.selectByHolderIdAndCoinId(userId, trade.getCoinId());
         if (userCoin.isPresent()) {
-            userCoin.get().processCoin(orderType, trade.getQuantity(), trade.getUnitPrice());
-            userCoinMapper.update(userCoin.get());
+            UserCoin existingUserCoin = userCoin.get();
+            existingUserCoin.processCoin(orderType, trade.getQuantity(), trade.getUnitPrice());
+            userCoinMapper.update(existingUserCoin);
         } else if (orderType == OrderType.BUY) {
             userCoinMapper.insert(UserCoin.of(userId, trade.getCoinId(), trade.getQuantity(), trade.getUnitPrice()));
         } else {

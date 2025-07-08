@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -18,7 +17,7 @@ public class OrderResponse {
     private String orderId;
     private String userId;
     private String coinId;
-    private LocalDateTime orderedAt;
+    private String orderedAt;
     private OrderType orderType;
     private BigDecimal quantity;
     private BigDecimal unitPrice;
@@ -29,7 +28,7 @@ public class OrderResponse {
             .orderId(order.getOrderId())
             .userId(order.getUserId())
             .coinId(order.getCoinId())
-            .orderedAt(order.getCreatedAt())
+            .orderedAt(order.getCreatedAt().toString())
             .orderType(order.getOrderType())
             .quantity(order.getQuantity())
             .unitPrice(order.getUnitPrice())

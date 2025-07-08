@@ -12,9 +12,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const userName = document.querySelector('.user-name');
     const coinBio = document.querySelector('.coin-bio');
 
+    console.log('profileData', profileData);
+
     // 데이터 표시
     if (profileImage) {
-      profileImage.src = profileData.creator_image || 'favicon.png';
+      profileImage.src = profileData.profile_image || 'favicon.png';
       profileImage.alt = `${profileData.user_name}의 프로필 이미지`;
     }
 

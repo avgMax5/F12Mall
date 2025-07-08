@@ -233,3 +233,28 @@
   display: block;
   opacity: 1;
 }
+
+.sortable {
+  cursor: pointer;
+  position: relative;
+}
+
+.sort-icon {
+  display: none;
+  color: #00ff2f;
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.4rem;
+}
+
+.sortable.asc .sort-icon {
+  display: inline;
+  content: "▲";
+}
+
+.sortable.desc .sort-icon {
+  display: inline;
+  content: "▼";
+}
