@@ -13,6 +13,7 @@ import lombok.Getter;
 @Builder
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class OrderBookResponse {
+    private String coinId;
     private String orderType;
     private BigDecimal quantity;
     private BigDecimal unitPrice;
@@ -20,6 +21,7 @@ public class OrderBookResponse {
 
     public static OrderBookResponse from(OrderWithCoinQuery orderWithCoinQuery) {
         return OrderBookResponse.builder()
+                .coinId(orderWithCoinQuery.getCoinId())
                 .orderType(orderWithCoinQuery.getOrderType())
                 .quantity(orderWithCoinQuery.getQuantity())
                 .unitPrice(orderWithCoinQuery.getUnitPrice())

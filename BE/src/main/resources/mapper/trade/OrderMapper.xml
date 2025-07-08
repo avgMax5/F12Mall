@@ -47,8 +47,8 @@
         FROM `ORDER`
         WHERE COIN_ID = #{coinId}
         AND ORDER_TYPE = 'SELL'
-        AND UNIT_PRICE = #{orderPrice} <!-- 매수 가격과 같은 매도 주문 -->
-        ORDER BY CREATED_AT ASC <!-- 오래된 순 -->
+        AND UNIT_PRICE &lt;= #{orderPrice} <!-- 매수 가격 이하의 매도 주문 -->
+        ORDER BY UNIT_PRICE DESC, CREATED_AT ASC <!-- 높은 가격부터 낮은 가격 순, 같은 가격은 오래된 순 -->
     </select>
 
     <select id="selectBuyOrdersByCoinId" resultType="com.avgmax.trade.domain.Order">
@@ -56,8 +56,8 @@
         FROM `ORDER`
         WHERE COIN_ID = #{coinId}
         AND ORDER_TYPE = 'BUY'
-        AND UNIT_PRICE = #{orderPrice} <!-- 매도 가격과 같은 매수 주문 -->
-        ORDER BY CREATED_AT ASC <!-- 오래된 순 -->
+        AND UNIT_PRICE &gt;= #{orderPrice} <!-- 매도 가격 이상의 매수 주문 -->
+        ORDER BY UNIT_PRICE ASC, CREATED_AT ASC <!-- 낮은 가격부터 높은 가격 순, 같은 가격은 오래된 순 -->
     </select>
 
     <update id="updateQuantity" parameterType="com.avgmax.trade.domain.Order">
@@ -72,7 +72,7 @@
             r.UNIT_PRICE AS UNIT_PRICE,
             r.ORDER_TYPE AS ORDER_TYPE,
             r.quantity AS QUANTITY,
-            ((c.CURRENT_PRICE - c.CLOSING_PRICE) / c.CLOSING_PRICE * 100) AS FLUCTUATION_RATE
+            ((r.UNIT_PRICE - c.CLOSING_PRICE) / c.CLOSING_PRICE * 100) AS FLUCTUATION_RATE
         FROM (
             SELECT
                 COIN_ID,
@@ -84,6 +84,6 @@
             GROUP BY COIN_ID, UNIT_PRICE, ORDER_TYPE
         ) AS r
         JOIN COIN c ON c.COIN_ID = r.COIN_ID
-        ORDER BY r.COIN_ID, r.UNIT_PRICE;
+        ORDER BY r.UNIT_PRICE DESC;
     </select>
 </mapper>
