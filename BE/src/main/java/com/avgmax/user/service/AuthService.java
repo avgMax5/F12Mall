@@ -30,9 +30,7 @@ import com.avgmax.trade.mapper.UserCoinMapper;
 import com.avgmax.global.exception.ErrorCode;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -58,9 +56,8 @@ public class AuthService {
             // 프로필 정보 저장
             profileMapper.insert(request.toProfile(userId));
 
-            // 스킬 정보 저장
+             // 스킬 정보 저장
             List<String> skillIds = userSkillMapper.selectByStack(request.getStack());
-            log.info(skillIds.toString());
             List<UserSkill> userSkills = skillIds.stream()
                 .map(skillId -> UserSkill.of(
                     userId, 

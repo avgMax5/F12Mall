@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/mypage/css/media.css" />
     <link rel="stylesheet" href="/fonts.css" />
     <link rel="icon" href="/favicon.png" />
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
     <title>mypage</title>
   </head>
   <body>
@@ -51,7 +52,7 @@
             <div class="box-inform-main border">
               <div class="main-left border media-border-none">
                 <div class="left-top media-display-none">
-                  <span id="coin_id"></span>
+                  <span id="coin-name"></span>
                   <svg
                     fill="#fff"
                     width="16px"
@@ -78,9 +79,9 @@
               </div>
               <div class="main-right border">
                 <div class="right-top">
-                  <span id="my-coin-quantity">400</span><span>/</span
+                  <span id="my-coin-quantity"></span><span>/</span
                   ><span>1000</span><span>FIS</span> <span>₩</span
-                  ><span id="total-value">40,000</span>
+                  ><span id="total-value"></span>
                 </div>
                 <div>
                   <div class="total-money-container">
@@ -89,28 +90,20 @@
                     </div>
                     <div class="line">
                       <span>코인 평가 금액 : </span><span>₩</span
-                      ><span>20,000</span>
+                      ><span id="current-coin-amount"></span>
                     </div>
                     <div class="line">
                       <span>코인 매수 원금 : </span><span>₩</span
-                      ><span>150,000</span>
+                      ><span id="total-coin-amount"></span>
                     </div>
                     <div class="line">
                       <span>총 보유 자산 : </span><span>₩</span
-                      ><span>320,000</span>
+                      ><span id="total-amount"></span>
                     </div>
-                    <div id="valuation-rate">
-                      +150,000 <span>(</span>9<span>%)</span>
-                    </div>
+                    <div id="subtract-amount"></div>
                   </div>
                   <div class="graph-container">
                     <div id="graph"></div>
-                    <div class="graph-bottom">
-                      <div></div>
-                      <span>매도량</span>
-                      <div style="background-color: #00ff2f"></div>
-                      <span>보유량</span>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -120,25 +113,10 @@
             <div class="border section-right-title">List of Coins</div>
             <div class="box-list-main border">
               <div class="total-info">
-                <div><span id="total-coins">38</span><span>FIS</span></div>
-                <div>
-                  <span>₩</span><span id="total-coin-price">300,000</span>
-                </div>
+                <div><span id="total-coins"></span><span> FIS</span></div>
+                <div><span>₩</span><span id="total-coin-price"></span></div>
               </div>
-              <div class="coin-list">
-                <div class="coin-item"></div>
-                <div class="coin-item"></div>
-                <div class="coin-item"></div>
-                <div class="coin-item"></div>
-                <div class="coin-item"></div>
-                <div class="coin-item"></div>
-                <div class="coin-item"></div>
-                <div class="coin-item"></div>
-                <div class="coin-item"></div>
-                <div class="coin-item"></div>
-                <div class="coin-item"></div>
-                <div class="coin-item"></div>
-              </div>
+              <div class="coin-list"></div>
             </div>
           </div>
         </div>
@@ -147,7 +125,6 @@
     <!-- script -->
     <script src="/mypage/js/background.js"></script>
     <script type="module" src="/common/header/header.js"></script>
-    <script src="/mypage/js/coin.js"></script>
     <script src="/mypage/js/coinElement.js"></script>
     <script src="/mypage/js/mobile.js"></script>
     <script type="module" src="/mypage/js/mypage.js"></script>
