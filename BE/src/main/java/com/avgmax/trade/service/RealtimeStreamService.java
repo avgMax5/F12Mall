@@ -45,16 +45,17 @@ public class RealtimeStreamService {
         
         emitter.onTimeout(() -> {
             emitter.complete();
-            emitterRegistry.remove(sessionId, coinId);
+            emitterRegistry.remove(sessionId, coinId, streamType);
         });
         
-        emitter.onCompletion(() -> emitterRegistry.remove(sessionId, coinId));
+        emitter.onCompletion(() -> emitterRegistry.remove(sessionId, coinId, streamType));
 
         try {
-            emitterRegistry.add(sessionId, coinId, emitter);
+            emitterRegistry.add(sessionId, coinId, streamType, emitter);
             emitter.send(SseEmitter.event()
                     .name("init")
                     .data("connected"));
+            log.debug("스트림 연결 성공: sessionId={}, coinId={}, streamType={}", sessionId, coinId, streamType);
         } catch (IOException e) {
             log.error("스트림 초기화 실패: {}", e.getMessage());
             emitter.completeWithError(e);
@@ -94,7 +95,7 @@ public class RealtimeStreamService {
     }
 
     private void broadcast(String coinId, String eventName, Object data) {
-        emitterRegistry.getEmittersByCoin(coinId).forEach((sessionId, emitter) -> {
+        emitterRegistry.getEmittersByCoinAndType(coinId, eventName).forEach((sessionId, emitter) -> {
             try {
                 emitter.send(SseEmitter.event()
                         .name(eventName)
@@ -102,7 +103,7 @@ public class RealtimeStreamService {
             } catch (IOException e) {
                 log.error("데이터 전송 실패 - {}: {}", eventName, e.getMessage());
                 emitter.completeWithError(e);
-                emitterRegistry.remove(coinId, sessionId);
+                emitterRegistry.remove(sessionId, coinId, eventName);
             }
         });
     }

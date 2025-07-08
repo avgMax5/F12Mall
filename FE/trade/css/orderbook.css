@@ -75,37 +75,51 @@
   height: 3rem;
   align-items: center;
   justify-content: center;
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   font-family: 'KIMM_B';
   padding: 0.4rem 0.5rem;
 }
 
-.orderbook-row .ordered-quantity {
-  flex: 3;
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  padding: 0.2rem 0.4rem;
-  color: #ffffff;
-  background-color: rgba(102, 255, 102, 0.25);
+.orderbook-row .quantity-wrapper {
+    position: relative;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.quantity-wrapper .ordered-quantity {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    opacity: 0.6;
+}
+
+.quantity-wrapper .quantity-text {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    color: white;
+    z-index: 1;
+    font-weight: bold;
 }
 
 .orderbook-row .ordered-price {
-  flex: 2;
+  flex: 1;
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
   padding: 0.2rem 0.4rem;
-  color: #1376ee;
 }
 
 .orderbook-row .fluctuation-rate {
-  flex: 2;
+  flex: 1;
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
   padding: 0.2rem 0.4rem;
-  color: #1376ee;
 }
 
 .box-content.myorderlist-content {
@@ -168,11 +182,11 @@
   align-items: center;
 }
 
-.myorderlist-row.sell {
+.myorderlist-row.buy {
   color: #e01200;
 }
 
-.myorderlist-row.buy {
+.myorderlist-row.sell {
   color: #1376ee;
 }
 

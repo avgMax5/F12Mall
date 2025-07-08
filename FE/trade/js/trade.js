@@ -11,5 +11,5 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     tradeCoinId = coinId;
-    window.tradeCoinId = coinId; // 이전 코드와의 호환성을 위해 유지
+    window.tradeCoinId = coinId;
 });

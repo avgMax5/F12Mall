@@ -1,55 +1,126 @@
 import { tradeCoinId } from '/trade/js/trade.js';
 import { getCoinRealtime } from '/hook/trade/getCoinRealtime.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-    try {
-        const evtSource = getCoinRealtime(tradeCoinId);
+class LivePriceManager {
+    constructor() {
+        this.evtSource = null;
+        this.elements = null;
+        this.init();
+    }
 
-        evtSource.addEventListener('coininfo', function(event) {
-            const coinInfo = JSON.parse(event.data);
-            updateCoinInfo(coinInfo);
+    init() {
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                this.initializeElements();
+                this.connectStream();
+            } catch (error) {
+                console.error('초기화 중 오류:', error);
+            }
         });
 
         window.addEventListener('beforeunload', () => {
-            evtSource.close();
+            this.closeStream();
         });
-
-    } catch (error) {
-        console.error('코인 데이터를 불러오는 중 오류가 발생했습니다:', error);
     }
-});
 
-// 코인 정보 업데이트 함수
-function updateCoinInfo(coinInfo) {
-    const currentPriceElement = document.getElementById('current-price');
-    const dailyChangeElement = document.getElementById('daily-change');
-    const fluctuationRateElement = document.getElementById('fluctuation-rate');
-    const priceDirectionElement = document.querySelector('.price-direction');
-    const boxPriceChange = document.querySelector('.box-price-change');
+    initializeElements() {
+        this.elements = {
+            currentPrice: document.getElementById('current-price'),
+            dailyChange: document.getElementById('daily-change'),
+            fluctuationRate: document.getElementById('fluctuation-rate'),
+            priceDirection: document.querySelector('.price-direction'),
+            boxPriceChange: document.querySelector('.box-price-change')
+        };
 
-    // 현재 가격 업데이트
-    currentPriceElement.textContent = formatNumberWithCommas(parseInt(coinInfo.current_price));
+        this.validateElements();
+    }
 
-    // 일일 변동가 계산 및 업데이트
-    const dailyChange = coinInfo.change_price;
-    dailyChangeElement.textContent = formatNumberWithCommas(parseInt(dailyChange));
+    validateElements() {
+        const requiredElements = [
+            this.elements.currentPrice,
+            this.elements.dailyChange,
+            this.elements.fluctuationRate,
+            this.elements.priceDirection,
+            this.elements.boxPriceChange
+        ];
 
-    // 등락률 업데이트
-    fluctuationRateElement.textContent = `${coinInfo.fluctuation_rate.toFixed(2)}%`;
+        const missingElements = Object.entries(this.elements)
+            .filter(([_, element]) => !element)
+            .map(([key]) => key);
 
-    // 가격 변동에 따른 상태 설정
-    if (dailyChange > 0) {
-        boxPriceChange.classList.remove('down');
-        boxPriceChange.classList.add('up');
-        priceDirectionElement.innerHTML = '▲';
-    } else if (dailyChange < 0) {
-        boxPriceChange.classList.remove('up');
-        boxPriceChange.classList.add('down');
-        priceDirectionElement.innerHTML = '▼';
+        if (missingElements.length > 0) {
+            throw new Error(`필수 DOM 요소를 찾을 수 없습니다: ${missingElements.join(', ')}`);
+        }
+    }
+
+    connectStream() {
+        this.closeStream();
+        this.evtSource = getCoinRealtime(tradeCoinId, this.updateCoinInfo.bind(this));
+    }
+
+    closeStream() {
+        if (this.evtSource) {
+            this.evtSource.close();
+            this.evtSource = null;
+        }
+    }
+
+    updateCoinInfo(coinInfo) {
+        try {
+            if (!this.validateCoinInfo(coinInfo)) {
+                throw new Error('잘못된 코인 정보 데이터');
+            }
+
+            this.updatePrice(coinInfo);
+            this.updateDailyChange(coinInfo);
+            this.updateFluctuationRate(coinInfo);
+            this.updatePriceDirection(coinInfo.change_price);
+
+        } catch (error) {
+            console.error('코인 정보 업데이트 중 오류:', error);
+        }
+    }
+
+    validateCoinInfo(coinInfo) {
+        return coinInfo &&
+            typeof coinInfo.current_price !== 'undefined' &&
+            typeof coinInfo.change_price !== 'undefined' &&
+            typeof coinInfo.fluctuation_rate !== 'undefined';
+    }
+
+    updatePrice(coinInfo) {
+        this.elements.currentPrice.textContent = this.formatNumberWithCommas(
+            parseInt(coinInfo.current_price)
+        );
+    }
+
+    updateDailyChange(coinInfo) {
+        this.elements.dailyChange.textContent = this.formatNumberWithCommas(
+            parseInt(coinInfo.change_price)
+        );
+    }
+
+    updateFluctuationRate(coinInfo) {
+        this.elements.fluctuationRate.textContent = 
+            `${coinInfo.fluctuation_rate.toFixed(2)}%`;
+    }
+
+    updatePriceDirection(dailyChange) {
+        if (dailyChange > 0) {
+            this.elements.boxPriceChange.classList.remove('down');
+            this.elements.boxPriceChange.classList.add('up');
+            this.elements.priceDirection.innerHTML = '▲';
+        } else if (dailyChange < 0) {
+            this.elements.boxPriceChange.classList.remove('up');
+            this.elements.boxPriceChange.classList.add('down');
+            this.elements.priceDirection.innerHTML = '▼';
+        }
+    }
+
+    formatNumberWithCommas(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
 }
 
-// 세자리 수 단위로 쉼표를 찍는 함수
-function formatNumberWithCommas(number) {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}
+// 싱글톤 인스턴스 생성
+new LivePriceManager();

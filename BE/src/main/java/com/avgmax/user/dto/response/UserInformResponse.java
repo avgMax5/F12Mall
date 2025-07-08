@@ -14,11 +14,15 @@ import com.avgmax.user.domain.Certification;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class UserInformResponse {
     private String userId;
     private String name;
