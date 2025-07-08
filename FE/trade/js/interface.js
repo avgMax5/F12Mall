@@ -1,7 +1,8 @@
-import { createOrder } from '/hook/trade/postOrder.js';
-import { getUserInform } from '/hook/user/getProfile.js';
-import { getUserCoins } from '/hook/user/getUserCoins.js';
 import { tradeCoinId } from '/trade/js/trade.js';
+import { getMyProfile } from '/hook/user/getMyProfile.js';
+import { getUserCoins } from '/hook/user/getUserCoins.js';
+import { createOrder } from '/hook/trade/postOrder.js';
+
 
 document.addEventListener('DOMContentLoaded', () => {
   // DOM 요소
@@ -50,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 사용자 정보 가져오기
   const fetchUserInform = async () => {
     try {
-      const userInfo = await getUserInform();
+      const userInfo = await getMyProfile();
       userMoney = userInfo.money;
       updateAvailableAmount();
     } catch (error) {
@@ -62,10 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // 사용 가능 금액/수량 업데이트
   const updateAvailableAmount = () => {
     if (containerInterface.classList.contains('buy-mode')) {
-      console.log('매수 모드');
       availableAmount.textContent = `₩ ${formatNumber(userMoney)}`;
     } else {
-      console.log('매도 모드');
       const holdQuantity = getCurrentCoinHoldQuantity();
       availableAmount.textContent = `${holdQuantity} 개`;
     }

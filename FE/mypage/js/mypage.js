@@ -1,9 +1,9 @@
-import { getUserInform } from '/hook/user/getProfile.js';
+import { getMyProfile } from '/hook/user/getMyProfile.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   try {
     //user정보 담기
-    const user = await getUserInform();
+    const user = await getMyProfile();
     renderUserProfile(user);
   } catch (error) {
     document.body.innerHTML = '<p>사용자 정보를 불러오는 데 실패했습니다.</p>';

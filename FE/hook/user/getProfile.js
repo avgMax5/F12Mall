@@ -1,8 +1,8 @@
 import { CONFIG } from '/config.js';
 
-export const getUserInform = async () => {
+export const getUserInform = async (userId) => {
   try {
-    const response = await fetch(`${CONFIG.API_BASE_URL}/users/me/profile`, {
+    const response = await fetch(`${CONFIG.API_BASE_URL}/users/${userId}/profile`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

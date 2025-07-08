@@ -16,7 +16,7 @@ import com.avgmax.trade.dto.request.OrderRequest;
 import com.avgmax.trade.dto.response.ChartResponse;
 import com.avgmax.trade.dto.response.OrderResponse;
 
-import com.avgmax.trade.service.OrderBookService;
+import com.avgmax.trade.service.RealtimeStreamService;
 import com.avgmax.trade.service.TradeService;
 
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class TradeController {
     private final TradeService tradeService;
-    private final OrderBookService orderBookService;
+    private final RealtimeStreamService realtimeStreamService;
 
     // 주문 요청
     @PostMapping("/{coinId}/orders")
@@ -80,11 +80,19 @@ public class TradeController {
         return ResponseEntity.ok(tradeService.getCoinFetchList(coinFilter));
     }
 
+    // 실시간 코인 정보 조회
+    @GetMapping(value = "/{coinId}/realtime", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter getRealtimeCoinInfo(HttpSession session, @PathVariable String coinId) {
+        String sessionId = session.getId();
+        log.debug("SSE 연결 요청: session={}, coin={}", sessionId, coinId);
+        return realtimeStreamService.connectCoinInfoStream(sessionId, coinId);
+    }
+
     // 현재 거래상황 조회
     @GetMapping(value = "/{coinId}/orders/orderbook", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter getOrderBook(HttpSession session, @PathVariable String coinId) {
         String sessionId = session.getId();
         log.debug("SSE 연결 요청: session={}, coin={}", sessionId, coinId);
-        return orderBookService.connectOrderBookSse(sessionId, coinId);
+        return realtimeStreamService.connectOrderBookStream(sessionId, coinId);
     }
 }

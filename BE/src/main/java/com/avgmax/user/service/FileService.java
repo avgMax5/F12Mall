@@ -8,9 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.avgmax.global.exception.ErrorCode;
 import com.avgmax.global.service.MinioService;
-import com.avgmax.user.exception.UserException;
 
 import lombok.extern.slf4j.Slf4j;
 
