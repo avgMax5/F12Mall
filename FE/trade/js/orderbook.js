@@ -1,5 +1,6 @@
 import { tradeCoinId } from '/trade/js/trade.js';
 import { getOrderbook } from '/hook/trade/getOrderbook.js';
+import { getMyOrderList } from '/hook/trade/getMyOrderList.js';
 
 const COLOR = {
     BLUE: '#1376ee',
@@ -14,6 +15,8 @@ class OrderbookManager {
         this.orderbookStream = null;
         this.init();
     }
+
+    /////////////  Orderbook  //////////////
 
     init() {
         document.addEventListener('DOMContentLoaded', () => {
@@ -116,6 +119,7 @@ class OrderbookManager {
             this.orderbookStream = getOrderbook(tradeCoinId, this.updateOrderbook.bind(this));
         } else {
             this.closeStream();
+            this.updateMyOrderList();
         }
     }
 
@@ -200,7 +204,187 @@ class OrderbookManager {
             console.error('오더북 업데이트 중 오류:', error);
         }
     }
+
+    /////////////  MyOrderList  //////////////
+
+    formatDate(dateString) {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}.${month}.${day}`;
+    }
+
+    formatTime(dateString) {
+        const date = new Date(dateString);
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        return `${hours}:${minutes}`;
+    }
+
+    formatNumber(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    createMyOrderRow(order) {
+        const row = document.createElement('div');
+        row.className = `myorderlist-row ${order.order_type.toLowerCase()}`;
+        
+        row.innerHTML = `
+            <div class="ordered-time-row">
+                <span class="order-date">${this.formatDate(order.ordered_at)}</span>
+                <span class="order-time">${this.formatTime(order.ordered_at)}</span>
+            </div>
+            <div class="order-type-row">
+                <span class="order-type">${order.order_type}</span>
+            </div>
+            <div class="ordered-quantity-row">
+                <span class="ordered-quantity">${order.quantity}</span>
+            </div>
+            <div class="ordered-price-row">
+                <span class="ordered-price">${this.formatNumber(order.unit_price)}</span>
+            </div>
+            <div class="order-total-row">
+                <span class="order-total">${order.order_type === 'SELL' ? '+' : '-'}${this.formatNumber(order.execute_amount)}</span>
+                <button class="cancel-btn">주문취소</button>
+            </div>
+        `;
+
+        return row;
+    }
+
+    async updateMyOrderList() {
+        try {
+            console.log('내 주문 목록 업데이트 시작');
+            if (!this.elements?.contents?.myorderlist || this.currentMode !== 'myorderlist') {
+                return;
+            }
+
+            const myorderlistContent = this.elements.contents.myorderlist.querySelector('.myorderlist-data');
+            if (!myorderlistContent) {
+                console.error('주문 목록을 표시할 컨테이너를 찾을 수 없습니다.');
+                return;
+            }
+
+            const orderData = await getMyOrderList(tradeCoinId);
+            myorderlistContent.innerHTML = '';
+            console.log('내 주문 목록 데이터:', orderData);
+
+            if (Array.isArray(orderData)) {
+                orderData.forEach(order => {
+                    try {
+                        const row = this.createMyOrderRow(order);
+                        myorderlistContent.appendChild(row);
+                    } catch (error) {
+                        console.error('주문 행 생성 중 오류:', error);
+                    }
+                });
+            }
+
+            console.log('내 주문 목록 업데이트 완료:', {
+                timestamp: new Date().toISOString(),
+                dataLength: Array.isArray(orderData) ? orderData.length : 0
+            });
+        } catch (error) {
+            console.error('내 주문 목록 업데이트 중 오류:', error);
+        }
+    }
 }
 
 // 싱글톤 인스턴스 생성
 new OrderbookManager();
+
+// 정렬 관련 코드 추가
+function initializeSorting() {
+  const sortableColumns = document.querySelectorAll('.sortable');
+  
+  sortableColumns.forEach(column => {
+    column.addEventListener('click', () => {
+      // 다른 컬럼의 정렬 상태 초기화
+      sortableColumns.forEach(col => {
+        if (col !== column) {
+          col.classList.remove('asc', 'desc');
+          col.querySelector('.sort-icon').textContent = '';
+        }
+      });
+
+      // 현재 컬럼의 정렬 상태 변경
+      if (!column.classList.contains('asc') && !column.classList.contains('desc')) {
+        column.classList.add('asc');
+        column.querySelector('.sort-icon').textContent = '▲';
+      } else if (column.classList.contains('asc')) {
+        column.classList.remove('asc');
+        column.classList.add('desc');
+        column.querySelector('.sort-icon').textContent = '▼';
+      } else {
+        column.classList.remove('desc');
+        column.querySelector('.sort-icon').textContent = '';
+      }
+
+      sortOrders(column);
+    });
+  });
+}
+
+function sortOrders(column) {
+  const orderList = document.querySelector('.myorderlist-data');
+  const orders = Array.from(orderList.children);
+  
+  const columnIndex = Array.from(column.parentElement.children).indexOf(column);
+  const isAsc = column.classList.contains('asc');
+  const isDesc = column.classList.contains('desc');
+  
+  if (!isAsc && !isDesc) {
+    // 정렬 해제 - 원래 순서로 복원
+    orders.sort((a, b) => {
+      return parseInt(a.dataset.originalIndex) - parseInt(b.dataset.originalIndex);
+    });
+  } else {
+    orders.sort((a, b) => {
+      let aValue = a.children[columnIndex].textContent.trim();
+      let bValue = b.children[columnIndex].textContent.trim();
+      
+      // 숫자 값인 경우 숫자로 변환
+      if (columnIndex === 2 || columnIndex === 3 || columnIndex === 4) {
+        aValue = parseFloat(aValue.replace(/[^0-9.-]+/g, ""));
+        bValue = parseFloat(bValue.replace(/[^0-9.-]+/g, ""));
+      }
+      // 날짜인 경우
+      else if (columnIndex === 0) {
+        aValue = new Date(aValue).getTime();
+        bValue = new Date(bValue).getTime();
+      }
+      
+      if (isAsc) {
+        return aValue > bValue ? 1 : -1;
+      } else {
+        return aValue < bValue ? 1 : -1;
+      }
+    });
+  }
+  
+  // DOM 업데이트
+  orders.forEach(order => orderList.appendChild(order));
+}
+
+// 주문 목록이 업데이트될 때마다 원래 순서 저장
+function saveOriginalOrder() {
+  const orders = document.querySelectorAll('.myorderlist-data > div');
+  orders.forEach((order, index) => {
+    order.dataset.originalIndex = index;
+  });
+}
+
+// 기존 주문 목록 업데이트 함수 수정
+function updateOrderList(orders) {
+  const orderListContainer = document.querySelector('.myorderlist-data');
+  // 기존 코드...
+  
+  // 원래 순서 저장
+  saveOriginalOrder();
+}
+
+// 페이지 로드 시 정렬 기능 초기화
+document.addEventListener('DOMContentLoaded', () => {
+  initializeSorting();
+});

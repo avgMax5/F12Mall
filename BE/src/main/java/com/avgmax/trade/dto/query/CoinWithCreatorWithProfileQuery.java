@@ -11,6 +11,7 @@ public class CoinWithCreatorWithProfileQuery {
     private String coinId;
     private String creatorId;
     private BigDecimal currentPrice;
+    private BigDecimal closingPrice;
     private BigDecimal changePrice;
     private BigDecimal fluctuationRate;
 

@@ -36,14 +36,6 @@ class LivePriceManager {
     }
 
     validateElements() {
-        const requiredElements = [
-            this.elements.currentPrice,
-            this.elements.dailyChange,
-            this.elements.fluctuationRate,
-            this.elements.priceDirection,
-            this.elements.boxPriceChange
-        ];
-
         const missingElements = Object.entries(this.elements)
             .filter(([_, element]) => !element)
             .map(([key]) => key);
