@@ -1,6 +1,6 @@
 import { CONFIG } from '/config.js';
 
-export const getUserInform = async (userId) => {
+export async function getProfile(userId) {
   try {
     const response = await fetch(`${CONFIG.API_BASE_URL}/users/${userId}/profile`, {
       method: 'GET',

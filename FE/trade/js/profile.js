@@ -1,11 +1,13 @@
 import { tradeCoinId } from '/trade/js/trade.js';
 import { getCoinInfo } from '/hook/trade/getCoinInfo.js';
 
+export let tradeUserId = null;
+
 document.addEventListener('DOMContentLoaded', async () => {
   try {
     // 프로필 데이터 가져오기
     const profileData = await getCoinInfo(tradeCoinId);
-    
+
     // DOM 요소 가져오기
     const profileImage = document.querySelector('.box-profile-image img');
     const coinName = document.querySelector('.coin-name');
@@ -13,6 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const coinBio = document.querySelector('.coin-bio');
 
     console.log('profileData', profileData);
+    tradeUserId = profileData.creator_id;
 
     // 데이터 표시
     if (profileImage) {
