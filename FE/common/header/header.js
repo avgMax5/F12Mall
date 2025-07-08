@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const includeTarget = document.querySelector("#include-header");
 
   if (includeTarget) {
-    fetch("../common/header/header.html")
+    fetch("/common/header/header.html")
       .then((res) => res.text())
       .then((data) => {
         includeTarget.innerHTML = data;
@@ -14,8 +14,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const observer = new MutationObserver((mutations) => {
           mutations.forEach((mutation) => {
             if (mutation.type === 'childList') {
-              const profileImg = document.getElementById("profile-img");
-              const boxMenu = document.getElementById("box-menu");
+              const profileImg = document.getElementById("header-profile-img");
+              const boxMenu = document.getElementById("header-box-menu");
 
               if (profileImg && boxMenu) {
 
@@ -47,8 +47,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         // 즉시 한 번 실행 (이미 로드된 경우)
-        const profileImg = document.getElementById("profile-img");
-        const boxMenu = document.getElementById("box-menu");
+        const profileImg = document.getElementById("header-profile-img");
+        const boxMenu = document.getElementById("header-box-menu");
 
         if (profileImg && boxMenu) {
 
@@ -73,15 +73,15 @@ function handleLogoClick(e) {
 function handleProfileClick(e) {
   e.preventDefault();
   e.stopPropagation();
-  const boxMenu = document.getElementById("box-menu");
+  const boxMenu = document.getElementById("header-box-menu");
   if (boxMenu) {
     boxMenu.classList.toggle("hidden");
   }
 }
 
 function handleDocumentClick(event) {
-  const profileImg = document.getElementById("profile-img");
-  const boxMenu = document.getElementById("box-menu");
+  const profileImg = document.getElementById("header-profile-img");
+  const boxMenu = document.getElementById("header-box-menu");
 
   if (profileImg && boxMenu && !profileImg.contains(event.target) && !boxMenu.contains(event.target)) {
     boxMenu.classList.add("hidden");

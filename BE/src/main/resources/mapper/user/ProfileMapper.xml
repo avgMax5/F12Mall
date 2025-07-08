@@ -3,12 +3,12 @@
 <mapper namespace="com.avgmax.user.mapper.ProfileMapper">
 
     <insert id="insert" parameterType="com.avgmax.user.domain.Profile">
-        INSERT INTO PROFILE (USER_ID, POSITION, BIO, GITHUB, BLOG, SNS, CREATED_AT, UPDATED_AT, LINKEDIN, RESUME) 
-        VALUES (#{userId}, #{position}, #{bio}, #{github}, #{blog}, #{sns}, #{createdAt}, #{updatedAt}, #{linkedin}, #{resume})
+        INSERT INTO PROFILE (USER_ID, POSITION, BIO, GITHUB, BLOG, SNS, LINKEDIN, RESUME, CREATED_AT, UPDATED_AT) 
+        VALUES (#{userId}, #{position}, #{bio}, #{github}, #{blog}, #{sns}, #{linkedin}, #{resume}, #{createdAt}, #{updatedAt})
     </insert>
 
     <select id="selectByUserId" parameterType="String" resultType="com.avgmax.user.domain.Profile">
-        SELECT USER_ID, POSITION, BIO, GITHUB, BLOG, SNS, CREATED_AT, UPDATED_AT, LINKEDIN, RESUME
+        SELECT USER_ID, POSITION, BIO, GITHUB, BLOG, SNS, LINKEDIN, RESUME, CREATED_AT, UPDATED_AT
         FROM PROFILE
         WHERE USER_ID = #{userId}
     </select>

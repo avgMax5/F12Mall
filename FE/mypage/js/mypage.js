@@ -1,6 +1,8 @@
-import { getUserInform } from '/hook/user/getProfile.js';
+import { getMyProfile } from '/hook/user/getMyProfile.js';
 import { getUserCoins } from '/hook/user/getUserCoins.js';
 import { renderPieChart } from '/mypage/js/chart.js';
+
+export let mypageUserId = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
   try {
@@ -8,9 +10,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const user = await getMyProfile();
     renderUserProfile(user);
 
+    mypageUserId = user.user_id;
+
     //보유 코인 목록 가져오기
     const coins = await getUserCoins();
-    console.log(coins);
     renderCoinList(coins);
     calculateCoin(coins, user.money);
 
@@ -18,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     //calculateRatio(coins);
 
     //나의 코인 보유 개수 가져오기
-    const quantity = await fetchMyQuantity(coins, user.userId);
+    const quantity = await fetchMyQuantity(coins, user.user_id);
     renderPieChart(quantity);
   } catch (error) {
     console.log(error);
@@ -27,13 +30,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function renderUserProfile(user) {
-  console.log(user);
   document.querySelector('#name').textContent = user.name;
   document.querySelector('#email').textContent = user.email;
   document.querySelector('#coin-name').textContent = user.username;
   document.querySelector('#image').style.backgroundImage = `url(${user.image})`;
-  document.querySelector('#money').textContent =
-    user.money.toLocaleString('ko-KR');
+  document.querySelector('#money').textContent = user.money.toLocaleString('ko-KR');
   document.querySelector('#position').textContent = user.position;
   document.querySelector('#bio').textContent = user.bio;
 

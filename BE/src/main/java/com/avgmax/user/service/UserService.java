@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-// import com.avgmax.trade.domain.Trade;
 import com.avgmax.trade.domain.Order;
 import com.avgmax.trade.domain.enums.OrderType;
 import com.avgmax.trade.mapper.OrderMapper;
@@ -64,7 +63,7 @@ public class UserService {
         List<Certification> certificationList = certificationMapper.selectByUserId(userId);
         List<UserSkillWithSkillQuery> userSkillList = userSkillMapper.selectByUserId(userId);
         
-         return UserInformResponse.from(user, profile, careerList, educationList, certificationList, userSkillList);
+        return UserInformResponse.from(user, profile, careerList, educationList, certificationList, userSkillList);
     }
 
     @Transactional
