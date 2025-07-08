@@ -8,7 +8,7 @@
     </insert>
 
     <select id="selectByStack" parameterType="list" resultType="java.lang.String">
-        SELECT STACK, SKILL_ID
+        SELECT SKILL_ID
         FROM SKILL
         WHERE STACK IN 
         <foreach item="stack" collection="list" open="(" separator="," close=")">

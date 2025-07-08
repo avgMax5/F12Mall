@@ -15,14 +15,14 @@ import com.avgmax.trade.dto.query.UserCoinWithCoinWithCreatorQuery;
 import com.avgmax.user.domain.Career;
 import com.avgmax.user.domain.Certification;
 import com.avgmax.user.domain.Education;
-//import com.avgmax.user.domain.Profile;
+import com.avgmax.user.domain.Profile;
 import com.avgmax.user.domain.UserSkill;
 import com.avgmax.user.domain.User;
 
 import com.avgmax.user.mapper.UserMapper;
 import com.avgmax.user.mapper.CareerMapper;
 import com.avgmax.user.mapper.EducationMapper;
-//import com.avgmax.user.mapper.ProfileMapper;
+import com.avgmax.user.mapper.ProfileMapper;
 import com.avgmax.user.mapper.UserSkillMapper;
 import com.avgmax.trade.mapper.UserCoinMapper;
 import com.avgmax.user.mapper.CertificationMapper;
@@ -34,6 +34,7 @@ import com.avgmax.user.dto.request.UserProfileUpdateRequest;
 import com.avgmax.user.dto.response.UserCoinResponse;
 import com.avgmax.user.dto.response.UserInformResponse;
 import com.avgmax.user.dto.response.UserProfileUpdateResponse;
+import com.avgmax.user.dto.data.LinkData;
 
 import lombok.RequiredArgsConstructor;
 import com.avgmax.global.exception.ErrorCode;
@@ -45,7 +46,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class UserService {
     private final UserMapper userMapper;
-    //private final ProfileMapper profileMapper;
+    private final ProfileMapper profileMapper;
     private final CareerMapper careerMapper;
     private final EducationMapper educationMapper;
     private final CertificationMapper certificationMapper;
@@ -57,13 +58,13 @@ public class UserService {
     public UserInformResponse getUserInform(String userId){
         User user = userMapper.selectByUserId(userId)
             .orElseThrow(() -> UserException.of(ErrorCode.USER_NOT_FOUND));
-        //Profile profile = profileMapper.selectByUserId(userId);
+        Profile profile = profileMapper.selectByUserId(userId);
         List<Career> careerList = careerMapper.selectByUserId(userId);
         List<Education> educationList = educationMapper.selectByUserId(userId);
         List<Certification> certificationList = certificationMapper.selectByUserId(userId);
         List<UserSkillWithSkillQuery> userSkillList = userSkillMapper.selectByUserId(userId);
         
-        return UserInformResponse.from(user, careerList, educationList, certificationList, userSkillList);
+        return UserInformResponse.from(user, profile, careerList, educationList, certificationList, userSkillList);
     }
 
     @Transactional
@@ -71,8 +72,8 @@ public class UserService {
         User user = updateUser(userId, request.getName(), request.getEmail(), request.getUsername(), request.getPwd(), request.getImage());
         userMapper.update(user);
         
-        //Profile profile = updateProfile(userId, request.getBio(), request.getPosition(), request.getLink(), request.getResume());
-        //profileMapper.update(profile);
+        Profile profile = updateProfile(userId, request.getBio(), request.getPosition(), request.getLink(), request.getResume());
+        profileMapper.update(profile);
         
         List<CareerRequest> careerRequests = request.getCareer();
         careerMapper.deleteByUserId(userId);
@@ -112,11 +113,11 @@ public class UserService {
         return user;
     }
 
-    // private Profile updateProfile(String userId, String bio, String position, LinkData link, String resume){
-    //     Profile profile = profileMapper.selectByUserId(userId);
-    //     profile.updateIfChanged(position, bio, link, resume);
-    //     return profile;
-    // }
+    private Profile updateProfile(String userId, String bio, String position, LinkData link, String resume){
+        Profile profile = profileMapper.selectByUserId(userId);
+        profile.updateIfChanged(position, bio, link, resume);
+        return profile;
+    }
 
     @Transactional(readOnly = true)
     public List<UserCoinResponse> getUserCoinList(String userId) {
