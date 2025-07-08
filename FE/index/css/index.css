@@ -15,17 +15,18 @@ body {
 }
 .section-header {
   background: white;
-  max-width: 819px;
+  max-width: 1200px;
   padding: 10px 0;
   margin: 0 auto;
+  display: flex; 
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .section-header .container {
-  max-width: 819px;
   margin: 0 auto;
   padding: 0 20px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 
@@ -37,24 +38,25 @@ body {
 }
 
 .box-search{
-  flex: 1;
-  max-width: 400px;
-  margin: 0 40px;
+  display: flex;
+  flex: 3;
+  width: 28rem;
+  margin: 0 2.5rem;
   position: relative;
 }
 
 .box-logo > .f12-key {
   position: relative;
-  width: 60px;
-  height: 30px;
+  width: 3.75rem;
+  height: 1.875rem;
   background: linear-gradient(to top, #333, #555);
   color: white;
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: bold;
   text-align: center;
-  line-height: 30px;
+  line-height: 1.875rem;
   transform: rotateX(20deg);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0.625rem 1.25rem rgba(0, 0, 0, 0.5);
   transition: transform 0.2s, box-shadow 0.2s;
   clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);
   border: none;
@@ -78,10 +80,10 @@ body {
 
 .box-search > .search-input {
   width: 100%;
-  padding: 10px 40px 10px 15px;
-  border: 3px solid #000000;
-  border-radius: 10px;
-  font-size: 14px;
+  padding: 0.625rem 2.5rem 0.625rem 0.9375rem;
+  border: 0.1875rem solid #000000;
+  border-radius: 0.625rem;
+  font-size: 0.875rem;
   outline: none;
 }
 
@@ -92,13 +94,13 @@ body {
 
 .box-search > .search-btn {
   position: absolute;
-  right: 10px;
+  right: 0.625rem;
   top: 50%;
   transform: translateY(-50%);
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .login {
@@ -107,7 +109,7 @@ body {
   padding: 0;
   text-decoration: none;
   color: #333;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
 }
@@ -142,7 +144,7 @@ body {
   display: inline-block;
   text-decoration: none;
   color: #333;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 500;
   padding-bottom: 15px;
   border-bottom: 2px solid transparent;
@@ -179,7 +181,7 @@ body {
 .dropdown-item {
   padding: 10px 20px;
   border-bottom: none;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: #333;
   transition: background-color 0.2s, color 0.2s;
 }
@@ -210,18 +212,17 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 60px;
-  align-items: center;
 }
 
 .content h1 {
-  font-size: 48px;
+  font-size: 3rem;
   font-weight: bold;
   line-height: 1.2;
   margin-bottom: 20px;
 }
 
 .content p {
-  font-size: 18px;
+  font-size: 1.125rem;
   margin-bottom: 30px;
   opacity: 0.9;
 }
@@ -235,7 +236,7 @@ body {
   display: flex;
   align-items: center;
   margin-bottom: 15px;
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .feature-icon {
@@ -247,7 +248,7 @@ body {
   align-items: center;
   justify-content: center;
   margin-right: 15px;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .button {
@@ -256,7 +257,7 @@ body {
   padding: 15px 30px;
   border: none;
   border-radius: 25px;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
   transition: transform 0.2s;
@@ -298,7 +299,7 @@ body {
 }
 
 .title {
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: bold;
   color: #333;
 }
@@ -306,7 +307,7 @@ body {
 .more {
   color: #666;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .grid {
@@ -332,9 +333,9 @@ body {
 
 .card > .image {
   width: 100%;
-  height: 180px;
-  border-radius: 8px;
-  margin-bottom: 15px;
+  height: 11.25rem;
+  border-radius: 0.5rem;
+  margin-bottom: 0.9375rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -347,11 +348,11 @@ body {
   height: 100%;
   object-fit: contain;
   object-position: center;
-  border-radius: 8px;
+  border-radius: 0.5rem;
 }
 
 .card > .name {
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: bold;
   color: #333;
   margin-bottom: 8px;
@@ -367,12 +368,12 @@ body {
 .card > .price > .original {
   text-decoration: line-through;
   color: #999;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .card > .price > .sale {
   color: #e74c3c;
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: bold;
 }
 
@@ -380,7 +381,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: #666;
   flex-wrap: nowrap;
   white-space: nowrap;
@@ -389,21 +390,17 @@ body {
 .card > .info > .delivery {
   color: #0078FF;
   font-weight: bold;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .card > .image > .sale-badge {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 0.625rem;
+  right: 0.625rem;
   background: #e74c3c;
   color: white;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
   font-weight: bold;
 }
-
-
-
-
