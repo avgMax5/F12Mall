@@ -23,8 +23,8 @@ public class CareerResponse {
             .companyName(career.getCompanyName())
             .status(career.getStatus())
             .position(career.getPosition())
-            .startDate(career.getStartDate().toString())
-            .endDate(career.getEndDate().toString())
+            .startDate(career.getStartDate())
+            .endDate(career.getEndDate())
             .build();
     }
 }
