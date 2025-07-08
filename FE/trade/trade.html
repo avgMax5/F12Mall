@@ -15,6 +15,7 @@
     <script type="module" src="/trade/js/trade.js"></script>
     <script type="module" src="/trade/js/profile.js"></script>
     <script type="module" src="/trade/js/live.js"></script>
+    <script type="module" src="/trade/js/modal.js"></script>
     <script type="module" src="/hook/trade/getChart.js"></script>
     <script type="module" src="/trade/js/chart.js"></script>
     <script type="module" src="/trade/js/interface.js"></script>
@@ -22,6 +23,7 @@
   </head>
   <body>
     <canvas id="trade-background"></canvas>
+    <div id="include-detail-modal"></div>
     <div id="wrapper">
       <div id="include-header"></div>
       <div class="width">
@@ -40,7 +42,7 @@
                   <p class="coin-bio"></p>
                 </div>
                 <div class="coin-info-bottom">
-                  <button class="coin-detail-btn">
+                  <button class="coin-detail-btn" onclick="setModal()">
                     <span>상세 정보 ></span>
                   </button>
                 </div>
