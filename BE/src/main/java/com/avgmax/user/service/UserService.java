@@ -26,6 +26,7 @@ import com.avgmax.user.mapper.ProfileMapper;
 import com.avgmax.user.mapper.UserSkillMapper;
 import com.avgmax.trade.mapper.UserCoinMapper;
 import com.avgmax.user.mapper.CertificationMapper;
+import com.avgmax.user.dto.data.LinkData;
 import com.avgmax.user.dto.query.UserSkillWithSkillQuery;
 import com.avgmax.user.dto.request.CareerRequest;
 import com.avgmax.user.dto.request.CertificationRequest;
@@ -34,7 +35,6 @@ import com.avgmax.user.dto.request.UserProfileUpdateRequest;
 import com.avgmax.user.dto.response.UserCoinResponse;
 import com.avgmax.user.dto.response.UserInformResponse;
 import com.avgmax.user.dto.response.UserProfileUpdateResponse;
-import com.avgmax.user.dto.data.LinkData;
 
 import lombok.RequiredArgsConstructor;
 import com.avgmax.global.exception.ErrorCode;
@@ -64,7 +64,7 @@ public class UserService {
         List<Certification> certificationList = certificationMapper.selectByUserId(userId);
         List<UserSkillWithSkillQuery> userSkillList = userSkillMapper.selectByUserId(userId);
         
-        return UserInformResponse.from(user, profile, careerList, educationList, certificationList, userSkillList);
+         return UserInformResponse.from(user, profile, careerList, educationList, certificationList, userSkillList);
     }
 
     @Transactional

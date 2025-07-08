@@ -18,6 +18,7 @@ public class UserCoinResponse {
     private String creatorId; // userId
     private String coinName; // creatorUsername
     private String creatorName; // creatorName
+    private String creatorImage;
     private BigDecimal holdQuantity; // 보유 수량 => holdQuantity
     private BigDecimal currentBuyAmount; // 평가금액 => holdQuantity * coinCurrentPrice
     private BigDecimal sellableQuantity; // 매도 가능 수량 => holdQuantity - SUM(ORDER QUANTITY) WHERE ORDER_TYPE = SELL
@@ -43,7 +44,9 @@ public class UserCoinResponse {
             .coinId(userCoin.getCoinId())
             .creatorId(userCoin.getCreatorId())
             .coinName(userCoin.getCreatorUsername())
+            .creatorId(userCoin.getCreatorId())
             .creatorName(userCoin.getCreatorName())
+            .creatorImage(userCoin.getCreatorImage())
             .holdQuantity(userCoin.getHoldQuantity())
             .currentBuyAmount(userCoin.getHoldQuantity().multiply(userCoin.getCoinCurrentPrice())) // SSE
             .sellableQuantity(userCoin.getHoldQuantity().subtract(sellingQuantity))
