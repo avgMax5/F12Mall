@@ -23,8 +23,8 @@ public class EducationResponse {
             .schoolName(education.getSchoolName())
             .status(education.getStatus())
             .major(education.getMajor())
-            .startDate(education.getStartDate().toString())
-            .endDate(education.getEndDate().toString())
+            .startDate(education.getStartDate())
+            .endDate(education.getEndDate())
             .build();
     }
 }
