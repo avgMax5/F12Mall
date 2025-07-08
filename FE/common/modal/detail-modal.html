@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=783, initial-scale=1.0">
+  <title>상세 정보</title>
+  <link rel="stylesheet" href="../../fonts.css">
+  <style>
+    *{
+      font-family: 'KIMM_B';
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #000000;
+    }
+
+    .section-modal {
+      background-color: #000;
+      box-sizing: border-box;
+      width: 783px;
+      height: 702px;
+      display: grid;
+      grid-template-rows: 48px 1fr;
+      color: #fff;
+      font-family: 'Pretendard', 'sans-serif';
+      box-shadow: 5px 6px 5px 2px rgba(0, 255, 47, 0.25);
+    }
+
+    .section-top {
+      background-color: #00400C;
+      color: #000;
+      font-weight: bold;
+      font-size: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 24px;
+      border: 5px solid #00ff2f;
+      letter-spacing: 2px;
+    }
+
+    .title{
+      color: #00ff2f;
+      opacity: 1;
+    }
+
+    .section-bottom {
+      display: grid;
+      grid-template-columns: 1.1fr 1.9fr;
+      border: 3.6px solid #00ff2f;
+      height: 100%;
+    }
+
+    .section-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 32px 0 0 0;
+      gap: 24px;
+    }
+
+    .profile-img {
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      border: 3px solid #00ff2f;
+      object-fit: cover;
+      background: #222;
+    }
+
+    .name{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 40px;
+    }
+
+    .coin-name {
+      font-size: 40px;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+    .real-name {
+      font-size: 20px;
+      color: #fff;
+      letter-spacing: 2px;
+    }
+
+    .profile-role {
+      font-size: 20px;
+      color: #aaa;
+      margin-bottom: 8px;
+    }
+
+    .profile-email {
+      font-size: 16px;
+      color: #fff;
+      font-family: 'KIMM_L';
+      margin-bottom: 8px;
+    }
+
+    .profile-desc {
+      font-size: 18px;
+      color: #fff;
+      margin-top: 12px;
+      text-align: center;
+    }
+
+    .profile-text-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 0 20px;
+      gap: 20px;
+    }
+
+    .section-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 32px 32px 0 32px;
+    }
+
+    .box-label {
+      color: #00ff2f;
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 16px;
+      letter-spacing: 1px;
+    }
+
+    .tech-stack-list {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .tech-btn {
+      background: #181818;
+      border: 2px solid #00ff2f;
+      color: #00ff2f;
+      border-radius: 20px;
+      padding: 6px 18px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 8px;
+    }
+
+    .info-table th, .info-table td {
+      border: 1px solid #00ff2f;
+      padding: 4px 8px;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .info-table th {
+      background: #111;
+      color: #D5F0A4;
+      font-weight: bold;
+      font-size: 12px;
+    }
+
+    .resume-link {
+      color: #fff;
+      font-family: 'KIMM_L';
+      text-decoration: underline;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .cert-list {
+      color: #fff;
+      font-family: 'KIMM_L';
+      font-size: 16px;
+      margin-top: 4px;
+    }
+
+    .social-icons {
+      margin-top: 18px;
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .social-icons a {
+      color: #00ff2f;
+      font-size: 28px;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .social-icons a:hover {
+      color: #fff;
+    }
+    
+    .close-btn {
+      font-size: 32px;
+      color: #00ff2f;
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-left: 30px;
+    }
+  </style>
+<script type="module" src="/hook/user/getProfile.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+  <div class="section-modal">
+    <div class="section-top">
+      <span class="title">상세 정보</span>
+      <button class="close-btn" onclick=""><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="section-bottom">
+      <div class="section-left">
+        <img class="profile-img" src="프로필이미지경로.jpg" alt="프로필">
+          <div class="profile-text-wrap">
+            <div class="name">
+              <span class="coin-name">JJ</span>
+              <span class="real-name">100</span>
+            </div>
+            <div class="profile-role">Backend Engineer</div>
+            <div class="profile-email">shalashala@example.com</div>
+            <div class="profile-desc">유튜브 50만 구독 채널 운영, 깃허브 팔로워 5000명, 인프런 인기 강사로 활동 중인 개발자입니다. 유튜브 50만 구독 채널 운영, 깃허브 팔로워 5000명, 인프런 인기짱.</div>
+          </div>
+      </div>
+      <div class="section-right">
+        <div>
+          <div class="box-label">[ TECH STACK ]</div>
+          <div class="tech-stack-list">
+            <button class="tech-btn">NextJS</button>
+            <button class="tech-btn">React</button>
+            <button class="tech-btn">TypeScript</button>
+          </div>
+        </div>
+        <div>
+          <div class="box-label">[ EDUCATION ]</div>
+          <table class="info-table">
+            <tr>
+              <th>학교명</th><th>재학 상태</th><th>학과</th><th>입학</th><th>졸업</th>
+            </tr>
+            <tr>
+              <td>서울대학교</td><td>재학</td><td>컴퓨터공학과</td><td>2020.03</td><td>2024.02</td>
+            </tr>
+          </table>
+        </div>
+        <div>
+          <div class="box-label">[ WORK EXPERIENCE ]</div>
+          <table class="info-table">
+            <tr>
+              <th>회사명</th><th>재직상태</th><th>직무</th><th>입사</th><th>퇴사</th>
+            </tr>
+            <tr>
+              <td>신한DS</td><td>재직</td><td>개발자</td><td>2020.03</td><td>2024.02</td>
+            </tr>
+          </table>
+        </div>
+        <div>
+          <div class="box-label">[ RESUME ]</div>
+          <a class="resume-link" href="#">이력서_정재용.pdf</a>
+        </div>
+        <div>
+          <div class="box-label">[ CERTIFICATION ]</div>
+          <div class="cert-list">정보처리기사<br/>SQLD</div>
+        </div>
+        <div class="social-icons">
+          <a href="#"><i class="fa-brands fa-github"></i></a>
+          <a href="#"><i class="fa-brands fa-vimeo"></i></a>
+          <a href="#"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
