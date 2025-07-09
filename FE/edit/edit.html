@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>F12_All</title>
-    <link rel="icon" href="/favicon.png" />
     <link rel="stylesheet" href="/login/css/login.css">
     <link rel="stylesheet" href="/login/css/media.css">
     <link rel="stylesheet" href="/login/css/animation.css">
@@ -12,34 +11,15 @@
     <link rel="stylesheet" href="/fonts.css">
     <script type="module" src="/config.js"></script>
     <script type="module" src="/hook/auth/postCheckUsername.js"></script>
-    <script type="module" src="/hook/auth/postLogin.js"></script>
-    <script type="module" src="/hook/auth/postSignup.js"></script>
+    <script type="module" src="/hook/user/getMyProfile.js"></script>
+    <script type="module" src="/hook/user/putEditProfile.js"></script>
 </head>
 <body>
     <!-- input, tech-stack input, 표 추후에 컴포넌트화 예정-->
     <iframe src="/common/background/cyber-background.html" frameborder="0" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;"></iframe>
 
     <div class="wrapper">
-        <div class="section-login">
-            <div class="container">
-                <h1 class="title">F12_All</h1>
-                <h2 class="sub-title">Hello World</h2>
-                <form class="login-form">
-                    <div class="input-group">
-                        <label>Username</label>
-                        <input type="text" name="username" class="login-username" required>
-                    </div>
-                    <div class="input-group">
-                        <label>Password</label>
-                        <input type="password" name="password" class="login-password" required>
-                    </div>
-                    <button type="submit" class="login-btn">LOGIN</button>
-                    <button type="button" class="signup-btn" id="signup-btn" onclick="toggleForms()">SIGN UP</button>
-                </form>
-            </div>
-        </div>
-        
-        <form class="section-signup hidden" id="signupForm" action="javascript:void(0);" method="post" onsubmit="event.preventDefault(); return false;">
+        <form class="section-signup" id="signupForm" action="javascript:void(0);" method="post" onsubmit="event.preventDefault(); return false;">
             <div class="container-left-signup">
                 <div class="box-logo">
                     <button class="f12-key" id="f12-btn">F12</button>
@@ -89,7 +69,6 @@
                         </svg>
                         <input type="email" name="email" placeholder="이메일" class="email-input">
                     </div>
-                    
 
                     <div class="input-wrap">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#697077" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-icon lucide-user input-icon">
@@ -116,11 +95,10 @@
                         </div>
                         <textarea name="bio" class="bio-area" placeholder="자신을 소개해주세요!" maxlength="100"></textarea>
                     </div>
-                    <button class="next-btn" type="button" onclick="showRightSignup()">다음으로</button>
                 </div>
             </div>
 
-            <div class="container-right-signup hidden">
+            <div class="container-right-signup">
                 <div class="box-right-signup">
                     <div class="tech-stack">
                         <div class="about-tech-stack">
@@ -373,10 +351,12 @@
                             </table>
                         </div>
                     </div>
-                    <button type="button" class="signup-btn" onclick="handleSignup()">시작하기</button>
+                    <button type="button" class="signup-btn" onclick="handleSignup()">저장하기</button>
                 </div>
             </div>
         </form>
     </div>
+
+    <script type="module" src="/edit/js/edit.js"></script>
 </body>
 </html> 

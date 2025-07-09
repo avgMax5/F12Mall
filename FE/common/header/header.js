@@ -23,9 +23,28 @@ async function updateHeaderInfo() {
     if (totalAssetsElement) {
       totalAssetsElement.textContent = totalAssets.toLocaleString('ko-KR');
     }
+
+    // 페이지별 메뉴 텍스트 변경
+    updateMenuText();
   } catch (error) {
     console.error('헤더 정보 업데이트 중 오류 발생:', error);
   }
+}
+
+function updateMenuText() {
+  // DOM이 완전히 로드될 때까지 약간 기다림
+  setTimeout(() => {
+    const mypageElement = document.querySelector(".mymenu");
+    if (mypageElement) {
+      // 현재 페이지가 mypage인지 확인
+      const currentPath = window.location.pathname;
+      if (currentPath === '/mypage' || currentPath.includes('mypage')) {
+        mypageElement.textContent = '내 정보 수정';
+      } else {
+        mypageElement.textContent = '마이메뉴';
+      }
+    }
+  }, 100);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -62,25 +81,23 @@ document.addEventListener("DOMContentLoaded", () => {
                   mypageElement.addEventListener("click", handleMypageClick);
                 }
 
-                // observer 중지 (한 번만 실행)
+                updateMenuText();
+
                 observer.disconnect();
               }
             }
           });
         });
 
-        // DOM 변화 감지 시작
         observer.observe(includeTarget, {
           childList: true,
           subtree: true
         });
 
-        // 즉시 한 번 실행 (이미 로드된 경우)
         const profileImg = document.getElementById("header-profile-img");
         const boxMenu = document.getElementById("header-box-menu");
 
         if (profileImg && boxMenu) {
-          // 헤더 정보 업데이트
           updateHeaderInfo();
 
           profileImg.addEventListener("click", handleProfileClick);
@@ -90,6 +107,8 @@ document.addEventListener("DOMContentLoaded", () => {
           if (mypageElement) {
             mypageElement.addEventListener("click", handleMypageClick);
           }
+
+          updateMenuText();
         }
       });
   }
@@ -119,6 +138,21 @@ function handleDocumentClick(event) {
   }
 }
 
-function handleMypageClick() {
-  window.location.href = "/mypage";
+async function handleMypageClick() {
+  const currentPath = window.location.pathname;
+  
+  // mypage에 있을 때는 /edit으로, 다른 페이지에서는 /mypage로 이동
+  if (currentPath === '/mypage' || currentPath.includes('mypage')) {
+    try {
+      // 현재 사용자 정보를 가져와서 userId를 URL 파라미터로 전달
+      const user = await getMyProfile();
+      window.location.href = "/edit";
+    } catch (error) {
+      console.error('사용자 정보 조회 실패:', error);
+      // 실패 시 userId 없이 이동
+      window.location.href = "/mypage";
+    }
+  } else {
+    window.location.href = "/mypage";
+  }
 }
