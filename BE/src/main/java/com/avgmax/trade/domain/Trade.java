@@ -32,14 +32,14 @@ public class Trade extends BaseTimeEntity {
 
     private BigDecimal unitPrice;
 
-    public static Trade of(OrderType requestType, Order buyOrder, Order sellOrder, BigDecimal tradableQuantity) {
+    public static Trade of(OrderType requestType, Order buyOrder, Order sellOrder, BigDecimal tradableQuantity, BigDecimal executedPrice) {
         Order matchedOrder = (requestType == OrderType.BUY) ? sellOrder : buyOrder;
         return Trade.builder()
             .coinId(matchedOrder.getCoinId())
             .buyUserId(buyOrder.getUserId())
             .sellUserId(sellOrder.getUserId())
             .quantity(tradableQuantity)
-            .unitPrice(matchedOrder.getUnitPrice())
+            .unitPrice(executedPrice)
             .build();
     }
 }

@@ -3,7 +3,6 @@ package com.avgmax.trade.service;
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -32,6 +31,7 @@ import com.avgmax.user.domain.User;
 import com.avgmax.user.exception.UserException;
 import com.avgmax.user.mapper.UserMapper;
 import com.avgmax.trade.dto.response.ChartResponse;
+import com.avgmax.trade.dto.data.OrderMatchResult;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,11 +51,13 @@ public class TradeService {
     public OrderResponse createOrder(String userId, String coinId, OrderRequest request) {
         Order newOrder = request.toEntity(userId, coinId);
         orderMapper.insert(newOrder);
-        switch (newOrder.getOrderType()) {
-            case BUY: processBuyOrder(newOrder); break;
-            case SELL: processSellOrder(newOrder); break;
-            default: throw new TradeException(ErrorCode.INVALID_ORDER_TYPE);
-        }
+        
+        // 주문 전처리: 자산 확보
+        preProcessOrder(newOrder);
+        
+        // 주문 실행
+        processOrder(newOrder);
+        
         return OrderResponse.from(newOrder);
     }
 
@@ -64,14 +66,30 @@ public class TradeService {
         Order order = orderMapper.selectByOrderId(orderId)
                 .orElseThrow(() -> TradeException.of(ErrorCode.ORDER_NOT_FOUND));
         order.validateOwnership(userId, coinId);
+
+        switch (order.getOrderType()) {
+            // 매수 주문 취소: 주문 금액 환불
+            case BUY:
+                BigDecimal refundAmount = OrderType.BUY.calculateExecuteAmount(order.getQuantity(), order.getUnitPrice());
+                updateUserMoney(userId, OrderType.SELL, refundAmount);
+                break;
+            // 매도 주문 취소: 코인 수량 환불
+            case SELL:
+                UserCoin userCoin = findOrCreateUserCoin(userId, coinId);
+                userCoin.plusUserCoin(order.getQuantity(), order.getUnitPrice());
+                userCoinMapper.update(userCoin);
+                break;
+            default:
+                throw TradeException.of(ErrorCode.INVALID_ORDER_TYPE);
+        }
+
         orderMapper.delete(orderId);
         return SuccessResponse.of(true);
     }
 
     @Transactional(readOnly = true)
     public List<OrderResponse> getMyList(String userId, String coinId) {
-        List<Order> orders = orderMapper.selectAllByUserIdAndCoinId(userId, coinId);
-        return orders.stream()
+        return orderMapper.selectAllByUserIdAndCoinId(userId, coinId).stream()
                 .map(OrderResponse::from)
                 .collect(Collectors.toList());
     }
@@ -89,98 +107,112 @@ public class TradeService {
         return user;
     }
 
-    private void validateUserCoinQuantity(String userId, String coinId, BigDecimal requestQuantity) {
-        Optional<UserCoin> userCoin = userCoinMapper.selectByHolderIdAndCoinId(userId, coinId);
-        if (!userCoin.isPresent() || userCoin.get().getHoldQuantity().compareTo(requestQuantity) < 0) {
-            throw TradeException.of(ErrorCode.INSUFFICIENT_COIN_QUANTITY);
+    private UserCoin findOrCreateUserCoin(String userId, String coinId) {
+        return userCoinMapper.selectByHolderIdAndCoinId(userId, coinId)
+                .orElseGet(() -> {
+                    UserCoin newUserCoin = UserCoin.init(userId, coinId);
+                    userCoinMapper.insert(newUserCoin);
+                    return newUserCoin;
+                });
+    }
+
+    private void preProcessOrder(Order order) {
+        switch (order.getOrderType()) {
+            case BUY:
+                // 매수 주문: 최대 필요 금액 차감
+                BigDecimal maxAmount = OrderType.BUY.calculateExecuteAmount(order.getQuantity(), order.getUnitPrice());
+                updateUserMoney(order.getUserId(), OrderType.BUY, maxAmount);
+                break;
+            case SELL:
+                // 매도 주문: 코인 수량 차감
+                UserCoin userCoin = userCoinMapper.selectByHolderIdAndCoinId(order.getUserId(), order.getCoinId())
+                        .orElseThrow(() -> TradeException.of(ErrorCode.USER_COIN_NOT_FOUND));
+                userCoin.minusUserCoin(order.getQuantity(), order.getUnitPrice());
+                userCoinMapper.update(userCoin);
+                break;
+            default:
+                throw TradeException.of(ErrorCode.INVALID_ORDER_TYPE);
         }
     }
 
-    private void processBuyOrder(Order buyOrder) {
-        // 주문 시점에는 최대 금액으로 차감 (나중에 차액 환불)
-        BigDecimal maxAmount = OrderType.BUY.calculateExecuteAmount(buyOrder.getQuantity(), buyOrder.getUnitPrice());
-        updateUserMoney(buyOrder.getUserId(), OrderType.BUY, maxAmount);
+    private void processOrder(Order order) {
+        BigDecimal remainingQuantity = order.getQuantity();
+        BigDecimal totalExecutedAmount = BigDecimal.ZERO;
+        
+        // 매칭 가능한 주문 조회
+        List<Order> matchingOrders = (order.getOrderType() == OrderType.BUY) 
+            ? orderMapper.selectSellOrdersByCoinId(order.getCoinId(), order.getUnitPrice())
+            : orderMapper.selectBuyOrdersByCoinId(order.getCoinId(), order.getUnitPrice());
 
-        BigDecimal remainingQuantity = buyOrder.getQuantity();
-        BigDecimal totalExecutedAmount = BigDecimal.ZERO;  // 실제 체결된 총 금액
-        List<Order> sellOrders = orderMapper.selectSellOrdersByCoinId(buyOrder.getCoinId(), buyOrder.getUnitPrice());
-
-        for (Order sellOrder : sellOrders) {
-            BigDecimal beforeQuantity = remainingQuantity;
-            remainingQuantity = executeMatch(OrderType.BUY, buyOrder, sellOrder, remainingQuantity);
-            BigDecimal executedQuantity = beforeQuantity.subtract(remainingQuantity);
-            
-            if (executedQuantity.compareTo(BigDecimal.ZERO) > 0) {
-                // 실제 체결된 금액 계산 (체결된 수량 * 체결 가격)
-                totalExecutedAmount = totalExecutedAmount.add(
-                    OrderType.BUY.calculateExecuteAmount(executedQuantity, sellOrder.getUnitPrice())
-                );
-            }
+        // 주문 매칭 및 체결
+        for (Order matchingOrder : matchingOrders) {
+            OrderMatchResult result = executeMatch(order, matchingOrder, remainingQuantity);
+            remainingQuantity = result.getRemainingQuantity();
+            totalExecutedAmount = totalExecutedAmount.add(result.getExecutedAmount());
             
             if (remainingQuantity.compareTo(BigDecimal.ZERO) <= 0) break;
         }
 
-        // 미체결 수량에 대한 금액과 체결 차액을 환불
-        if (totalExecutedAmount.compareTo(maxAmount) < 0) {
-            BigDecimal refundAmount = maxAmount.subtract(totalExecutedAmount);
-            if (refundAmount.compareTo(BigDecimal.ZERO) > 0) {
-                updateUserMoney(buyOrder.getUserId(), OrderType.SELL, refundAmount);
-            }
-        }
-
-        updateOrderQuentity(buyOrder, remainingQuantity);
+        // 후처리: 잔액 정산
+        postProcessOrder(order, totalExecutedAmount, remainingQuantity);
     }
 
-    private void processSellOrder(Order sellOrder) {
-        validateUserCoinQuantity(sellOrder.getUserId(), sellOrder.getCoinId(), sellOrder.getQuantity());
-
-        BigDecimal remainingQuantity = sellOrder.getQuantity();
-        BigDecimal totalExecutedAmount = BigDecimal.ZERO;  // 실제 체결된 총 금액
-        List<Order> matchingBuyOrders = orderMapper.selectBuyOrdersByCoinId(sellOrder.getCoinId(), sellOrder.getUnitPrice());
-
-        for (Order buyOrder : matchingBuyOrders) {
-            BigDecimal beforeQuantity = remainingQuantity;
-            remainingQuantity = executeMatch(OrderType.SELL, buyOrder, sellOrder, remainingQuantity);
-            BigDecimal executedQuantity = beforeQuantity.subtract(remainingQuantity);
-            
-            if (executedQuantity.compareTo(BigDecimal.ZERO) > 0) {
-                // 실제 체결된 금액 계산 (체결된 수량 * 체결 가격)
-                totalExecutedAmount = totalExecutedAmount.add(
-                    OrderType.SELL.calculateExecuteAmount(executedQuantity, buyOrder.getUnitPrice())
-                );
-            }
-            
-            if (remainingQuantity.compareTo(BigDecimal.ZERO) <= 0) break;
+    private OrderMatchResult executeMatch(Order order, Order matchingOrder, BigDecimal remainingQuantity) {
+        BigDecimal executedPrice = matchingOrder.getUnitPrice();
+        BigDecimal tradableQuantity = remainingQuantity.min(matchingOrder.getQuantity());
+        
+        if (tradableQuantity.compareTo(BigDecimal.ZERO) <= 0) {
+            return new OrderMatchResult(remainingQuantity, BigDecimal.ZERO);
         }
-
-        // 체결된 수량에 대해서만 금액 지급
-        if (totalExecutedAmount.compareTo(BigDecimal.ZERO) > 0) {
-            updateUserMoney(sellOrder.getUserId(), OrderType.SELL, totalExecutedAmount);
-        }
-
-        updateOrderQuentity(sellOrder, remainingQuantity);
-    }
-
-    private BigDecimal executeMatch(OrderType requestType, Order buyOrder, Order sellOrder, BigDecimal remainingQuantity) {
-        Order matchedOrder = (requestType == OrderType.BUY) ? sellOrder : buyOrder;
-        BigDecimal tradableQuantity = remainingQuantity.min(matchedOrder.getQuantity());
 
         // 체결 기록 생성
-        Trade trade = Trade.of(requestType, buyOrder, sellOrder, tradableQuantity);
+        Trade trade = (order.getOrderType() == OrderType.BUY)
+            ? Trade.of(order.getOrderType(), order, matchingOrder, tradableQuantity, executedPrice)
+            : Trade.of(order.getOrderType(), matchingOrder, order, tradableQuantity, executedPrice);
+        
         tradeMapper.insert(trade);
 
         // 현재가 갱신
-        updateCurrentPrice(matchedOrder.getCoinId(), matchedOrder.getUnitPrice());
+        updateCurrentPrice(matchingOrder.getCoinId(), executedPrice);
 
-        // 비교 주문 수량 갱신
-        updateOrderQuentity(matchedOrder, matchedOrder.getQuantity().subtract(tradableQuantity));
+        // 매칭된 주문 수량 갱신
+        updateOrderQuentity(matchingOrder, matchingOrder.getQuantity().subtract(tradableQuantity));
 
-        // 코인 수량 업데이트
-        updateUserCoinQuantity(trade);
+        // 매수자에게 코인 지급
+        if (order.getOrderType() == OrderType.BUY) {
+            processBuyCoin(trade);
+        }
 
-        log.info("주문 체결 완료: trade={}, quantity={}, unitPrice={}", trade.getTradeId(), trade.getQuantity(), trade.getUnitPrice());
+        BigDecimal executedAmount = OrderType.BUY.calculateExecuteAmount(tradableQuantity, executedPrice);
+        return new OrderMatchResult(
+            remainingQuantity.subtract(tradableQuantity),
+            executedAmount
+        );
+    }
 
-        return remainingQuantity.subtract(tradableQuantity);
+    private void postProcessOrder(Order order, BigDecimal totalExecutedAmount, BigDecimal remainingQuantity) {
+        switch (order.getOrderType()) {
+            case BUY:
+                // 매수 주문: 미체결 금액 환불
+                BigDecimal maxAmount = OrderType.BUY.calculateExecuteAmount(order.getQuantity(), order.getUnitPrice());
+                BigDecimal refundAmount = maxAmount.subtract(totalExecutedAmount);
+                if (refundAmount.compareTo(BigDecimal.ZERO) > 0) {
+                    updateUserMoney(order.getUserId(), OrderType.SELL, refundAmount);
+                } break;
+            case SELL:
+                // 매도 주문: 체결된 금액 지급
+                if (totalExecutedAmount.compareTo(BigDecimal.ZERO) > 0) {
+                    updateUserMoney(order.getUserId(), OrderType.SELL, totalExecutedAmount);
+                } break;
+            default:
+                throw TradeException.of(ErrorCode.INVALID_ORDER_TYPE);
+        }
+        // 주문 수량 갱신
+        updateOrderQuentity(order, remainingQuantity);
+    }
+
+    private void updateCurrentPrice(String coinId, BigDecimal price) {
+        coinMapper.updateCurrentPrice(coinId, price);
     }
 
     private void updateOrderQuentity(Order order, BigDecimal remainingQuantity) {
@@ -192,27 +224,10 @@ public class TradeService {
         }
     }
 
-    private void updateCurrentPrice(String coinId, BigDecimal price) {
-        coinMapper.updateCurrentPrice(coinId, price);
-    }
-
-    private void updateUserCoinQuantity(Trade trade) {
-        processUserCoin(OrderType.BUY, trade);
-        processUserCoin(OrderType.SELL, trade);
-    }
-
-    private void processUserCoin(OrderType orderType, Trade trade) {
-        String userId = orderType == OrderType.BUY ? trade.getBuyUserId() : trade.getSellUserId();
-        Optional<UserCoin> userCoin = userCoinMapper.selectByHolderIdAndCoinId(userId, trade.getCoinId());
-        if (userCoin.isPresent()) {
-            UserCoin existingUserCoin = userCoin.get();
-            existingUserCoin.processCoin(orderType, trade.getQuantity(), trade.getUnitPrice());
-            userCoinMapper.update(existingUserCoin);
-        } else if (orderType == OrderType.BUY) {
-            userCoinMapper.insert(UserCoin.of(userId, trade.getCoinId(), trade.getQuantity(), trade.getUnitPrice()));
-        } else {
-            throw TradeException.of(ErrorCode.USER_COIN_NOT_FOUND);
-        }
+    private void processBuyCoin(Trade trade) {
+        UserCoin userCoin = findOrCreateUserCoin(trade.getBuyUserId(), trade.getCoinId());
+        userCoin.plusUserCoin(trade.getQuantity(), trade.getUnitPrice());
+        userCoinMapper.update(userCoin);
     }
 
     @Transactional(readOnly = true)
