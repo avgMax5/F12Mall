@@ -6,17 +6,17 @@ export async function initModalContent(userId) {
   console.log('[모달 데이터]:', data);
 
   // Profile Image
-  document.getElementById('profile-img').src = data.image || 'default-profile-image.jpg';
+  document.getElementById('modal-profile-img').src = data.image || '/assets/images/common/headerImg.png';
 
   // Profile Information
-  document.getElementById('profile-coinname').innerText = data.username || '';
-  document.getElementById('profile-realname').innerText = data.name || '';
-  document.getElementById('profile-role').innerText = data.position || 'Role not specified';
-  document.getElementById('profile-email').innerText = data.email || 'No email provided';
-  document.getElementById('profile-desc').textContent = data.bio || 'No bio provided';
+  document.getElementById('modal-profile-coinname').innerText = data.username || '';
+  document.getElementById('modal-profile-realname').innerText = data.name || '';
+  document.getElementById('modal-profile-role').innerText = data.position || 'Role not specified';
+  document.getElementById('modal-profile-email').innerText = data.email || 'No email provided';
+  document.getElementById('modal-profile-desc').textContent = data.bio || 'No bio provided';
 
   // Tech Stack
-  const techStackList = document.getElementById('tech-stack-list');
+  const techStackList = document.getElementById('modal-tech-stack-list');
   techStackList.innerHTML = '';
   if (data.stack && data.stack.length > 0) {
     data.stack.forEach(tech => {
@@ -28,7 +28,7 @@ export async function initModalContent(userId) {
   }
 
   // Education
-  const educationTable = document.getElementById('education-table');
+  const educationTable = document.getElementById('modal-education-table');
   let educationBody = educationTable.querySelector('tbody');
   educationBody.innerHTML = '';
 
@@ -48,7 +48,7 @@ export async function initModalContent(userId) {
   }
 
   // Career
-  const careerTable = document.getElementById('career-table');
+  const careerTable = document.getElementById('modal-career-table');
   let careerBody = careerTable.querySelector('tbody');
   careerBody.innerHTML = '';
 
@@ -68,7 +68,7 @@ export async function initModalContent(userId) {
   }
 
   // Resume
-  const resumeLink = document.getElementById('profile-resume');
+  const resumeLink = document.getElementById('modal-profile-resume');
   if (data.resume) {
     resumeLink.href = data.resume;
     resumeLink.textContent = data.resume
@@ -83,7 +83,7 @@ export async function initModalContent(userId) {
   }
 
   // Certification
-  const certListContainer = document.getElementById('profile-cert-list');
+  const certListContainer = document.getElementById('modal-profile-cert-list');
   certListContainer.innerHTML = '';
 
   data.certification.forEach(cert => {
@@ -93,7 +93,7 @@ export async function initModalContent(userId) {
   });
 
   // SNS
-  const socialIconsContainer = document.getElementById('profile-sns');
+  const socialIconsContainer = document.getElementById('modal-profile-sns');
   socialIconsContainer.innerHTML = '';
 
   const socialLinks = data.link;

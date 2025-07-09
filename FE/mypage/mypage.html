@@ -14,6 +14,7 @@
     <div id="wrapper">
       <canvas id="matrix"></canvas>
       <div id="include-header"></div>
+      <div id="include-detail-modal"></div>
       <div class="width">
         <!-- section : left  -->
         <div class="section-left">
@@ -33,7 +34,7 @@
                 <!-- 깃허브 링크,이미지 / 벨로그 링크.이미지 -->
               </div>
             </div>
-            <div class="detail-btn media-display-none">DETAIL</div>
+            <div class="detail-btn media-display-none" onclick="setModal()">DETAIL</div>
           </div>
           <div class="media-profile-right-row">
             <div class="container-ratio border media-border-none">
@@ -128,5 +129,6 @@
     <script src="/mypage/js/coinElement.js"></script>
     <script src="/mypage/js/mobile.js"></script>
     <script type="module" src="/mypage/js/mypage.js"></script>
+    <script type="module" src="/mypage/js/modal.js"></script>
   </body>
 </html>
