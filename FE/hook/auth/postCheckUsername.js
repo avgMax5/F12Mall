@@ -25,7 +25,7 @@ async function checkUsernameDuplicate() {
         if (response.ok) {
             const result = await response.json();
             
-            if (result.isDuplicate) {
+            if (result.is_duplicate) {
                 alert(result.message);
                 usernameInput.focus();
             } else {
