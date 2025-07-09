@@ -1,14 +1,17 @@
 package com.avgmax.trade.service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.avgmax.trade.domain.ClosingPrice;
 import com.avgmax.trade.domain.enums.CoinFilter;
 import com.avgmax.trade.dto.query.CoinWithCreatorWithProfileQuery;
 import com.avgmax.trade.dto.query.TradeGroupByCoinQuery;
+import com.avgmax.trade.dto.query.TradeWithCoinQuery;
 import com.avgmax.trade.dto.response.CoinFetchResponse;
 import com.avgmax.trade.mapper.*;
 import org.springframework.stereotype.Service;
@@ -97,6 +100,22 @@ public class TradeService {
     @Transactional(readOnly = true)
     public List<ChartResponse> getChartData(String coinId) {
         return ChartResponse.from(closingPriceMapper.selectBycoinIdDuring180(coinId));
+    }
+
+    @Transactional
+    public int updateClosingPriceAtMidnight() {
+        LocalDateTime startDate = LocalDateTime.now().minusDays(1).toLocalDate().atStartOfDay();
+        LocalDateTime endDate = LocalDateTime.now().toLocalDate().atStartOfDay();
+
+        List<TradeWithCoinQuery> tradeWithCoinQuery = closingPriceMapper.selectSummaryByDateRange(startDate, endDate);
+        if (tradeWithCoinQuery.isEmpty()) {
+            log.warn("거래 데이터가 없습니다.");
+            return 0;
+        }
+
+        return closingPriceMapper.bulkInsert(tradeWithCoinQuery.stream()
+                .map(ClosingPrice::toEntity)
+                .collect(Collectors.toList()));
     }
 
     private User updateUserMoney(String userId, OrderType orderType, BigDecimal amount) {
