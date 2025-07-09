@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 import com.avgmax.global.base.BaseTimeEntity;
-import com.avgmax.trade.domain.enums.OrderType;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,14 +31,13 @@ public class Trade extends BaseTimeEntity {
 
     private BigDecimal unitPrice;
 
-    public static Trade of(OrderType requestType, Order buyOrder, Order sellOrder, BigDecimal tradableQuantity, BigDecimal executedPrice) {
-        Order matchedOrder = (requestType == OrderType.BUY) ? sellOrder : buyOrder;
+    public static Trade of(Order buyOrder, Order sellOrder, BigDecimal tradableQuantity) {
         return Trade.builder()
-            .coinId(matchedOrder.getCoinId())
+            .coinId(sellOrder.getCoinId())
             .buyUserId(buyOrder.getUserId())
             .sellUserId(sellOrder.getUserId())
             .quantity(tradableQuantity)
-            .unitPrice(executedPrice)
+            .unitPrice(sellOrder.getUnitPrice())
             .build();
     }
 }

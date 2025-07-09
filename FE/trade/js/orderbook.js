@@ -140,7 +140,14 @@ class OrderbookManager {
 
     createOrderRow(item, quantityRatio) {
         const row = document.createElement('div');
-        row.className = 'orderbook-row';
+        
+        // 현재가 확인
+        const currentPriceElement = document.getElementById('current-price');
+        const currentPrice = currentPriceElement ? currentPriceElement.textContent.replace(/,/g, '') : null;
+        const isCurrentPrice = currentPrice && parseInt(item.unit_price) === parseInt(currentPrice);
+        console.log("일치여부 ==>", isCurrentPrice, currentPrice, item.unit_price);
+        
+        row.className = `orderbook-row${isCurrentPrice ? ' current-price' : ''}`;
         
         const quantity = parseInt(item.quantity).toLocaleString();
         const unitPrice = parseInt(item.unit_price).toLocaleString();

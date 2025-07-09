@@ -21,6 +21,7 @@ public enum ErrorCode {
     ORDER_NOT_FOUND("주문를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
     ORDER_USER_MISMATCH("해당 주문에 대한 권한이 없습니다.", HttpStatus.FORBIDDEN),
     ORDER_COIN_MISMATCH("주문와 코인 정보가 일치하지 않습니다.", HttpStatus.BAD_REQUEST),
+    INVALID_ORDER_QUANTITY("잔여 주문 수량이 0보다 작습니다.", HttpStatus.BAD_REQUEST),
 
     // coin
     COIN_INFO_NOT_FOUND("코인 정보를 찾을 수 없습니다.", HttpStatus.NOT_FOUND),
