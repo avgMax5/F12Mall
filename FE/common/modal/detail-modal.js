@@ -71,12 +71,12 @@ export async function initModalContent(userId) {
   const resumeLink = document.getElementById('modal-profile-resume');
   if (data.resume) {
     resumeLink.href = data.resume;
-    resumeLink.textContent = data.resume
+    resumeLink.textContent = decodeURIComponent(data.resume
       .split('/')
       .pop()
       .split('_')
       .slice(1)
-      .join('_');
+      .join('_'));
   } else {
     resumeLink.href = '#';
     resumeLink.textContent = '등록된 이력서가 없습니다';
