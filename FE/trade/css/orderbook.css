@@ -80,6 +80,36 @@
   padding: 0.4rem 0.5rem;
 }
 
+.orderbook-row.current-price {
+  background-color: rgba(127, 146, 129, 0.5) !important;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 255, 47, 0.3);
+}
+
+.orderbook-row.current-price::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px solid rgba(0, 255, 47, 0.3);
+  transition: all 0.5s ease-in-out;
+  animation: neonBorder 1s ease-in-out infinite;
+}
+
+@keyframes neonBorder {
+  0%, 100% {
+    border-color: rgba(0, 255, 47, 0.3);
+    box-shadow: 0 0 1px rgba(0, 255, 47, 0.3);
+  }
+  50% {
+    border-color: rgba(0, 255, 47, 0.6);
+    box-shadow: 0 0 5px rgba(0, 255, 47, 0.5);
+  }
+}
+
 .orderbook-row .quantity-wrapper {
     position: relative;
     width: 50%;
