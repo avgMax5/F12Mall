@@ -1,475 +1,294 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>main</title>
-    <link rel="stylesheet" href="/fonts.css">
-    <link rel="stylesheet" href="/main/css/main.css">
-</head>
+    <link rel="stylesheet" href="/fonts.css" />
+    <link rel="stylesheet" href="/main/css/main.css" />
+  </head>
 
-<body>
-    <iframe src="/common/background/cyber-background.html" frameborder="0"
-        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></iframe>
+  <body>
+    <!-- <iframe
+      src="/common/background/cyber-background.html"
+      frameborder="0"
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+      "
+    ></iframe> -->
     <div id="wrapper">
-        <div id="include-header"></div>
-        <div class="width">
-            <!-- 상단 영역 -->
-            <div class="section-top">
-                <!-- Top 5 Surging -->
-                <div class="container-left">
-                    <!-- surging title -->
-                    <div class="box-surging-header">
-                        <h2 class="surging-title">Top 5 Surging</h2>
-                    </div>
-                    <!-- surging list -->
-                    <div class="box-surging-body">
-                        <ul class="surging-list">
-                            <li class="surging-entry rank-1">
-                                <div class="entry-left">
-                                    <svg class="entry-trophy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                                        <path
-                                            d="M552 64h-88V56c0-13.3-10.7-24-24-24H136c-13.3 0-24 10.7-24 24v8H24C10.7 64 0 74.7 0 88v56c0 67.4 50.6 122.8 115.2 127.7C144 319.5 198.1 366 264 375.5V432h-88c-13.3 0-24 10.7-24 24v32h272v-32c0-13.3-10.7-24-24-24h-88v-56.5c65.9-9.5 120-56 148.8-119.8C525.4 266.8 576 211.4 576 144V88c0-13.3-10.7-24-24-24zM48 144v-32h64v97.2C77.3 203.6 48 176.9 48 144zm480 0c0 32.9-29.3 59.6-64 65.2V112h64v32z" />
-                                    </svg>
-                                    <span class="entry-name">일등코인</span>
-                                </div>
-                                <div class="entry-right">
-                                    <span class="entry-change up">199.00%</span>
-                                </div>
-                            </li>
-                            <li class="surging-entry rank-2">
-                                <div class="entry-left">
-                                    <svg class="entry-trophy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                                        <path
-                                            d="M552 64h-88V56c0-13.3-10.7-24-24-24H136c-13.3 0-24 10.7-24 24v8H24C10.7 64 0 74.7 0 88v56c0 67.4 50.6 122.8 115.2 127.7C144 319.5 198.1 366 264 375.5V432h-88c-13.3 0-24 10.7-24 24v32h272v-32c0-13.3-10.7-24-24-24h-88v-56.5c65.9-9.5 120-56 148.8-119.8C525.4 266.8 576 211.4 576 144V88c0-13.3-10.7-24-24-24zM48 144v-32h64v97.2C77.3 203.6 48 176.9 48 144zm480 0c0 32.9-29.3 59.6-64 65.2V112h64v32z" />
-                                    </svg>
-                                    <span class="entry-name">이등코인</span>
-                                </div>
-                                <div class="entry-right">
-                                    <span class="entry-change up">188.00%</span>
-                                </div>
-                            </li>
-                            <li class="surging-entry rank-3">
-                                <div class="entry-left">
-                                    <svg class="entry-trophy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                                        <path
-                                            d="M552 64h-88V56c0-13.3-10.7-24-24-24H136c-13.3 0-24 10.7-24 24v8H24C10.7 64 0 74.7 0 88v56c0 67.4 50.6 122.8 115.2 127.7C144 319.5 198.1 366 264 375.5V432h-88c-13.3 0-24 10.7-24 24v32h272v-32c0-13.3-10.7-24-24-24h-88v-56.5c65.9-9.5 120-56 148.8-119.8C525.4 266.8 576 211.4 576 144V88c0-13.3-10.7-24-24-24zM48 144v-32h64v97.2C77.3 203.6 48 176.9 48 144zm480 0c0 32.9-29.3 59.6-64 65.2V112h64v32z" />
-                                    </svg>
-                                    <span class="entry-name">삼등코인</span>
-                                </div>
-                                <div class="entry-right">
-                                    <span class="entry-change up">177.00%</span>
-                                </div>
-                            </li>
-                            <li class="surging-entry rank-4">
-                                <div class="entry-left">
-                                    <svg class="entry-trophy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                                        <path
-                                            d="M552 64h-88V56c0-13.3-10.7-24-24-24H136c-13.3 0-24 10.7-24 24v8H24C10.7 64 0 74.7 0 88v56c0 67.4 50.6 122.8 115.2 127.7C144 319.5 198.1 366 264 375.5V432h-88c-13.3 0-24 10.7-24 24v32h272v-32c0-13.3-10.7-24-24-24h-88v-56.5c65.9-9.5 120-56 148.8-119.8C525.4 266.8 576 211.4 576 144V88c0-13.3-10.7-24-24-24zM48 144v-32h64v97.2C77.3 203.6 48 176.9 48 144zm480 0c0 32.9-29.3 59.6-64 65.2V112h64v32z" />
-                                    </svg>
-                                    <span class="entry-name">사등코인</span>
-                                </div>
-                                <div class="entry-right">
-                                    <span class="entry-change up">99.00%</span>
-                                </div>
-                            </li>
-                            <li class="surging-entry rank-5">
-                                <div class="entry-left">
-                                    <svg class="entry-trophy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                                        <path
-                                            d="M552 64h-88V56c0-13.3-10.7-24-24-24H136c-13.3 0-24 10.7-24 24v8H24C10.7 64 0 74.7 0 88v56c0 67.4 50.6 122.8 115.2 127.7C144 319.5 198.1 366 264 375.5V432h-88c-13.3 0-24 10.7-24 24v32h272v-32c0-13.3-10.7-24-24-24h-88v-56.5c65.9-9.5 120-56 148.8-119.8C525.4 266.8 576 211.4 576 144V88c0-13.3-10.7-24-24-24zM48 144v-32h64v97.2C77.3 203.6 48 176.9 48 144zm480 0c0 32.9-29.3 59.6-64 65.2V112h64v32z" />
-                                    </svg>
-                                    <span class="entry-name">오등코인</span>
-                                </div>
-                                <div class="entry-right">
-                                    <span class="entry-change up">88.00%</span>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- Carousel -->
-                <div class="container-right">
-                    <div class="box-carousel-header">
-                        <h2 class="carousel-title">Top 5 Coin</h2>
-                    </div>
-                    <div class="box-carousel-body">
-                        <div class="carousel-track">
-                            <div class="carousel-cap-cards">
-                                <!-- coin card 1 -->
-                                <div class="cap-card">
-                                    <div class="card-top">
-                                        <div class="card-label">
-                                            <span class="card-coin-name">JH코인</span>
-                                            <span class="card-author">허재환</span>
-                                        </div>
-                                    </div>
-                                    <div class="card-bot">
-                                        <div class="card-info">
-                                            <div class="card-role">Backend Engineer</div>
-                                            <img src="../assets/images/main/JH.png" alt="시총 프사">
-                                        </div>
-                                        <div class="card-price">
-                                            <div class="card-change up">
-                                                500,000 <span class="change-percent">(+5.00%)</span>
-                                            </div>
-                                            <div class="price-icon">
-                                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                    <circle cx="12" cy="12" r="12" fill="#00FF2F" />
-                                                    <text x="12" y="16" text-anchor="middle">₩</text>
-                                                </svg>
-                                                <span class="price-amount">10,000,000</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- coin card 2 -->
-                                <div class="cap-card">
-                                    <div class="card-top">
-                                        <div class="card-label">
-                                            <span class="card-coin-name">JH코인</span>
-                                            <span class="card-author">허재환</span>
-                                        </div>
-                                    </div>
-                                    <div class="card-bot">
-                                        <div class="card-info">
-                                            <div class="card-role">Backend Engineer</div>
-                                            <img src="../assets/images/main/JH.png" alt="시총 프사">
-                                        </div>
-                                        <div class="card-price">
-                                            <div class="card-change up">
-                                                500,000 <span class="change-percent">(+5.00%)</span>
-                                            </div>
-                                            <div class="price-icon">
-                                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                    <circle cx="12" cy="12" r="12" fill="#00FF2F" />
-                                                    <text x="12" y="16" text-anchor="middle">₩</text>
-                                                </svg>
-                                                <span class="price-amount">10,000,000</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- coin card 3 -->
-                                <div class="cap-card">
-                                    <div class="card-top">
-                                        <div class="card-label">
-                                            <span class="card-coin-name">JH코인</span>
-                                            <span class="card-author">허재환</span>
-                                        </div>
-                                    </div>
-                                    <div class="card-bot">
-                                        <div class="card-info">
-                                            <div class="card-role">Backend Engineer</div>
-                                            <img src="../assets/images/main/JH.png" alt="시총 프사">
-                                        </div>
-                                        <div class="card-price">
-                                            <div class="card-change up">
-                                                500,000 <span class="change-percent">(+5.00%)</span>
-                                            </div>
-                                            <div class="price-icon">
-                                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                    <circle class="icon-circle" cx="12" cy="12" r="12" fill="#00FF2F" />
-                                                    <text x="12" y="16" text-anchor="middle">₩</text>
-                                                </svg>
-                                                <span class="price-amount">10,000,000</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- coin card 4 -->
-                                <div class="cap-card">
-                                    <div class="card-top">
-                                        <div class="card-label">
-                                            <span class="card-coin-name">JH코인</span>
-                                            <span class="card-author">허재환</span>
-                                        </div>
-                                    </div>
-                                    <div class="card-bot">
-                                        <div class="card-info">
-                                            <div class="card-role">Backend Engineer</div>
-                                            <img src="../assets/images/main/JH.png" alt="시총 프사">
-                                        </div>
-                                        <div class="card-price">
-                                            <div class="card-change up">
-                                                500,000 <span class="change-percent">(+5.00%)</span>
-                                            </div>
-                                            <div class="price-icon">
-                                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                    <circle cx="12" cy="12" r="12" fill="#00FF2F" />
-                                                    <text x="12" y="16" text-anchor="middle">₩</text>
-                                                </svg>
-                                                <span class="price-amount">10,000,000</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- coin card 5 -->
-                                <div class="cap-card">
-                                    <div class="card-top">
-                                        <div class="card-label">
-                                            <span class="card-coin-name">JH코인</span>
-                                            <span class="card-author">허재환</span>
-                                        </div>
-                                    </div>
-                                    <div class="card-bot">
-                                        <div class="card-info">
-                                            <div class="card-role">Backend Engineer</div>
-                                            <img src="../assets/images/main/JH.png" alt="시총 프사">
-                                        </div>
-                                        <div class="card-price">
-                                            <div class="card-change up">
-                                                500,000 <span class="change-percent">(+5.00%)</span>
-                                            </div>
-                                            <div class="price-icon">
-                                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                    <circle cx="12" cy="12" r="12" fill="#00FF2F" />
-                                                    <text x="12" y="16" text-anchor="middle">₩</text>
-                                                </svg>
-                                                <span class="price-amount">10,000,000</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="carousel-banner">
-                                <img src="../assets/images/main/avgMax.png" alt="광고1">
-                            </div>
-                            <!-- <div class="carousel-banner">
-                                <img src="" alt="광고2">
-                            </div> -->
-                        </div>
-                        <div class="carousel-indicator">
-                            <span class="dot active"></span>
-                            <span class="dot"></span>
-                            <span class="dot"></span>
-                        </div>
-                    </div>
-                </div>
+      <div id="include-header"></div>
+      <div class="width">
+        <!-- 상단 영역 -->
+        <div class="section-top">
+          <!-- container-left -->
+          <div class="container-left">
+            <div class="box-header">
+              <h2 class="box-top-title">Top 5 Surging</h2>
             </div>
-
-            <!-- 하단 영역 -->
-            <div class="section-bottom">
-                <div class="container-top">
-                    <form class="box-search">
-                        <input type="text" class="search-input" />
-                        <div class="search-divider"></div>
-                        <button type="submit" class="search-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                <circle cx="11" cy="11" r="7" />
-                                <line x1="16" y1="16" x2="21" y2="21" />
-                            </svg>
-                        </button>
-                    </form>
-                    <div>
-                        <div class="box-sort">
-                            <button class="sort-toggle">
-                                <span class="sort-label">최신순</span>
-                                <span class="sort-icon down"></span>
-                            </button>
-                            <ul class="sort-menu">
-                                <li class="sort-option selected">최신순</li>
-                                <li class="sort-option">금액순</li>
-                                <li class="sort-option">거래순</li>
-                                <li class="sort-option">금액 상승순</li>
-                                <li class="sort-option">비율 상승순</li>
-                            </ul>
-                        </div>
-                        <div class="box-view">
-                            <input type="radio" name="view" id="view-card" checked>
-                            <label for="view-card" class="view-toggle">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" stroke="#00FF2F"
-                                    stroke-width="1" viewBox="0 0 24 24">
-                                    <rect x="3" y="4.5" width="18" height="6" rx="1" />
-                                    <rect x="3" y="13.5" width="18" height="6" rx="1" />
-                                </svg>
-                            </label>
-                            <input type="radio" name="view" id="view-list">
-                            <label for="view-list" class="view-toggle">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" stroke="#00FF2F"
-                                    stroke-width="1" viewBox="0 0 24 24">
-                                    <circle cx="4" cy="6" r="1.5" />
-                                    <rect x="7" y="5" width="13" height="2" rx="1" />
-                                    <circle cx="4" cy="12" r="1.5" />
-                                    <rect x="7" y="11" width="13" height="2" rx="1" />
-                                    <circle cx="4" cy="18" r="1.5" />
-                                    <rect x="7" y="17" width="13" height="2" rx="1" />
-                                </svg>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="container-bottom">
-                    <!-- card view -->
-                    <div class="box-grid-card" id="card-viewer"></div>
-                    <!-- list view -->
-                    <div class="box-coin-list">
-                        <!-- hearder -->
-                        <div class="table-header">
-                            <div class="col col-coin">코인이름</div>
-                            <div class="col col-name">이름</div>
-                            <div class="col col-price sortable" data-key="price">현재가
-                                <svg class="sort-arrow" width="12" height="20" viewBox="0 0 12 20"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#888" stroke-width="1.5">
-                                    <path class="arrow-up" d="M2 8 L6 4 L10 8" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path class="arrow-down" d="M2 12 L6 16 L10 12" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                </svg>
-                            </div>
-                            <div class="col col-diff sortable" data-key="diff">변동가
-                                <svg class="sort-arrow" width="12" height="20" viewBox="0 0 12 20"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#888" stroke-width="1.5">
-                                    <path class="arrow-up" d="M2 8 L6 4 L10 8" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path class="arrow-down" d="M2 12 L6 16 L10 12" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                </svg>
-                            </div>
-                            <div class="col col-rate sortable" data-key="rate">등락률
-                                <svg class="sort-arrow" width="12" height="20" viewBox="0 0 12 20"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#888" stroke-width="1.5">
-                                    <path class="arrow-up" d="M2 8 L6 4 L10 8" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path class="arrow-down" d="M2 12 L6 16 L10 12" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                </svg>
-                            </div>
-                            <div class="col col-volume sortable" data-key="volume">거래량
-                                <svg class="sort-arrow" width="12" height="20" viewBox="0 0 12 20"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#888" stroke-width="1.5">
-                                    <path class="arrow-up" d="M2 8 L6 4 L10 8" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path class="arrow-down" d="M2 12 L6 16 L10 12" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                </svg>
-                            </div>
-                            <div class="col col-low">최저가</div>
-                            <div class="col col-high">최고가</div>
-                        </div>
-                        <div class="table-body">
-                            <!-- list 1 -->
-                            <div class="table-row">
-                                <div class="col col-coin">도지코인</div>
-                                <div class="col col-name">일론 머스크</div>
-                                <div class="col col-price">150,000</div>
-                                <div class="col col-diff up">50,000</div>
-                                <div class="col col-rate up">50.00%</div>
-                                <div class="col col-volume">9,999,999</div>
-                                <div class="col col-low">9,999,999</div>
-                                <div class="col col-high">9,999,999</div>
-                            </div>
-                            <!-- list 2 -->
-                            <div class="table-row">
-                                <div class="col col-coin">도지코인</div>
-                                <div class="col col-name">일론 머스크</div>
-                                <div class="col col-price">150,000</div>
-                                <div class="col col-diff up">50,000</div>
-                                <div class="col col-rate up">50.00%</div>
-                                <div class="col col-volume">9,999,999</div>
-                                <div class="col col-low">9,999,999</div>
-                                <div class="col col-high">9,999,999</div>
-                            </div>
-                            <!-- list 3 -->
-                            <div class="table-row">
-                                <div class="col col-coin">도지코인</div>
-                                <div class="col col-name">일론 머스크</div>
-                                <div class="col col-price">150,000</div>
-                                <div class="col col-diff up">50,000</div>
-                                <div class="col col-rate up">50.00%</div>
-                                <div class="col col-volume">9,999,999</div>
-                                <div class="col col-low">9,999,999</div>
-                                <div class="col col-high">9,999,999</div>
-                            </div>
-                            <!-- list 4 -->
-                            <div class="table-row">
-                                <div class="col col-coin">도지코인</div>
-                                <div class="col col-name">일론 머스크</div>
-                                <div class="col col-price">150,000</div>
-                                <div class="col col-diff up">50,000</div>
-                                <div class="col col-rate up">50.00%</div>
-                                <div class="col col-volume">9,999,999</div>
-                                <div class="col col-low">9,999,999</div>
-                                <div class="col col-high">9,999,999</div>
-                            </div>
-                            <!-- list 5 -->
-                            <div class="table-row">
-                                <div class="col col-coin">도지코인</div>
-                                <div class="col col-name">일론 머스크</div>
-                                <div class="col col-price">150,000</div>
-                                <div class="col col-diff up">50,000</div>
-                                <div class="col col-rate up">50.00%</div>
-                                <div class="col col-volume">9,999,999</div>
-                                <div class="col col-low">9,999,999</div>
-                                <div class="col col-high">9,999,999</div>
-                            </div>
-                            <!-- list 6 -->
-                            <div class="table-row">
-                                <div class="col col-coin">도지코인</div>
-                                <div class="col col-name">일론 머스크</div>
-                                <div class="col col-price">50,000</div>
-                                <div class="col col-diff down">50,000</div>
-                                <div class="col col-rate down">50.00%</div>
-                                <div class="col col-volume">9,999,999</div>
-                                <div class="col col-low">9,999,999</div>
-                                <div class="col col-high">9,999,999</div>
-                            </div>
-                            <!-- list 7 -->
-                            <div class="table-row">
-                                <div class="col col-coin">도지코인</div>
-                                <div class="col col-name">일론 머스크</div>
-                                <div class="col col-price">50,000</div>
-                                <div class="col col-diff down">50,000</div>
-                                <div class="col col-rate down">50.00%</div>
-                                <div class="col col-volume">9,999,999</div>
-                                <div class="col col-low">9,999,999</div>
-                                <div class="col col-high">9,999,999</div>
-                            </div>
-                            <!-- list 8 -->
-                            <div class="table-row">
-                                <div class="col col-coin">도지코인</div>
-                                <div class="col col-name">일론 머스크</div>
-                                <div class="col col-price">50,000</div>
-                                <div class="col col-diff down">50,000</div>
-                                <div class="col col-rate down">50.00%</div>
-                                <div class="col col-volume">9,999,999</div>
-                                <div class="col col-low">9,999,999</div>
-                                <div class="col col-high">9,999,999</div>
-                            </div>
-                            <!-- list 9 -->
-                            <div class="table-row">
-                                <div class="col col-coin">도지코인</div>
-                                <div class="col col-name">일론 머스크</div>
-                                <div class="col col-price">50,000</div>
-                                <div class="col col-diff down">50,000</div>
-                                <div class="col col-rate down">50.00%</div>
-                                <div class="col col-volume">9,999,999</div>
-                                <div class="col col-low">9,999,999</div>
-                                <div class="col col-high">9,999,999</div>
-                            </div>
-                            <!-- list 10 -->
-                            <div class="table-row">
-                                <div class="col col-coin">도지코인</div>
-                                <div class="col col-name">일론 머스크</div>
-                                <div class="col col-price">50,000</div>
-                                <div class="col col-diff down">50,000</div>
-                                <div class="col col-rate down">50.00%</div>
-                                <div class="col col-volume">9,999,999</div>
-                                <div class="col col-low">9,999,999</div>
-                                <div class="col col-high">9,999,999</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="box-surging-body border-shadow">
+              <ul class="surging-list">
+                <li class="surging-entry rank-1">
+                  <div class="entry-left">
+                    <svg
+                      class="entry-trophy"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 576 512"
+                    >
+                      <path
+                        d="M552 64h-88V56c0-13.3-10.7-24-24-24H136c-13.3 0-24 10.7-24 24v8H24C10.7 64 0 74.7 0 88v56c0 67.4 50.6 122.8 115.2 127.7C144 319.5 198.1 366 264 375.5V432h-88c-13.3 0-24 10.7-24 24v32h272v-32c0-13.3-10.7-24-24-24h-88v-56.5c65.9-9.5 120-56 148.8-119.8C525.4 266.8 576 211.4 576 144V88c0-13.3-10.7-24-24-24zM48 144v-32h64v97.2C77.3 203.6 48 176.9 48 144zm480 0c0 32.9-29.3 59.6-64 65.2V112h64v32z"
+                      />
+                    </svg>
+                    <span class="entry-name">일등코인</span>
+                  </div>
+                  <div class="entry-right">
+                    <span class="entry-change up">199.00%</span>
+                  </div>
+                </li>
+              </ul>
             </div>
+          </div>
+          <!-- container-right -->
+          <div class="container-right">
+            <div class="box-header">
+              <h2 class="box-top-title">Top 5 Coin</h2>
+            </div>
+            <div class="box-carousel-body border-shadow">
+              <div class="carousel-track">
+                <div class="carousel-slide carousel-cap-cards">
+                  <!-- coin card 1 -->
+                  <div class="cap-card">
+                    <div class="card-top">
+                      <div class="card-label">
+                        <span class="card-coin-name">JH코인</span>
+                        <span class="card-author">허재환</span>
+                      </div>
+                    </div>
+                    <div class="card-bot">
+                      <div class="card-info">
+                        <div class="card-role">Backend Engineer</div>
+                        <img
+                          src="../assets/images/main/JH.png"
+                          alt="시총 프사"
+                        />
+                      </div>
+                      <div class="card-price">
+                        <div class="card-change up">
+                          500,000 <span class="change-percent">(+5.00%)</span>
+                        </div>
+                        <div class="price-icon">
+                          <svg
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <circle cx="12" cy="12" r="12" fill="#00FF2F" />
+                            <text x="12" y="16" text-anchor="middle">₩</text>
+                          </svg>
+                          <span class="price-amount">10,000,000</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- coin card 2 -->
+                  <div class="cap-card">
+                    <div class="card-top">
+                      <div class="card-label">
+                        <span class="card-coin-name">JH코인</span>
+                        <span class="card-author">허재환</span>
+                      </div>
+                    </div>
+                    <div class="card-bot">
+                      <div class="card-info">
+                        <div class="card-role">Backend Engineer</div>
+                        <img
+                          src="../assets/images/main/JH.png"
+                          alt="시총 프사"
+                        />
+                      </div>
+                      <div class="card-price">
+                        <div class="card-change up">
+                          500,000 <span class="change-percent">(+5.00%)</span>
+                        </div>
+                        <div class="price-icon">
+                          <svg
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <circle cx="12" cy="12" r="12" fill="#00FF2F" />
+                            <text x="12" y="16" text-anchor="middle">₩</text>
+                          </svg>
+                          <span class="price-amount">10,000,000</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- coin card 3 -->
+                  <div class="cap-card">
+                    <div class="card-top">
+                      <div class="card-label">
+                        <span class="card-coin-name">JH코인</span>
+                        <span class="card-author">허재환</span>
+                      </div>
+                    </div>
+                    <div class="card-bot">
+                      <div class="card-info">
+                        <div class="card-role">Backend Engineer</div>
+                        <img
+                          src="../assets/images/main/JH.png"
+                          alt="시총 프사"
+                        />
+                      </div>
+                      <div class="card-price">
+                        <div class="card-change up">
+                          500,000 <span class="change-percent">(+5.00%)</span>
+                        </div>
+                        <div class="price-icon">
+                          <svg
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <circle
+                              class="icon-circle"
+                              cx="12"
+                              cy="12"
+                              r="12"
+                              fill="#00FF2F"
+                            />
+                            <text x="12" y="16" text-anchor="middle">₩</text>
+                          </svg>
+                          <span class="price-amount">10,000,000</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- coin card 4 -->
+                  <div class="cap-card">
+                    <div class="card-top">
+                      <div class="card-label">
+                        <span class="card-coin-name">JH코인</span>
+                        <span class="card-author">허재환</span>
+                      </div>
+                    </div>
+                    <div class="card-bot">
+                      <div class="card-info">
+                        <div class="card-role">Backend Engineer</div>
+                        <img
+                          src="../assets/images/main/JH.png"
+                          alt="시총 프사"
+                        />
+                      </div>
+                      <div class="card-price">
+                        <div class="card-change up">
+                          500,000 <span class="change-percent">(+5.00%)</span>
+                        </div>
+                        <div class="price-icon">
+                          <svg
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <circle cx="12" cy="12" r="12" fill="#00FF2F" />
+                            <text x="12" y="16" text-anchor="middle">₩</text>
+                          </svg>
+                          <span class="price-amount">10,000,000</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- coin card 5 -->
+                  <div class="cap-card">
+                    <div class="card-top">
+                      <div class="card-label">
+                        <span class="card-coin-name">JH코인</span>
+                        <span class="card-author">허재환</span>
+                      </div>
+                    </div>
+                    <div class="card-bot">
+                      <div class="card-info">
+                        <div class="card-role">Backend Engineer</div>
+                        <img
+                          src="../assets/images/main/JH.png"
+                          alt="시총 프사"
+                        />
+                      </div>
+                      <div class="card-price">
+                        <div class="card-change up">
+                          500,000 <span class="change-percent">(+5.00%)</span>
+                        </div>
+                        <div class="price-icon">
+                          <svg
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <circle cx="12" cy="12" r="12" fill="#00FF2F" />
+                            <text x="12" y="16" text-anchor="middle">₩</text>
+                          </svg>
+                          <span class="price-amount">10,000,000</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- banner -->
+                <div class="carousel-slide carousel-banner"></div>
+              </div>
+              <div class="carousel-indicator">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+              </div>
+            </div>
+          </div>
         </div>
+        <div class="section-bottom border-shadow">
+          <!-- container-top -->
+          <div class="container-top">
+            <form class="box-search">
+              <input type="text" class="search-input" />
+              <div class="search-divider"></div>
+              <button type="submit" class="search-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="7" />
+                  <line x1="16" y1="16" x2="21" y2="21" />
+                </svg>
+              </button>
+            </form>
+            <div id="sort-view-wrapper"></div>
+          </div>
+          <!-- container-bottom -->
+          <div class="container-bottom">
+            <!-- card view -->
+            <div class="box-grid-card" id="card-viewer"></div>
+            <!-- list view -->
+            <div class="box-coin-list">
+              <div id="table-header-wrapper"></div>
+              <div class="table-body">
+                <!-- list 1 -->
+                <div class="table-row">
+                  <div class="col col-coin">도지코인</div>
+                  <div class="col col-name">일론 머스크</div>
+                  <div class="col col-price">150,000</div>
+                  <div class="col col-diff up">50,000</div>
+                  <div class="col col-rate up">50.00%</div>
+                  <div class="col col-volume">9,999,999</div>
+                  <div class="col col-low">9,999,999</div>
+                  <div class="col col-high">9,999,999</div>
+                </div>
+                <!--  -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <script type="module" src="/config.js"></script>
     <script type="module" src="/hook/auth/postLogout.js"></script>
     <script type="module" src="/common/header/header.js"></script>
     <script type="module" src="/hook/trade/getAllCoins.js"></script>
     <script type="module" src="/main/js/main.js"></script>
-</body>
-
+  </body>
 </html>
