@@ -3,6 +3,7 @@ import { getOrderbook } from '/hook/trade/getOrderbook.js';
 import { getMyOrderList } from '/hook/trade/getMyOrderList.js';
 import { cancelOrder } from '/hook/trade/deleteOrder.js';
 import { fetchUserInform, fetchUserCoins } from '/trade/js/interface.js';
+import { showFailAlert, showSuccessAlert, showConfirmModal } from '/common/js/modal.js';
 
 const COLOR = {
     BLUE: '#1376ee',
@@ -260,18 +261,30 @@ class OrderbookManager {
         // 주문 취소 버튼 이벤트 리스너 추가
         const cancelBtn = row.querySelector('.cancel-btn');
         cancelBtn.addEventListener('click', async () => {
-            try {
-                await cancelOrder(tradeCoinId, order.order_id);
-                alert('주문이 취소되었습니다.');
-                await Promise.all([
-                    this.updateMyOrderList(),
-                    fetchUserInform(),
-                    fetchUserCoins()
-                ]);
-            } catch (error) {
-                console.error('주문 취소 중 오류 발생:', error);
-                alert('주문 취소에 실패했습니다.');
-            }
+            // 주문 취소 확인 모달 띄우기
+            showConfirmModal(
+                `${order.quantity}`, 
+                '주문취소', 
+                async () => {
+                    // 확인 버튼 클릭 시 주문 취소 처리
+                    try {
+                        await cancelOrder(tradeCoinId, order.order_id);
+                        showSuccessAlert('주문이 취소되었습니다.');
+                        await Promise.all([
+                            this.updateMyOrderList(),
+                            fetchUserInform(),
+                            fetchUserCoins()
+                        ]);
+                    } catch (error) {
+                        console.error('주문 취소 중 오류 발생:', error);
+                        showFailAlert('주문 취소에 실패했습니다.');
+                    }
+                },
+                () => {
+                    // 취소 버튼 클릭 시
+                    console.log('주문 취소가 취소되었습니다.');
+                }
+            );
         });
 
         return row;

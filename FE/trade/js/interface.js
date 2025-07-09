@@ -3,6 +3,7 @@ import { getMyProfile } from '/hook/user/getMyProfile.js';
 import { getUserCoins } from '/hook/user/getUserCoins.js';
 import { createOrder } from '/hook/trade/postOrder.js';
 import { updateMyOrderList } from '/trade/js/orderbook.js';
+import { showFailAlert, showSuccessAlert, showConfirmModal } from '/common/js/modal.js';
 
 // 사용자 정보 상태
 let userMoney = 0;
@@ -80,7 +81,7 @@ export const fetchUserInform = async () => {
     updateAvailableAmount();
   } catch (error) {
     console.error('사용자 정보 조회 실패:', error);
-    alert('사용자 정보를 불러오는데 실패했습니다.');
+    showFailAlert('사용자 정보를 불러오는데 실패했습니다.');
   }
 };
 
@@ -91,7 +92,7 @@ export const fetchUserCoins = async () => {
     updateAvailableAmount();
   } catch (error) {
     console.error('사용자 코인 정보 조회 실패:', error);
-    alert('사용자 코인 정보를 불러오는데 실패했습니다.');
+    showFailAlert('사용자 코인 정보를 불러오는데 실패했습니다.');
   }
 };
 
@@ -272,25 +273,43 @@ document.addEventListener('DOMContentLoaded', () => {
       const orderFis = parseNumberFromString(quantityInput.value);
       const orderPrice = parseNumberFromString(orderPriceInput.value);
 
-      const result = await processOrder(orderFis, orderPrice);
-
-      if (result.success) {
-        console.log('주문이 성공적으로 처리되었습니다:', result.data);
-        alert('주문이 성공적으로 처리되었습니다.');
-        resetInputs();
-        // 주문 성공 후 주문 목록, 사용자 정보, 코인 정보 갱신
-        await Promise.all([
-          updateMyOrderList(),
-          fetchUserInform(),
-          fetchUserCoins()
-        ]);
-        // interface 영역 초기화
-        updateAvailableAmount();
-        calculateTotalPrice();
-      } else {
-        console.error('주문 처리 실패:', result.error);
-        alert(result.error);
+      // 먼저 유효성 검사
+      try {
+        validateOrder(quantityInput.value, orderPriceInput.value);
+      } catch (error) {
+        showFailAlert(error.message);
+        return;
       }
+
+      // 주문 타입 결정
+      const isBuyMode = containerInterface.classList.contains('buy-mode');
+      const action = isBuyMode ? '매수' : '매도';
+      
+      // confirm 모달 띄우기
+      showConfirmModal(`${orderFis}`, action, 
+        async () => {
+          // 확인 버튼 클릭 시 기존 주문 처리 로직 실행
+          const result = await processOrder(orderFis, orderPrice);
+          
+          if (result.success) {
+            console.log('주문이 성공적으로 처리되었습니다:', result.data);
+            showSuccessAlert('주문이 성공적으로 처리되었습니다.');
+            resetInputs();
+            // 주문 성공 후 주문 목록, 사용자 정보, 코인 정보 갱신
+            await Promise.all([
+              updateMyOrderList(),
+              fetchUserInform(),
+              fetchUserCoins()
+            ]);
+            // interface 영역 초기화
+            updateAvailableAmount();
+            calculateTotalPrice();
+          } else {
+            console.error('주문 처리 실패:', result.error);
+            showFailAlert(result.error);
+          }
+        }
+      );
     });
 
     // 초기화 버튼
