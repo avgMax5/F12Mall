@@ -1,7 +1,34 @@
-// import { CONFIG } from '../config.js';
+import { getMyProfile } from '/hook/user/getMyProfile.js';
+import { getUserCoins } from '/hook/user/getUserCoins.js';
+
+async function updateHeaderInfo() {
+  try {
+    const user = await getMyProfile();
+    const coins = await getUserCoins();
+
+    // 프로필 이미지 업데이트
+    // const profileImg = document.getElementById("header-profile-img");
+    // if (profileImg && user.image) {
+    //   profileImg.src = user.image;
+    // }
+
+    // 총 자산 계산 및 표시
+    let currentCoinAmount = 0;
+    coins.forEach(element => {
+      currentCoinAmount += element.current_buy_amount;
+    });
+    const totalAssets = currentCoinAmount + user.money;
+
+    const totalAssetsElement = document.querySelector(".total-assets");
+    if (totalAssetsElement) {
+      totalAssetsElement.textContent = totalAssets.toLocaleString('ko-KR');
+    }
+  } catch (error) {
+    console.error('헤더 정보 업데이트 중 오류 발생:', error);
+  }
+}
 
 document.addEventListener("DOMContentLoaded", () => {
-
   const includeTarget = document.querySelector("#include-header");
 
   if (includeTarget) {
@@ -18,6 +45,8 @@ document.addEventListener("DOMContentLoaded", () => {
               const boxMenu = document.getElementById("header-box-menu");
 
               if (profileImg && boxMenu) {
+                // 헤더 정보 업데이트
+                updateHeaderInfo();
 
                 // 기존 이벤트 리스너 제거 (중복 방지)
                 profileImg.removeEventListener("click", handleProfileClick);
@@ -51,6 +80,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const boxMenu = document.getElementById("header-box-menu");
 
         if (profileImg && boxMenu) {
+          // 헤더 정보 업데이트
+          updateHeaderInfo();
 
           profileImg.addEventListener("click", handleProfileClick);
           document.addEventListener("click", handleDocumentClick);
