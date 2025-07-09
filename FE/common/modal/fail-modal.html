@@ -80,7 +80,7 @@ padding: 28px 18px 18px 18px;
 
 </style>
 <script>
-  function showFailAlert() {
+  function showFailAlert(message = '오류가 발생했습니다.') {
     if (document.querySelector('.fail-alert-modal')) return;
     fetch('/common/modal/fail-modal.html')
         .then(res => res.text())
@@ -88,6 +88,12 @@ padding: 28px 18px 18px 18px;
             const wrapper = document.createElement('div');
             wrapper.innerHTML = html;
             document.body.appendChild(wrapper);
+
+            // 동적으로 메시지 업데이트
+            const messageElement = wrapper.querySelector('.fail-alert-message');
+            if (messageElement) {
+                messageElement.textContent = message;
+            }
 
             // 모달 fade-in 트리거
             const modal = wrapper.querySelector('.fail-alert-modal');
@@ -108,7 +114,7 @@ padding: 28px 18px 18px 18px;
   <div class="fail-alert-backdrop"></div>
   <div class="fail-alert-modal">
     <div class="fail-alert-header">
-      <span class="fail-alert-title">Login Failed</span>
+      <span class="fail-alert-title">Failed</span>
       <button class="fail-alert-close" onclick="this.closest('.fail-alert-wrapper').remove()">✕</button>
     </div>
     <div class="fail-alert-body">

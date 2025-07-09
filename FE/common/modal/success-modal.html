@@ -80,7 +80,7 @@
     
     </style>
     <script>
-      function showSuccessAlert() {
+      function showSuccessAlert(message = '작업이 완료되었습니다.') {
         if (document.querySelector('.success-alert-modal')) return;
         fetch('/common/modal/success-modal.html')
             .then(res => res.text())
@@ -88,6 +88,12 @@
                 const wrapper = document.createElement('div');
                 wrapper.innerHTML = html;
                 document.body.appendChild(wrapper);
+
+                // 동적으로 메시지 업데이트
+                const messageElement = wrapper.querySelector('.success-alert-message');
+                if (messageElement) {
+                    messageElement.textContent = message;
+                }
     
                 // 모달 fade-in 트리거
                 const modal = wrapper.querySelector('.success-alert-modal');
@@ -108,12 +114,12 @@
       <div class="success-alert-backdrop"></div>
       <div class="success-alert-modal">
         <div class="success-alert-header">
-          <span class="success-alert-title">Login Success</span>
+          <span class="success-alert-title">Success</span>
           <button class="success-alert-close" onclick="this.closest('.success-alert-wrapper').remove()">✕</button>
         </div>
         <div class="success-alert-body">
           <img src="/assets/images/common/success.png" alt="success icon" class="success-alert-icon" />
-          <div class="success-alert-message">로그인에<br/>성공하였습니다! </div>
+          <div class="success-alert-message">로그인에<br/>성공하였습니다!</div>
         </div>
       </div>
     </div>
