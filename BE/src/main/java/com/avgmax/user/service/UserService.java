@@ -34,6 +34,7 @@ import com.avgmax.user.dto.request.UserProfileUpdateRequest;
 import com.avgmax.user.dto.response.UserCoinResponse;
 import com.avgmax.user.dto.response.UserInformResponse;
 import com.avgmax.user.dto.response.UserProfileUpdateResponse;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lombok.RequiredArgsConstructor;
 import com.avgmax.global.exception.ErrorCode;
@@ -52,6 +53,7 @@ public class UserService {
     private final UserSkillMapper userSkillMapper;
     private final UserCoinMapper userCoinMapper;
     private final OrderMapper orderMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
     public UserInformResponse getUserInform(String userId){
@@ -107,7 +109,7 @@ public class UserService {
     private User updateUser(String userId, String name, String email, String username, String pwd, String image) {
         User user = userMapper.selectByUserId(userId)
             .orElseThrow(() -> UserException.of(ErrorCode.USER_NOT_FOUND));
-        user.updateIfChanged(name, email, username, pwd, image);
+        user.updateIfChanged(name, email, username, passwordEncoder.encode(pwd), image);
         userMapper.update(user);
         return user;
     }
