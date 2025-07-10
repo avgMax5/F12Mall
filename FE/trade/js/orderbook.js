@@ -157,7 +157,6 @@ class OrderbookManager {
         const currentPriceElement = document.getElementById('current-price');
         const currentPrice = currentPriceElement ? currentPriceElement.textContent.replace(/,/g, '') : null;
         const isCurrentPrice = currentPrice && parseInt(item.unit_price) === parseInt(currentPrice);
-        console.log("일치여부 ==>", isCurrentPrice, currentPrice, item.unit_price);
         
         row.className = `orderbook-row${isCurrentPrice ? ' current-price' : ''}`;
         
@@ -198,13 +197,6 @@ class OrderbookManager {
             if (!this.elements?.contents?.orderbook || this.currentMode !== 'orderbook') {
                 return;
             }
-
-            // 데이터 로깅
-            console.log('오더북 데이터 수신:', {
-                timestamp: new Date().toISOString(),
-                dataLength: Array.isArray(orderbookData) ? orderbookData.length : 0,
-                data: orderbookData
-            });
 
             const orderbookContent = this.elements.contents.orderbook;
             orderbookContent.innerHTML = '';
@@ -257,6 +249,15 @@ class OrderbookManager {
         const row = document.createElement('div');
         row.className = `myorderlist-row ${order.order_type.toLowerCase()}`;
         
+        // 현재가 확인
+        const currentPriceElement = document.getElementById('current-price');
+        const currentPrice = currentPriceElement ? currentPriceElement.textContent.replace(/,/g, '') : null;
+        
+        const getPriceColor = (orderPrice, currentPrice) => {
+            if (!currentPrice) return COLOR.WHITE;
+            return orderPrice < currentPrice ? COLOR.BLUE : orderPrice > currentPrice ? COLOR.RED : COLOR.WHITE;
+        };
+        
         row.innerHTML = `
             <div class="ordered-time-row">
                 <span class="order-date">${this.formatDate(order.ordered_at)}</span>
@@ -269,7 +270,7 @@ class OrderbookManager {
                 <span class="ordered-quantity">${order.quantity}</span>
             </div>
             <div class="ordered-price-row">
-                <span class="ordered-price">${this.formatNumber(order.unit_price)}</span>
+                <span class="ordered-price" style="color: ${getPriceColor(parseInt(order.unit_price), parseInt(currentPrice))}">${this.formatNumber(order.unit_price)}</span>
             </div>
             <div class="order-total-row">
                 <span class="order-total">${order.order_type === 'SELL' ? '+' : '-'}${this.formatNumber(order.execute_amount)}</span>
@@ -311,7 +312,6 @@ class OrderbookManager {
 
     async updateMyOrderList() {
         try {
-            console.log('내 주문 목록 업데이트 시작');
             if (!this.elements?.contents?.myorderlist || this.currentMode !== 'myorderlist') {
                 return;
             }
@@ -324,7 +324,6 @@ class OrderbookManager {
 
             const orderData = await getMyOrderList(tradeCoinId);
             myorderlistContent.innerHTML = '';
-            console.log('내 주문 목록 데이터:', orderData);
 
             if (Array.isArray(orderData)) {
                 orderData.forEach(order => {
@@ -337,10 +336,6 @@ class OrderbookManager {
                 });
             }
 
-            console.log('내 주문 목록 업데이트 완료:', {
-                timestamp: new Date().toISOString(),
-                dataLength: Array.isArray(orderData) ? orderData.length : 0
-            });
         } catch (error) {
             console.error('내 주문 목록 업데이트 중 오류:', error);
         }

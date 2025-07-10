@@ -25,6 +25,7 @@
   border-top: 1px solid #00ff2f;
   border-right: 1px solid #00ff2f;
   border-left: 1px solid #00ff2f;
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 .box-list-controller > button.deactive {
@@ -46,6 +47,7 @@
   border-right: 1px solid #00ff2f;
   border-bottom: 1px solid #00ff2f;
   border-left: 1px solid #00ff2f;
+  background-color: rgba(0, 0, 0, 0.5);
   flex: 1;
   width: 100%;
 }
@@ -72,7 +74,7 @@
 .box-content.orderbook-content .orderbook-row {
   display: flex;
   background-color: rgba(62, 62, 62, 0.5);
-  height: 3rem;
+  height: 2rem;
   align-items: center;
   justify-content: center;
   font-size: 0.7rem;
@@ -239,9 +241,9 @@
 .myorderlist-row .cancel-btn {
   position: absolute;
   padding: 0.2rem 0.4rem;
-  background-color: rgba(224, 18, 0, 0.2);
-  border: 1px solid #e01200;
-  color: #e01200;
+  background-color: rgba(255, 192, 91, 0.5);
+  border: 1px solid #ff9d00;
+  color: #ffffff;
   cursor: pointer;
   transition: all 0.2s ease;
   display: none;
@@ -251,7 +253,7 @@
 }
 
 .myorderlist-row .cancel-btn:hover {
-  background-color: #e01200;
+  background-color: #ff9d00;
   color: #ffffff;
 }
 

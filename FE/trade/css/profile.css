@@ -4,6 +4,7 @@
     gap: 0.5rem;
     padding: 1rem;
     box-shadow: 0 0 2px #00ff41, inset 0 0 2px rgba(0, 255, 65, 0.4);
+    min-width: fit-content;
   }
   
   .container-profile .box-profile-image {
@@ -39,17 +40,21 @@
     align-items: flex-end;
     flex-shrink: 0;
     font-family: 'KIMM_B';
+    white-space: nowrap;
+    overflow: hidden;
   }
   
   .coin-info-top .coin-name {
     font-size: 1.2rem;
     margin-right: 0.5rem;
     color: #ffffff;
+    white-space: nowrap;
   }
   
   .coin-info-top .user-name {
     font-size: 0.8rem;
     color: #999999;
+    white-space: nowrap;
   }
   
   .box-coin-info .coin-info-middle {

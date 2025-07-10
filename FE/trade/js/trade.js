@@ -19,7 +19,21 @@ document.addEventListener('DOMContentLoaded', async function() {
         const coinInfo = await getCoinInfo(coinId);
         // 페이지 타이틀 업데이트
         document.title = `F12_All-Trade:${coinInfo.coin_name}`;
+
+        // 모바일 인터페이스 토글 설정
+        setupMobileInterface();
     } catch (error) {
         console.error('코인 정보를 가져오는 중 오류 발생:', error);
     }
 });
+
+function setupMobileInterface() {
+    const toggleButton = document.querySelector('.toggle-interface');
+    const interfaceContainer = document.querySelector('.container-interface');
+
+    if (toggleButton && interfaceContainer) {
+        toggleButton.addEventListener('click', () => {
+            interfaceContainer.classList.toggle('show');
+        });
+    }
+}
