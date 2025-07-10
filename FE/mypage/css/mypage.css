@@ -46,6 +46,9 @@ canvas {
 
 /* section : left  */
 .section-left {
+  display: grid;
+  grid-template-rows: 3fr 1fr;
+  gap: 1rem;
   position: relative;
   background-color: #98989859;
   height: calc(100vh - 8rem);
@@ -56,9 +59,8 @@ canvas {
 .container-profile {
   position: relative;
   width: 100%;
-  height: 70%;
+  height: 100%;
   margin: 0 auto;
-  margin-bottom: 4%;
   background-color: #00000088;
 }
 .container-profile .box-contents {
@@ -139,7 +141,7 @@ canvas {
 /* 코인 비율 영역 */
 .container-ratio {
   width: 100%;
-  height: 27%;
+  height: 100%;
   background-color: #00000088;
 }
 .container-ratio > div:first-child {
@@ -162,10 +164,10 @@ canvas {
 .box-coins {
   display: flex;
   flex-wrap: wrap;
-  gap: 23%;
-
   width: 90%;
+  height: 5rem;
   margin: 0 auto;
+  margin-top: 2.8rem;
 }
 
 /* section : right  */
@@ -299,7 +301,7 @@ span:nth-child(6) {
 }
 .box-list-main .coin-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  grid-template-columns: repeat(3, 32%);
   gap: 1rem;
   width: 97%;
   /* height: 86%; */
@@ -308,7 +310,8 @@ span:nth-child(6) {
   box-sizing: border-box;
 }
 .coin {
-  /* height: 10rem; */
+  width: 100%;
+  height: 10rem;
 }
 .coin .name-container {
   display: flex;
@@ -388,4 +391,63 @@ span:nth-child(6) {
 .result-container #valuation-rate {
   font-size: 20px;
   margin-left: 15px;
+}
+/* 추가추가추가 */
+.bar-container {
+  width: 90%;
+  height: 1.2rem;
+  margin: 2rem auto 0 auto;
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-end;
+}
+.bar {
+  height: 100% !important;
+  min-width: 3.5rem;
+  color: #fff;
+  font-weight: bold;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 8px #00ff2f55;
+  /* background: #00c943; 기본 배경 제거 */
+  transition: width 0.4s;
+  padding-bottom: 0.3rem;
+  margin-bottom: 0;
+  border-radius: 0;
+}
+.bar.top1 {
+  background: #00450a;
+  border-bottom-left-radius: 16px;
+  border-top-left-radius: 16px;
+}
+.bar.top2 {
+  background: #008c1a;
+}
+.bar.top3 {
+  background: #00c943;
+}
+.bar.etc {
+  background: #b0b0b0;
+  color: #222;
+  border-bottom-right-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+.coin-container {
+  display: flex;
+  gap: 0.2rem;
+  width: 50%;
+  color: #00ff2f;
+  font-size: 0.9rem;
+}
+.coin-container .circle {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+}
+.coin-container #username {
+  margin-right: 0.2rem;
+  color: #fff;
 }

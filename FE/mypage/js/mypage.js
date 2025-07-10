@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     calculateCoin(coins, user.money);
 
     //코인 비율 계산
-    //calculateRatio(coins);
+    calculateRatio(coins);
 
     //나의 코인 보유 개수 가져오기
     const quantity = await fetchMyQuantity(coins, user.user_id);
@@ -34,7 +34,8 @@ function renderUserProfile(user) {
   document.querySelector('#email').textContent = user.email;
   document.querySelector('#coin-name').textContent = user.username;
   document.querySelector('#image').style.backgroundImage = `url(${user.image})`;
-  document.querySelector('#money').textContent = user.money.toLocaleString('ko-KR');
+  document.querySelector('#money').textContent =
+    user.money.toLocaleString('ko-KR');
   document.querySelector('#position').textContent = user.position;
   document.querySelector('#bio').textContent = user.bio;
 
@@ -151,10 +152,82 @@ function calculateCoin(coins, userMoney) {
 
 function calculateRatio(coins) {
   let totalCoins = 0;
-
   coins.forEach(element => {
     totalCoins += element.hold_quantity;
   });
+
+  // 각 코인에 비율 추가
+  const coinsWithRatio = coins.map(coin => ({
+    ...coin,
+    ratio: totalCoins > 0 ? (coin.hold_quantity / totalCoins) * 100 : 0,
+  }));
+
+  // 비율 내림차순 정렬 후 상위 3개 추출
+  const top3 = coinsWithRatio.sort((a, b) => b.ratio - a.ratio).slice(0, 3);
+
+  // 나머지 코인 비율 합산
+  const etcRatio = coinsWithRatio
+    .slice(3)
+    .reduce((sum, coin) => sum + coin.ratio, 0);
+
+  // bar 렌더링
+  const barContainer = document.querySelector('.bar-container');
+  if (!barContainer) return;
+  barContainer.innerHTML = '';
+  top3.forEach((coin, idx) => {
+    const bar = document.createElement('div');
+    bar.className = `bar top${idx + 1}`;
+    bar.style.width = `${coin.ratio}%`;
+    barContainer.appendChild(bar);
+  });
+  if (etcRatio > 0) {
+    const etcBar = document.createElement('div');
+    etcBar.className = 'bar etc';
+    etcBar.style.width = `${etcRatio}%`;
+    barContainer.appendChild(etcBar);
+  }
+
+  // box-coins에 coin-element 추가
+  const boxCoins = document.querySelector('.box-coins');
+  if (!boxCoins) return;
+  boxCoins.innerHTML = '';
+  // top3
+  top3.forEach((coin, idx) => {
+    fetch('/mypage/component/coin-element.html')
+      .then(res => res.text())
+      .then(template => {
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = template;
+        const container = wrapper.querySelector('.coin-container');
+        container.classList.add(`top${idx + 1}`);
+        container.querySelector('#username').textContent = coin.coin_name;
+        container.querySelector('#ratio').textContent = coin.ratio.toFixed(1);
+        // 원 색상도 bar와 맞추기
+        const circle = container.querySelector('.circle');
+        if (circle) {
+          if (idx === 0) circle.style.backgroundColor = '#00450A';
+          else if (idx === 1) circle.style.backgroundColor = '#008C1A';
+          else if (idx === 2) circle.style.backgroundColor = '#00C943';
+        }
+        boxCoins.appendChild(container);
+      });
+  });
+  // etc
+  if (etcRatio > 0) {
+    fetch('/mypage/component/coin-element.html')
+      .then(res => res.text())
+      .then(template => {
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = template;
+        const container = wrapper.querySelector('.coin-container');
+        container.classList.add('etc');
+        container.querySelector('#username').textContent = '기타';
+        container.querySelector('#ratio').textContent = etcRatio.toFixed(1);
+        const circle = container.querySelector('.circle');
+        if (circle) circle.style.backgroundColor = '#B0B0B0';
+        boxCoins.appendChild(container);
+      });
+  }
 }
 
 function fetchMyQuantity(coins, userId) {
