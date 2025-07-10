@@ -1,4 +1,4 @@
-export function initListHeaerHandlers() {
+export function initListHeaderHandlers() {
   const wrapper = document.getElementById('table-header-wrapper');
   if (!wrapper) return;
 
@@ -18,8 +18,8 @@ function initListHeader() {
       const currentDirection = header.classList.contains('asc')
         ? 'asc'
         : header.classList.contains('desc')
-        ? 'desc'
-        : null;
+          ? 'desc'
+          : null;
 
       document
         .querySelectorAll('.sortable')
