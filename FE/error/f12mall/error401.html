@@ -12,7 +12,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'KIMM_B', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
@@ -23,33 +23,33 @@
 
         .error-container {
             background: white;
-            border-radius: 20px;
-            padding: 60px 40px;
+            border-radius: 1.11rem; /* 20px */
+            padding: 3.33rem 2.22rem; /* 60px 40px */
             text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
+            box-shadow: 0 1.11rem 2.22rem rgba(0, 0, 0, 0.1); /* 20px 40px */
+            max-width: 27.78rem; /* 500px */
             width: 90%;
         }
 
         .error-code {
-            font-size: 120px;
+            font-size: 6.67rem; /* 120px */
             font-weight: bold;
             color: #667eea;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.11rem; /* 20px */
+            text-shadow: 0.11rem 0.11rem 0.22rem rgba(0, 0, 0, 0.1); /* 2px 4px */
         }
 
         .error-title {
-            font-size: 28px;
+            font-size: 1.56rem; /* 28px */
             font-weight: 600;
-            margin-bottom: 15px;
+            margin-bottom: 0.83rem; /* 15px */
             color: #333;
         }
 
         .error-message {
-            font-size: 16px;
+            font-size: 0.89rem; /* 16px */
             color: #666;
-            margin-bottom: 40px;
+            margin-bottom: 2.22rem; /* 40px */
             line-height: 1.6;
         }
 
@@ -57,18 +57,18 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 15px 30px;
-            border-radius: 50px;
-            font-size: 16px;
+            padding: 0.83rem 1.67rem; /* 15px 30px */
+            border-radius: 2.78rem; /* 50px */
+            font-size: 0.89rem; /* 16px */
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 0.28rem 0.83rem rgba(102, 126, 234, 0.4); /* 5px 15px */
         }
 
         .back-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+            transform: translateY(-0.11rem); /* -2px */
+            box-shadow: 0 0.44rem 1.39rem rgba(102, 126, 234, 0.6); /* 8px 25px */
         }
 
         .back-button:active {
@@ -76,24 +76,36 @@
         }
 
         .icon {
-            font-size: 80px;
-            margin-bottom: 20px;
+            font-size: 4.44rem; /* 80px */
+            margin-bottom: 1.11rem; /* 20px */
             color: #667eea;
         }
 
-        @media (max-width: 480px) {
-            .error-container {
-                padding: 40px 20px;
-            }
-            
-            .error-code {
-                font-size: 80px;
-            }
-            
-            .error-title {
-                font-size: 24px;
+        /* 모바일 */
+        @media (max-width: 767px) {
+            html {
+                font-size: 9px;
             }
         }
+        /* 테블릿 */
+        @media (min-width: 768px) and (max-width: 1199px) {
+            html {
+                font-size: 12px;
+            }
+        }
+        /*맥북 14*/
+        @media (min-width: 1200px) and (max-width: 1700px) {
+            html {
+                font-size: 16px;
+            }
+        }
+        /*맥북 16이상*/
+        @media (min-width: 1701px) {
+            html {
+                font-size: 18px;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -110,17 +122,9 @@
 
     <script>
         function goBack() {
-            // if (document.referrer) {
-            //     // 이전 페이지가 있으면 이전 페이지로 이동
-            //     window.location.href = '/';
-            // } else {
-            //     // 이전 페이지가 없으면 홈페이지로 이동
-            //     window.location.href = '/';
-            // }
             window.location.href = '/';
         }
 
-        // 키보드 이벤트 (ESC 키로 뒤로가기)
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
                 goBack();
