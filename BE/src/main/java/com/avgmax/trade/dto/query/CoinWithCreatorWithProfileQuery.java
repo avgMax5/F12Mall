@@ -3,6 +3,7 @@ package com.avgmax.trade.dto.query;
 import lombok.Getter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Getter
 public class CoinWithCreatorWithProfileQuery {
@@ -14,6 +15,7 @@ public class CoinWithCreatorWithProfileQuery {
     private BigDecimal closingPrice;
     private BigDecimal changePrice;
     private BigDecimal fluctuationRate;
+    private LocalDateTime createdAt;
 
     //user 정보
     private String creatorName;

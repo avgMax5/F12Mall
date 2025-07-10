@@ -23,7 +23,8 @@
             u.USERNAME AS CREATOR_USERNAME,
             u.IMAGE AS CREATOR_IMAGE,
             p.POSITION AS PROFILE_POSITION,
-            p.BIO AS PROFILE_BIO
+            p.BIO AS PROFILE_BIO,
+            c.CREATED_AT AS CREATED_AT
         FROM COIN c
         JOIN USER u ON c.CREATOR_ID = u.USER_ID
         JOIN PROFILE p ON u.USER_ID = p.USER_ID
@@ -42,7 +43,8 @@
             u.USERNAME AS CREATOR_USERNAME,
             u.IMAGE AS CREATOR_IMAGE,
             p.POSITION AS PROFILE_POSITION,
-            p.BIO AS PROFILE_BIO
+            p.BIO AS PROFILE_BIO,
+            c.CREATED_AT AS CREATED_AT
         FROM COIN c
         JOIN USER u ON c.CREATOR_ID = u.USER_ID
         JOIN PROFILE p ON u.USER_ID = p.USER_ID
