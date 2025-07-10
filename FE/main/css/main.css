@@ -468,6 +468,50 @@ body {
   transform: translateX(-1rem);
 }
 
+/* 모바일 컨테이너 스타일 */
+.container-top-mobile {
+  display: none;
+  width: 100%;
+  padding: 1rem;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.container-top-mobile .box-search {
+  position: relative;
+  left: 0;
+  transform: none;
+  width: 100%;
+}
+
+.mobile-sort-view {
+  display: flex;
+  width: 100%;
+  gap: 0.3rem;
+  justify-content: space-between;
+}
+
+.mobile-sort-view > div {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 0.5rem 0;
+}
+
+.mobile-sort-view > div.active {
+  background: #00FF2F;
+  color: #000000;
+  border-radius: 0.5rem;
+}
+
+.mobile-sort-view > div span {
+  font-size: 1rem;
+}
+
 /* input[type="radio"]#view-card:checked+label,
 input[type="radio"]#view-list:checked+label {f
     background-color: rgba(0, 255, 47, 0.1);
@@ -481,12 +525,13 @@ sect-bot : card-view (container-bottom)
 .section-bottom .container-bottom {
   width: 100%;
   overflow-y: auto;
+  overflow-x: hidden;
   scrollbar-width: none;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-bottom: 10rem;
+  padding: 0 2rem 10rem 2rem;
 }
 
 .section-bottom .container-bottom::-webkit-scrollbar {
@@ -495,18 +540,17 @@ sect-bot : card-view (container-bottom)
 
 /* gird card */
 .section-bottom .container-bottom .box-grid-card {
-  width: 90%;
-  height: 31rem;
+  width: 100%;
+  height: auto;
+  min-height: 31rem;
   display: grid;
   justify-content: center;
-  grid-template-columns: repeat(3, 28%);
-  grid-auto-rows: auto;
-  gap: 2rem 4.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(22.25rem, 1fr));
+  gap: 2rem;
   box-sizing: border-box;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin: 1rem 0;
   padding-top: 1rem;
-  overflow-y: auto;
+  overflow: visible;
 }
 
 .container-bottom>.box-grid-card::-webkit-scrollbar {
@@ -514,8 +558,10 @@ sect-bot : card-view (container-bottom)
 }
 
 .box-grid-card .card-view {
-  width: 22.25rem;
+  width: 100%;
+  max-width: 22.25rem;
   height: 12.375rem;
+  margin: 0 auto;
   background-color: rgba(0, 0, 0, 0.95);
   border: 1px solid #00ff2f;
   transition: transform 0.3s ease, box-shadow 0.3s ease;

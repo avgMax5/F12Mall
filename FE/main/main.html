@@ -57,7 +57,7 @@
                 <!-- container-top -->
                 <div class="container-top">
                     <form class="box-search">
-                        <input type="text" class="search-input" />
+                        <input type="text" class="search-input" id="search-input" name="search-input" />
                         <div class="search-divider"></div>
                         <button type="submit" class="search-btn">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -67,6 +67,27 @@
                         </button>
                     </form>
                     <div id="sort-view-wrapper"></div>
+                </div>
+                <!-- container-top-mobile -->
+                <div class="container-top-mobile">
+                    <form class="box-search">
+                        <input type="text" class="search-input" id="search-input" name="search-input" />
+                        <div class="search-divider"></div>
+                        <button type="submit" class="search-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <circle cx="11" cy="11" r="7" />
+                                <line x1="16" y1="16" x2="21" y2="21" />
+                            </svg>
+                        </button>
+                    </form>
+                    <div class="mobile-sort-view">
+                        <div class="card-view active">
+                            <span>Card</span>
+                        </div>
+                        <div class="list-view">
+                            <span>List</span>
+                        </div>
+                    </div>
                 </div>
                 <!-- container-bottom -->
                 <div class="container-bottom">

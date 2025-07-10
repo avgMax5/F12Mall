@@ -89,23 +89,44 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     //Search
-    document.querySelector('.box-search').addEventListener('submit', function (e) {
-        e.preventDefault();
+    const searchForms = document.querySelectorAll('.box-search');
+    
+    searchForms.forEach(form => {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+    
+            const keyword = this.querySelector('.search-input').value.trim().toLowerCase();
+    
+            if (keyword === '') {
+                currentFilteredCoins = null;
+                renderCoinsByFilter('all', globalCoins);
+                return;
+            }
+    
+            const filtered = globalCoins.filter(coin =>
+                coin.coin_name.toLowerCase().includes(keyword) || coin.user_name.toLowerCase().includes(keyword)
+            );
+            currentFilteredCoins = filtered;
+            renderCoinsByFilter('all', filtered);
 
-        const keyword = document.querySelector('.search-input').value.trim().toLowerCase();
+            // 다른 검색창의 값도 동기화
+            searchForms.forEach(otherForm => {
+                if (otherForm !== this) {
+                    otherForm.querySelector('.search-input').value = keyword;
+                }
+            });
+        });
 
-        if (keyword === '') {
-            currentFilteredCoins = null;
-            renderCoinsByFilter('all', globalCoins);
-            return;
-        }
-
-        const filtered = globalCoins.filter(coin =>
-            coin.coin_name.toLowerCase().includes(keyword) || coin.user_name.toLowerCase().includes(keyword)
-        );
-        currentFilteredCoins = filtered;
-        renderCoinsByFilter('all', filtered);
-    })
+        // 검색창 초기화 시 동기화
+        form.querySelector('.search-input').addEventListener('input', function(e) {
+            const value = this.value;
+            searchForms.forEach(otherForm => {
+                if (otherForm !== this.form) {
+                    otherForm.querySelector('.search-input').value = value;
+                }
+            });
+        });
+    });
 });
 
 // CoinFetchResponse Dto by filter
