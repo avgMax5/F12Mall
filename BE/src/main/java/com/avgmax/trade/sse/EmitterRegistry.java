@@ -14,10 +14,19 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class EmitterRegistry {
     // coinId -> (sessionId -> (streamType -> emitter))
-    private final Map<String, Map<String, Map<String, SseEmitter>>> emittersByCoin = new ConcurrentHashMap<>();
+    private final Map<String, Map<String, Map<String, SseEmitter>>> emittersByCoinWithStreamType = new ConcurrentHashMap<>();
+    private final Map<String, Map<String, SseEmitter>> emittersByCoin = new ConcurrentHashMap<>();
+
+    public void add(String sessionId, String coinId, SseEmitter emitter) {
+        emittersByCoin
+                .computeIfAbsent(coinId, k -> new ConcurrentHashMap<>())
+                .computeIfAbsent(sessionId, k -> emitter);
+
+        log.debug("스트림 등록: coinId={}, sessionId={}", coinId, sessionId);
+    }
 
     public void add(String sessionId, String coinId, String streamType, SseEmitter emitter) {
-        emittersByCoin
+        emittersByCoinWithStreamType
             .computeIfAbsent(coinId, k -> new ConcurrentHashMap<>())
             .computeIfAbsent(sessionId, k -> new ConcurrentHashMap<>())
             .put(streamType, emitter);
@@ -25,8 +34,19 @@ public class EmitterRegistry {
         log.debug("스트림 등록: coinId={}, sessionId={}, streamType={}", coinId, sessionId, streamType);
     }
 
+    public void remove(String sessionId, String coinId) {
+        Map<String, SseEmitter> sessionMap = emittersByCoin.get(coinId);
+        if (sessionMap != null) {
+            sessionMap.remove(sessionId);
+            if (sessionMap.isEmpty()) {
+                emittersByCoin.remove(coinId);
+            }
+            log.debug("스트림 제거: coinId={}, sessionId={}", coinId, sessionId);
+        }
+    }
+
     public void remove(String sessionId, String coinId, String streamType) {
-        Map<String, Map<String, SseEmitter>> sessionMap = emittersByCoin.get(coinId);
+        Map<String, Map<String, SseEmitter>> sessionMap = emittersByCoinWithStreamType.get(coinId);
         if (sessionMap != null) {
             Map<String, SseEmitter> streamMap = sessionMap.get(sessionId);
             if (streamMap != null) {
@@ -34,7 +54,7 @@ public class EmitterRegistry {
                 if (streamMap.isEmpty()) {
                     sessionMap.remove(sessionId);
                     if (sessionMap.isEmpty()) {
-                        emittersByCoin.remove(coinId);
+                        emittersByCoinWithStreamType.remove(coinId);
                     }
                 }
                 log.debug("스트림 제거: coinId={}, sessionId={}, streamType={}", coinId, sessionId, streamType);
@@ -45,9 +65,16 @@ public class EmitterRegistry {
     public Set<String> getAllCoinIds() {
         return emittersByCoin.keySet();
     }
+    public Set<String> getAllCoinIdsWithStreamType() {
+        return emittersByCoinWithStreamType.keySet();
+    }
+
+    public Map<String, SseEmitter> getEmittersByCoin(String coinId) {
+        return emittersByCoin.getOrDefault(coinId, Collections.emptyMap());
+    }
 
     public Map<String, SseEmitter> getEmittersByCoinAndType(String coinId, String streamType) {
-        Map<String, Map<String, SseEmitter>> sessionMap = emittersByCoin.getOrDefault(coinId, Collections.emptyMap());
+        Map<String, Map<String, SseEmitter>> sessionMap = emittersByCoinWithStreamType.getOrDefault(coinId, Collections.emptyMap());
         Map<String, SseEmitter> result = new ConcurrentHashMap<>();
         
         sessionMap.forEach((sessionId, streamMap) -> {

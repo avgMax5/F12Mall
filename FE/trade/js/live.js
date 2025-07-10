@@ -5,6 +5,8 @@ class LivePriceManager {
     constructor() {
         this.evtSource = null;
         this.elements = null;
+        this.coinInfo = null;
+        this.subscribers = [];
         this.init();
     }
 
@@ -47,7 +49,23 @@ class LivePriceManager {
 
     connectStream() {
         this.closeStream();
-        this.evtSource = getCoinRealtime(tradeCoinId, this.updateCoinInfo.bind(this));
+        this.evtSource = getCoinRealtime(tradeCoinId, {
+            onCoinInfo: this.updateCoinInfo.bind(this),
+            onOrderBook: this.handleOrderBook.bind(this),
+        });
+    }
+
+    subscribeOrderbook(callback) {
+        this.orderbookSubscribers ??= [];
+        this.orderbookSubscribers.push(callback);
+        if (this.latestOrderbook) {
+            callback(this.latestOrderbook);
+        }
+    }
+
+    handleOrderBook(data) {
+        this.latestOrderbook = data;
+        this.orderbookSubscribers?.forEach(fn => fn(data));
     }
 
     closeStream() {
@@ -115,4 +133,4 @@ class LivePriceManager {
 }
 
 // 싱글톤 인스턴스 생성
-new LivePriceManager();
+export const priceManager = new LivePriceManager();
