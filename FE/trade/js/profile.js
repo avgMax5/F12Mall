@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // 데이터 표시
     if (profileImage) {
-      profileImage.src = profileData.profile_image || `${CONFIG.DEFAULT_PROFILE_IMG}`;
+      profileImage.src = profileData.image ? profileData.image : `${CONFIG.DEFAULT_PROFILE_IMG}`;
       profileImage.alt = `${profileData.user_name}의 프로필 이미지`;
     }
 
