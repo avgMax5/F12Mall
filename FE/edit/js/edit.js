@@ -1,21 +1,24 @@
 import { getMyProfile } from '/hook/user/getMyProfile.js';
 import { putEditProfile } from '/hook/user/putEditProfile.js';
+import { CONFIG } from '/config.js';
 
 export let editUserId = null;
 
+const toNullIfEmpty = (value) => value.trim() === '' ? null : value;
+const API_UPLOAD_URL = `${CONFIG.API_BASE_URL}/users/upload`;
+
+const MAX_FILE_SIZE_MB = 5; // 업로드 파일사이즈 5MB 제한 (1개당)
+const MAX_FILE_SIZE = MAX_FILE_SIZE_MB * 1024 * 1024; 
+
+var user = null;
+
 document.addEventListener('DOMContentLoaded', async () => {
   try {
-    // 현재 로그인된 사용자 정보 가져오기
-    const user = await getMyProfile();
+    user = await getMyProfile();
     editUserId = user.user_id;
     
-    // 사용자 정보로 폼 필드들 초기화
     initializeFormWithUserData(user);
-    
-    // Tech Stack 체크박스 제한 초기화
     initTechStackLimit();
-    
-    // Bio 글자수 카운터 초기화
     initBioCharCounter();
     
   } catch (error) {
@@ -32,18 +35,12 @@ window.handleSignup = async function() {
       return;
     }
 
-    // 폼 데이터 수집
-    const formData = collectFormData();
-
-    // API 호출
+    const formData = await collectFormData();
     const result = await putEditProfile(editUserId, formData);
 
-    // 성공 메시지
     alert('프로필이 성공적으로 수정되었습니다!');
     
-
     window.location.href = '/mypage';
-    
   } catch (error) {
     console.error('프로필 수정 중 오류 발생:', error);
     alert('프로필 수정에 실패했습니다. 다시 시도해주세요.');
@@ -51,86 +48,130 @@ window.handleSignup = async function() {
 };
 
 // 폼 데이터 수집 함수
-function collectFormData() {
-  const formData = {};
+async function collectFormData() {
+  const profileFile = document.querySelector('#profile-upload')?.files[0] ?? null;
+  const resumeFile = document.querySelector('#resume-upload')?.files[0] ?? null;
+  const certificateUpload  = Array.from(document.querySelector('#certificate-upload')?.files ?? []);
+  const educationCertUpload  = Array.from(document.querySelector('#education-cert-upload')?.files ?? []);
+  const careerCertUpload = Array.from(document.querySelector('#career-cert-upload')?.files ?? []);
 
-  // 기본 정보 (백엔드 UserProfileUpdateRequest에 맞춤)
-  const username = document.querySelector('input[name="username"]')?.value?.trim();
-  const email = document.querySelector('input[name="email"]')?.value?.trim();
-  const name = document.querySelector('input[name="name"]')?.value?.trim();
-  const position = document.querySelector('input[name="position"]')?.value?.trim();
-  const bio = document.querySelector('textarea[name="bio"]')?.value?.trim();
-  const password = document.querySelector('input[name="password"]')?.value?.trim();
+  const uploadResult = await uploadFiles(profileFile, resumeFile, certificateUpload, educationCertUpload, careerCertUpload);
+  
+  const username = document.querySelector('.id-input').value;
+  const passwordInput = document.querySelector('input[placeholder="비밀번호"]');
+  const pwd = passwordInput.value;
+  const email = document.querySelector('.email-input').value;
+  const name = document.querySelector('.name-input').value;
+  const position = document.querySelector('.position-input').value;
+  const bio = document.querySelector('.bio-area').value;
+  const github = document.querySelector('.github-input').value;
+  const sns = document.querySelector('.sns-input').value;
+  const blog = document.querySelector('.blog-input').value;
+  const linkedin = document.querySelector('.linkedin-input').value;
+  
+  const stackCheckboxes = document.querySelectorAll('.tech-stack-item input[type="checkbox"]:checked');
+  const stack = Array.from(stackCheckboxes).map(cb => cb.value);
 
-  // 필수 필드들 (빈 문자열이라도 포함)
-  formData.username = username || '';
-  formData.email = email || '';
-  formData.name = name || '';
-  formData.position = position || '';
-  formData.bio = bio || '';
-  formData.image = ''; // 프로필 이미지는 별도 업로드로 처리
-  formData.pwd = password || null; // 비밀번호가 없으면 null
-  formData.resume = ''; // 이력서는 별도 업로드로 처리
+  const education = collectEducationData(uploadResult);
+  const career = collectCareerData(uploadResult);
 
-  // 기술 스택 수집
-  const checkedStacks = document.querySelectorAll('input[name="stack"]:checked');
-  formData.stack = Array.from(checkedStacks).map(input => input.value);
-
-  // 링크 정보 수집 (LinkData 객체 형태)
-  const github = document.querySelector('input[name="github"]')?.value?.trim() || '';
-  const blog = document.querySelector('input[name="blog"]')?.value?.trim() || '';
-  const sns = document.querySelector('input[name="sns"]')?.value?.trim() || '';
-  const linkedin = document.querySelector('input[name="linkedin"]')?.value?.trim() || '';
-
-  formData.link = {
-    github: github,
-    blog: blog,
-    sns: sns,
-    linkedin: linkedin
+  const modifiedUserData = {
+    image: uploadResult?.profile?.[0] ?? `${user.image}`,
+    username: username.trim() === '' ? `${user.username}` : username,
+    pwd: pwd.trim() === '' ? `${user.pwd}` : pwd,
+    email: email.trim() === '' ? user.email : email,
+    name: name.trim() === '' ? user.name : name,
+    position: position.trim() === '' ? user.position : position,
+    bio: bio.trim() === '' ? user.bio : bio,
+    stack: stack.length > 0 ? stack : `${user.stack}`,
+    resume: uploadResult?.resume?.[0] ?? `${user.resume}`,
+    certificate_url: (uploadResult?.certification ?? []).map(certificate_url => ({ certificate_url })),
+    link: {
+      github: github.trim() === '' ? user.github : github,
+      sns: sns.trim() === '' ? user.sns : sns,
+      blog: blog.trim() === '' ? user.blog : blog,
+      linkedin: linkedin.trim() === '' ? user.linkedin : linkedin,
+    },
+    education: education.length > 0 ? education : null,
+    career: career.length > 0 ? career : null
   };
 
-  // 교육 정보 수집 (EducationRequest 배열 형태 - snake_case)
-  const schoolName = document.querySelector('.school-name')?.value?.trim();
-  const major = document.querySelector('.major')?.value?.trim();
-  const admissionDate = document.querySelector('.admission-date')?.value?.trim();
-  const graduationDate = document.querySelector('.graduation-date')?.value?.trim();
-  const educationStatus = document.querySelector('input[name="education-status"]:checked')?.id;
+  return modifiedUserData;
+}
 
-  formData.education = [];
-  if (schoolName || major || admissionDate || graduationDate) {
-    formData.education = [{
-      school_name: schoolName || '',
-      major: major || '',
-      start_date: admissionDate || '',
-      end_date: graduationDate || '',
-      status: educationStatus?.toUpperCase() || 'ENROLLED',
-      certificate_url: '' // 파일 업로드는 별도 처리
-    }];
-  }
 
-  // 경력 정보 수집 (CareerRequest 배열 형태 - snake_case)
-  const companyName = document.querySelector('.company-name')?.value?.trim();
-  const job = document.querySelector('.job')?.value?.trim();
-  const joinDate = document.querySelectorAll('.admission-date')[1]?.value?.trim();
-  const leaveDate = document.querySelectorAll('.graduation-date')[1]?.value?.trim();
-  const careerStatus = document.querySelector('input[name="career-status"]:checked')?.id;
+function collectEducationData(uploadResult) {
+    const educationTable = document.querySelector('.education .form-table tbody');
+    if (!educationTable) return [];
+    
+    const educationRows = educationTable.querySelectorAll('.form-row');
 
-  formData.career = [];
-  if (companyName || job || joinDate || leaveDate) {
-    formData.career = [{
-      company_name: companyName || '',
-      position: job || '',
-      start_date: joinDate || '',
-      end_date: leaveDate || '',
-      status: careerStatus?.toUpperCase() || 'EMPLOYED',
-      certificate_url: '' // 파일 업로드는 별도 처리
-    }];
-  }
+    return Array.from(educationRows).map(row => {
+        const schoolName = row.querySelector('.school-name')?.value || '';
+        const statusRadio = row.querySelector('input[name="education-status"]:checked')?.id || 'enrolled';
+        
+        let status;
 
-  // 자격증 정보 (CertificationRequest 배열 형태)
-  formData.certificateUrl = [];
+        switch(statusRadio) {
+            case 'enrolled':
+                status = 'ENROLLED';
+                break;
+            case 'graduated':
+                status = 'GRADUATED';
+                break;
+            default:
+                status = 'ENROLLED';
+        }
 
-  return formData;
+        const major = row.querySelector('td:nth-child(3) input')?.value || '';
+        const startDate = row.querySelector('td:nth-child(4) input')?.value || '';
+        const endDate = row.querySelector('td:nth-child(5) input')?.value || '';
+        
+        return {
+          school_name: schoolName.trim() === '' ? user.education.school_name : schoolName,
+          status: status,
+          major: major.trim() === '' ? user.education.major : major,
+          certificate_url: uploadResult?.education?.[0] ?? null,
+          start_date: startDate.trim() === '' ? user.education.start_date : startDate,
+          end_date: endDate.trim() === '' ? user.education.end_date : endDate
+        };
+    });
+}
+
+function collectCareerData(uploadResult) {
+    const careerTable = document.querySelector('.career .form-table tbody');
+    if (!careerTable) return [];
+    
+    const careerRows = careerTable.querySelectorAll('.form-row');
+    return Array.from(careerRows).map(row => {
+        const companyName = row.querySelector('.company-name')?.value || '';
+        const statusRadio = row.querySelector('input[name="career-status"]:checked')?.id || 'employed';
+        
+        let status;
+        switch(statusRadio) {
+            case 'employed':
+                status = 'EMPLOYED';
+                break;
+            case 'resigned':
+                status = 'NOT_EMPLOYED';
+                break;
+            default:
+                status = 'EMPLOYED';
+        }
+        
+        const position = row.querySelector('td:nth-child(3) input')?.value || '';
+        const startDate = row.querySelector('td:nth-child(4) input')?.value || '';
+        const endDate = row.querySelector('td:nth-child(5) input')?.value || '';
+
+        return {
+          company_name: companyName.trim() === '' ? user.career.company_name : companyName,
+          status: status,
+          position: position.trim() === '' ? user.career.position : position,
+          certificate_url: uploadResult?.career?.[0] ?? null, // 추후 반복 시 키 기반으로 인덱스 처리 필요
+          start_date: startDate.trim() === '' ? user.career.start_date : startDate,
+          end_date: endDate.trim() === '' ? user.career.end_date : endDate
+        };
+    });
 }
 
 function initializeFormWithUserData(user) {
@@ -393,3 +434,45 @@ function updateTechStackCounter(currentCount) {
 }
 
  
+async function uploadFiles(profileFile, resumeFile, certificateFile, educationCertFile, careerCertFile) {
+    const formData = new FormData();
+    [profileFile].filter(Boolean).forEach(file => formData.append("profile", file));
+    [resumeFile].filter(Boolean).forEach(file => formData.append("resume", file));
+    if (certificateFile) certificateFile.forEach(file => formData.append("certification", file));
+    if (educationCertFile) educationCertFile.forEach(file => formData.append("education", file));
+    if (careerCertFile) careerCertFile.forEach(file => formData.append("career", file));
+
+    const res = await fetch(API_UPLOAD_URL, {
+        method: 'POST',
+        body: formData,
+        credentials: 'include'
+    });
+
+    if (!res.ok) {
+        throw new Error('파일 업로드 실패');
+    }
+
+    return await res.json();
+}
+
+
+function validateFileSize(inputElement, label) {
+    inputElement.addEventListener('change', function (e) {
+        const files = Array.from(inputElement.files);
+        for (const file of files) {
+            if (file.size > MAX_FILE_SIZE) {
+                alert(`${label} 파일은 ${MAX_FILE_SIZE_MB}MB를 초과할 수 없습니다.`);
+                inputElement.value = ''; // 파일 선택 초기화
+                break;
+            }
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    validateFileSize(document.getElementById('profile-upload'), '프로필');
+    validateFileSize(document.getElementById('resume-upload'), '이력서');
+    validateFileSize(document.getElementById('certificate-upload'), '자격증');
+    validateFileSize(document.getElementById('education-cert-upload'), '학력 증명서');
+    validateFileSize(document.getElementById('career-cert-upload'), '경력 증명서');
+});

@@ -1,4 +1,5 @@
 import { getProfile } from '/hook/user/getProfile.js';
+import { CONFIG } from '/config.js';
 
 export async function initModalContent(userId) {
   if (!userId) return;
@@ -6,7 +7,7 @@ export async function initModalContent(userId) {
   console.log('[모달 데이터]:', data);
 
   // Profile Image
-  document.getElementById('modal-profile-img').src = data.image || '/assets/images/common/headerImg.png';
+  document.getElementById('modal-profile-img').src = data.image || `${CONFIG.DEFAULT_PROFILE_IMG}`;
 
   // Profile Information
   document.getElementById('modal-profile-coinname').innerText = data.username || '';

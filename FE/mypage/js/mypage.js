@@ -1,6 +1,7 @@
 import { getMyProfile } from '/hook/user/getMyProfile.js';
 import { getUserCoins } from '/hook/user/getUserCoins.js';
 import { renderPieChart } from '/mypage/js/chart.js';
+import { CONFIG } from '/config.js';
 
 export let mypageUserId = null;
 
@@ -33,9 +34,9 @@ function renderUserProfile(user) {
   document.querySelector('#name').textContent = user.name;
   document.querySelector('#email').textContent = user.email;
   document.querySelector('#coin-name').textContent = user.username;
-  document.querySelector('#image').style.backgroundImage = `url(${user.image})`;
-  document.querySelector('#money').textContent =
-    user.money.toLocaleString('ko-KR');
+  const profileImage = user.image ? user.image : `${CONFIG.DEFAULT_PROFILE_IMG}`;
+  document.querySelector('#image').style.backgroundImage = `url(${profileImage})`;
+  document.querySelector('#money').textContent = user.money.toLocaleString('ko-KR');
   document.querySelector('#position').textContent = user.position;
   document.querySelector('#bio').textContent = user.bio;
 
@@ -86,7 +87,7 @@ function renderCoinList(coins) {
         wrapper.innerHTML = template;
 
         const coin = wrapper.querySelector('.coin');
-        const defaultImage = '/assets/images/main/avgMax.png';
+        const defaultImage = `${CONFIG.DEFAULT_PROFILE_IMG}`;
 
         // class로 접근하여 데이터 주입
         coin.querySelector('#coin-name').textContent = coinData.coin_name;

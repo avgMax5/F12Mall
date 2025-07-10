@@ -73,9 +73,9 @@ public class User extends BaseTimeEntity  {
         }
     }
 
-    public void updateIfChanged(String name, String email, String username, String pwd, String image){
+    public void updateIfChanged(String name, String email, String username, String rawPassword, String image, PasswordEncoder encoder){
         if (!Objects.equals(this.name, name)) {
-        this.name = name;
+            this.name = name;
         }
         if (!Objects.equals(this.email, email)) {
             this.email = email;
@@ -83,8 +83,10 @@ public class User extends BaseTimeEntity  {
         if (!Objects.equals(this.username, username)) {
             this.username = username;
         }
-        if (!Objects.equals(this.pwd, pwd)) {
-            this.pwd = pwd;
+        if (rawPassword != null && !rawPassword.isBlank()) {
+            if (this.pwd == null || !encoder.matches(rawPassword, this.pwd)) {
+                this.pwd = encoder.encode(rawPassword);
+            }
         }
         if (!Objects.equals(this.image, image)) {
             this.image = image;

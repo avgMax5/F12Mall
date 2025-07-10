@@ -1,5 +1,6 @@
 import { tradeCoinId } from '/trade/js/trade.js';
 import { getCoinInfo } from '/hook/trade/getCoinInfo.js';
+import { CONFIG } from '/config.js';
 
 export let tradeUserId = null;
 
@@ -19,7 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // 데이터 표시
     if (profileImage) {
-      profileImage.src = profileData.profile_image || 'favicon.png';
+      profileImage.src = profileData.profile_image || `${CONFIG.DEFAULT_PROFILE_IMG}`;
       profileImage.alt = `${profileData.user_name}의 프로필 이미지`;
     }
 
