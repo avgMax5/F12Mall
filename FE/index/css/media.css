@@ -1,175 +1,184 @@
-@media (min-width: 1701px) {
-    .section-header {
-      max-width: 1400px;
-    }
-    
-    .section-header .container {
-      max-width: 1400px;
-    }
-    
-    .section-nav .container {
-      max-width: 1400px;
-    }
-    
-    .section-adv .container {
-      max-width: 1400px;
-    }
-    
-    .section-products .container-products-row {
-      max-width: 1400px;
-    }
-    
-    .content h1 {
-      font-size: 3.5rem;
-    }
-    
-    .content p {
-      font-size: 1.25rem;
-    }
-    
-    .grid {
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-    }
-    
-    .card {
-      max-width: 400px;
-      max-height: 350px;
-      padding: 25px;
-    }
-    
-    .card > .image {
-      height: 220px;
-    }
-    
-    .card > .name {
-      font-size: 1.25rem;
-    }
-    
-    .card > .price > .sale {
-      font-size: 1.375rem;
-    }
+@media (min-width: 768px) and (max-width: 1199px) {
+  .section-header {
+    max-width: 80%;
+    padding: 8px 0;
+    flex-direction: row;
   }
   
-  /* 768px - 1199px - 태블릿 */
-  @media (min-width: 768px) and (max-width: 1199px) {
-    .section-header {
-      max-width: 80%;
-      padding: 8px 0;
-      flex-direction: row;
-    }
-    
-    .section-header .container {
-      max-width: 80%;
-      padding: 0 15px;
-    }
-    
-    .box-search {
-      width: 20rem;
-      margin: 0 1.25rem;
-    }
-    
-    .box-logo > .f12-key {
-      width: 50px;
-      height: 25px;
-      font-size: 0.8125rem;
-      line-height: 25px;
-    }
-    
-    .section-nav .container {
-      max-width: 100%;
-      padding: 0 15px;
-    }
-    
-    .section-nav .box-ul {
-      gap: 40px;
-    }
-    
-    .box-ul > .nav-item > .nav-link {
-      font-size: 0.875rem;
-    }
-    
-    .section-adv {
-      padding: 40px 0;
-    }
-    
-    .section-adv .container {
-      max-width: 100%;
-      padding: 0 15px;
-    }
-    
-    .section-adv .box {
-      grid-template-columns: 1fr;
-      gap: 40px;
-    }
-    
-    .content h1 {
-      font-size: 2.25rem;
-    }
-    
-    .content p {
-      font-size: 1rem;
-    }
-    
-    .features {
-      justify-content: center;
-    }
-    
-    .feature-item {
-      font-size: 0.875rem;
-    }
-    
-    .section-products {
-      padding: 40px 0;
-    }
-    
-    .section-products .container-products-row {
-      max-width: 100%;
-      padding: 0 15px;
-    }
-    
-    .container-products-row {
-      flex-direction: column;
-      gap: 30px;
-    }
-    
-    .box-product-column {
-      max-width: 100%;
-    }
-    
-    .header {
-      margin-bottom: 30px;
-    }
-    
-    .title {
-      font-size: 1.25rem;
-    }
-    
-    .grid {
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 15px;
-    }
-    
-    .card {
-      max-width: 100%;
-      max-height: none;
-      padding: 15px;
-    }
-    
-    .card > .image {
-      height: 160px;
-    }
-    
-    .card > .name {
-      font-size: 1rem;
-    }
-    
-    .card > .price > .sale {
-      font-size: 1.125rem;
-    }
+  .section-header .container {
+    max-width: 80%;
+    padding: 0 15px;
   }
   
-  /* 767px 이하 - 모바일 */
+  .box-search {
+    width: 20rem;
+    margin: 0 1.25rem;
+  }
+  
+  .box-logo > .f12-key {
+    width: 50px;
+    height: 25px;
+    font-size: 0.8125rem;
+    line-height: 25px;
+  }
+  
+  .section-nav .container {
+    max-width: 100%;
+    padding: 0 15px;
+  }
+  
+  .section-nav .box-ul {
+    gap: 40px;
+  }
+  
+  .box-ul > .nav-item > .nav-link {
+    font-size: 0.875rem;
+  }
+  
+  .section-adv {
+    padding: 40px 0;
+  }
+  
+  .section-adv .container {
+    max-width: 100%;
+    padding: 0 15px;
+  }
+  
+  .section-adv .box {
+    gap: 40px;
+  }
+  
+  .keyboard {
+    max-width: 350px;
+  }
+  
+  .key {
+    width: 20px;
+    height: 20px;
+    font-size: 6px;
+  }
+  
+  .key.space {
+    width: 140px;
+  }
+  
+  .key.tab {
+    width: 30px;
+  }
+  
+  .key.caps {
+    width: 36px;
+  }
+  
+  .key.shift {
+    width: 48px;
+  }
+  
+  .key.ctrl,
+  .key.alt {
+    width: 30px;
+  }
+  
+  .key.enter,
+  .key.backspace {
+    width: 40px;
+  }
+  
+  .key.function {
+    font-size: 5px;
+  }
+  
+  .key.f12-logo {
+    font-size: 6px;
+  }
+  
+  .key-row {
+    gap: 3px;
+    padding: 0 4px;
+  }
+  
+  .key.function-row {
+    padding: 0 25px;
+  }
+  
+  .key.number-row {
+    padding-left: 25px;
+  }
+  
+  .key.alpha-row {
+    padding-left: 12px;
+  }
+  
+  .key.bottom-row {
+    padding-left: 25px;
+  }
+  
+  /* .content h1 {
+    font-size: 2.25rem;
+  }
+  
+  .content p {
+    font-size: 1rem;
+  } */
+  
+  /* .features {
+    justify-content: center;
+  }
+  
+  .feature-item {
+    font-size: 0.875rem;
+  } */
+  
+  .section-products {
+    padding: 40px 0;
+  }
+  
+  .section-products .container-products-row {
+    max-width: 100%;
+    padding: 0 15px;
+  }
+  
+  .container-products-row {
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .box-product-column {
+    max-width: 100%;
+  }
+  
+  .header {
+    margin-bottom: 30px;
+  }
+  
+  .title {
+    font-size: 1.25rem;
+  }
+  
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 15px;
+  }
+  
+  .card {
+    max-width: 100%;
+    max-height: none;
+    padding: 15px;
+  }
+  
+  .card > .image {
+    height: 160px;
+  }
+  
+  .card > .name {
+    font-size: 1rem;
+  }
+  
+  .card > .price > .sale {
+    font-size: 1.125rem;
+  }
+}
+
   @media (max-width: 767px) {
     .section-header {
       max-width: 100%;
@@ -191,8 +200,8 @@
     }
     
     .box-search {
-      flex: 1;
-      margin: 0 0.625rem;
+      width: 10rem;
+      margin: 0 1.25rem;
     }
     
     .login {
@@ -207,10 +216,10 @@
       line-height: 20px;
     }
     
-    .box-search > .search-input {
+    /* .box-search > .search-input {
       padding: 8px 35px 8px 12px;
       font-size: 0.8125rem;
-    }
+    } */
     
     .section-nav {
       padding: 10px 0;
@@ -250,8 +259,72 @@
     }
     
     .section-adv .box {
-      grid-template-columns: 1fr;
       gap: 30px;
+    }
+    
+    .keyboard {
+      max-width: 250px;
+    }
+    
+    .key {
+      width: 15px;
+      height: 15px;
+      font-size: 5px;
+    }
+    
+    .key.space {
+      width: 105px;
+    }
+    
+    .key.tab {
+      width: 23px;
+    }
+    
+    .key.caps {
+      width: 27px;
+    }
+    
+    .key.shift {
+      width: 36px;
+    }
+    
+    .key.ctrl,
+    .key.alt {
+      width: 23px;
+    }
+    
+    .key.enter,
+    .key.backspace {
+      width: 30px;
+    }
+    
+    .key.function {
+      font-size: 4px;
+    }
+    
+    .key.f12-logo {
+      font-size: 5px;
+    }
+    
+    .key-row {
+      gap: 2px;
+      padding: 0 3px;
+    }
+    
+    .key.function-row {
+      padding: 0 20px;
+    }
+    
+    .key.number-row {
+      padding-left: 20px;
+    }
+    
+    .key.alpha-row {
+      padding-left: 10px;
+    }
+    
+    .key.bottom-row {
+      padding-left: 20px;
     }
     
     .content h1 {

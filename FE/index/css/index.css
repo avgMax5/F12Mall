@@ -209,9 +209,10 @@ body {
 }
 
 .section-adv .box {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   gap: 60px;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .content h1 {
@@ -395,8 +396,8 @@ body {
 
 .card > .image > .sale-badge {
   position: absolute;
-  top: 0.625rem;
-  right: 0.625rem;
+  top: 0.1rem;
+  right: 0.1rem;
   background: #e74c3c;
   color: white;
   padding: 0.25rem 0.5rem;
@@ -404,3 +405,186 @@ body {
   font-size: 0.75rem;
   font-weight: bold;
 }
+
+.keyboard-container {
+  z-index: 2;
+  position: relative;
+  transform: perspective(1000px) rotateX(10deg) rotateY(-5deg);
+  animation: float-keyboard 4s ease-in-out infinite;
+  transition: all 0.3s ease;
+}
+
+.keyboard {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  background: linear-gradient(145deg, #1a1a1a, #2c2c2c);
+  border-radius: 15px;
+  padding: 15px;
+  box-shadow: 
+      0 20px 60px rgba(0,0,0,0.4),
+      inset 0 2px 10px rgba(255,255,255,0.1);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: all 0.3s ease;
+}
+
+.keyboard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #4facfe, #00f2fe);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.key-row {
+  display: flex;
+  justify-content: flex-start;
+  gap: 4px;
+  padding: 0 6px;
+}
+
+.key {
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(145deg, #2a2a2a, #3a3a3a);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 8px;
+  font-weight: bold;
+  box-shadow: 
+      0 2px 4px rgba(0,0,0,0.3),
+      inset 0 1px 2px rgba(255,255,255,0.1);
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.key::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(255,255,255,0.1);
+}
+
+.key:nth-child(odd) {
+  animation: key-glow 3s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.1s);
+}
+
+.key.space {
+  width: 210px;
+}
+
+.key:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+      0 6px 12px rgba(0,0,0,0.4),
+      inset 0 1px 2px rgba(255,255,255,0.2);
+}
+
+.key.function {
+  background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+  font-size: 7px;
+  color: #aaa;
+}
+
+.key.f12-logo {
+  background: linear-gradient(145deg, #ff6b6b, #ff8e8e);
+  font-size: 8px;
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.5);
+}
+
+.key.esc {
+  background: linear-gradient(145deg, #2a1a1a, #3a2a2a);
+  color: #ff6b6b;
+}
+
+.key.tab {
+  width: 45px;
+}
+
+.key.caps {
+  width: 54px;
+}
+
+.key.shift {
+  width: 72px;
+}
+
+.key.ctrl {
+  width: 45px;
+}
+
+.key.alt {
+  width: 45px;
+}
+
+.key.enter {
+  width: 60px;
+}
+
+.key.backspace {
+  width: 60px;
+}
+
+.key.function-row {
+  justify-content: space-between;
+  padding: 0 30px;
+}
+
+.key.number-row {
+  padding-left: 30px;
+}
+
+.key.alpha-row {
+  padding-left: 15px;
+}
+
+.key.bottom-row {
+  padding-left: 30px;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes float-keyboard {
+  0%, 100% { transform: perspective(1000px) rotateX(10deg) rotateY(-5deg) translateY(0px); }
+  50% { transform: perspective(1000px) rotateX(10deg) rotateY(-5deg) translateY(-10px); }
+}
+
+/* @keyframes glow {
+  0% { text-shadow: 2px 2px 10px rgba(0,0,0,0.3); }
+  100% { text-shadow: 2px 2px 20px rgba(255,255,255,0.5); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes key-glow {
+  0%, 100% { box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 1px 2px rgba(255,255,255,0.1); }
+  50% { box-shadow: 0 4px 15px rgba(79, 172, 254, 0.5), inset 0 1px 2px rgba(255,255,255,0.2); }
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+} */
