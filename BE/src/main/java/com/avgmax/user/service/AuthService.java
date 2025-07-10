@@ -2,6 +2,7 @@ package com.avgmax.user.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import com.avgmax.trade.mapper.ClosingPriceMapper;
@@ -56,8 +57,11 @@ public class AuthService {
             // 프로필 정보 저장
             profileMapper.insert(request.toProfile(userId));
 
-             // 스킬 정보 저장
-            List<String> skillIds = userSkillMapper.selectByStack(request.getStack());
+            // 스킬 정보 저장
+            List<String> stack = request.getStack();
+            List<String> skillIds = (stack == null || stack.isEmpty())
+                ? new ArrayList<>()
+                : userSkillMapper.selectByStack(stack);
             List<UserSkill> userSkills = skillIds.stream()
                 .map(skillId -> UserSkill.of(
                     userId, 

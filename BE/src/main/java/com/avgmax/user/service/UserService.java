@@ -2,6 +2,7 @@ package com.avgmax.user.service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -71,37 +72,52 @@ public class UserService {
     @Transactional
     public UserProfileUpdateResponse updateUserProfile(String userId, UserProfileUpdateRequest request){
         User user = updateUser(userId, request.getName(), request.getEmail(), request.getUsername(), request.getPwd(), request.getImage());
-        userMapper.update(user);
+        if (user != null) {
+            userMapper.update(user);
+        }
         
         Profile profile = updateProfile(userId, request.getBio(), request.getPosition(), request.getLink(), request.getResume());
-        profileMapper.update(profile);
+        if (profile != null) {
+            profileMapper.update(profile);
+        }
         
         List<CareerRequest> careerRequests = request.getCareer();
-        careerMapper.deleteByUserId(userId);
-        careerRequests.stream()
-            .map(careerRequest -> careerRequest.toEntity(userId))
-            .forEach(career -> careerMapper.insert(career));
-        
+        if (careerRequests != null && !careerRequests.isEmpty()) {
+            careerMapper.deleteByUserId(userId);
+            careerRequests.stream()
+                .map(careerRequest -> careerRequest.toEntity(userId))
+                .forEach(career -> careerMapper.insert(career));
+        }
+
         List<CertificationRequest> certificationRequests = request.getCertificateUrl();
-        careerMapper.deleteByUserId(userId);
-        certificationRequests.stream()
-            .map(certificationRequest -> certificationRequest.toEntity(userId))
-            .forEach(certification -> certificationMapper.insert(certification));
-        
-        List<EducationRequest> educationnRequests = request.getEducation();
-        educationMapper.deleteByUserId(userId);
-        educationnRequests.stream()
-            .map(educationRequest -> educationRequest.toEntity(userId))
-            .forEach(education -> educationMapper.insert(education));
-        
+        if (certificationRequests != null && !certificationRequests.isEmpty()) {
+            careerMapper.deleteByUserId(userId);
+            certificationRequests.stream()
+                .map(certificationRequest -> certificationRequest.toEntity(userId))
+                .forEach(certification -> certificationMapper.insert(certification));
+        }
+
+        List<EducationRequest> educationRequests = request.getEducation();
+        if (educationRequests != null && !educationRequests.isEmpty()) {
+            educationMapper.deleteByUserId(userId);
+            educationRequests.stream()
+                .map(educationRequest -> educationRequest.toEntity(userId))
+                .forEach(education -> educationMapper.insert(education));
+        } 
+
         List<String> stackList = request.getStack();
-        List<String> skillIds = userSkillMapper.selectByStack(stackList);
+        List<String> skillIds = (stackList == null || stackList.isEmpty())
+                ? new ArrayList<>()
+                : userSkillMapper.selectByStack(stackList);
+
         List<UserSkill> userSkills = skillIds.stream()
             .map(skillId -> UserSkill.of(userId, skillId))
             .collect(Collectors.toList());
         
         userSkillMapper.deleteByUserId(userId);
-        userSkills.forEach(userSkillMapper::insert);
+        if (!userSkills.isEmpty()) {
+            userSkills.forEach(userSkillMapper::insert);
+        }
 
         return UserProfileUpdateResponse.of(true);
     }
@@ -109,21 +125,29 @@ public class UserService {
     private User updateUser(String userId, String name, String email, String username, String pwd, String image) {
         User user = userMapper.selectByUserId(userId)
             .orElseThrow(() -> UserException.of(ErrorCode.USER_NOT_FOUND));
-        user.updateIfChanged(name, email, username, passwordEncoder.encode(pwd), image);
-        userMapper.update(user);
+        if (user != null) {
+            user.updateIfChanged(name, email, username, pwd, image, passwordEncoder);
+            userMapper.update(user);
+        }
         return user;
     }
 
     private Profile updateProfile(String userId, String bio, String position, LinkData link, String resume){
-        Profile profile = profileMapper.selectByUserId(userId);
-        profile.updateIfChanged(position, bio, link, resume);
-        return profile;
+        try{
+            Profile profile = profileMapper.selectByUserId(userId);
+            if (profile != null) {
+                profile.updateIfChanged(position, bio, link, resume);
+            }
+            return profile;
+        }catch(Exception e){
+            log.warn("profile update 실패: {}", e.getMessage(), e);
+            return null;
+        }
     }
 
     @Transactional(readOnly = true)
     public List<UserCoinResponse> getUserCoinList(String userId) {
         List<UserCoinWithCoinWithCreatorQuery> userCoins = userCoinMapper.selectAllByHolderId(userId);
-
         return userCoins.stream()
                 .map(userCoin -> {
                     String coinId = userCoin.getCoinId();

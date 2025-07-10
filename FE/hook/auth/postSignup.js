@@ -56,7 +56,7 @@ async function handleSignup() {
     const career = collectCareerData(uploadResult);
 
     const userData = {
-        image: uploadResult?.profile?.[0] ?? null,
+        image: uploadResult?.profile?.[0] ?? `${CONFIG.DEFAULT_PROFILE_IMG}`,
         username: toNullIfEmpty(username),
         pwd: toNullIfEmpty(pwd),
         email: toNullIfEmpty(email),

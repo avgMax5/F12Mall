@@ -32,22 +32,24 @@ public class Profile extends BaseTimeEntity {
 
     public void updateIfChanged(String position, String bio, LinkData link, String resume){
         if (!Objects.equals(this.bio, bio)) {
-        this.bio = bio;
+            this.bio = bio;
         }
         if (!Objects.equals(this.position, position)) {
             this.position = position;
         }
-        if (!Objects.equals(this.github, link.getGithub())){
-            this.github = link.getGithub();
-        }
-        if (!Objects.equals(this.blog, link.getBlog())){
-            this.blog = link.getBlog();
-        }
-        if (!Objects.equals(this.sns, link.getSns())){
-            this.blog = link.getBlog();
-        }
-        if (!Objects.equals(this.linkedin, link.getLinkedin())){
-            this.linkedin = link.getLinkedin();
+        if (link != null){
+            if (!Objects.equals(this.github, link.getGithub())){
+                this.github = link.getGithub();
+            }
+            if (!Objects.equals(this.blog, link.getBlog())){
+                this.blog = link.getBlog();
+            }
+            if (!Objects.equals(this.sns, link.getSns())){
+                this.sns = link.getSns();
+            }
+            if (!Objects.equals(this.linkedin, link.getLinkedin())){
+                this.linkedin = link.getLinkedin();
+            }
         }
         if (!Objects.equals(this.resume, resume)) {
             this.resume = resume;
