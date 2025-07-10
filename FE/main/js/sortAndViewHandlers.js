@@ -16,12 +16,60 @@ export function initSortAndeViewHandlers() {
             wrapper.innerHTML = html;
 
             initSortAndViewToggle();
+            initMobileViewToggle();
 
             loadCoins("all");
             loadCoins("surging");
             loadCoins("price");
         })
         .catch(err => console.error('HTML 조각 로딩 실패:', err));
+}
+
+function toggleView(isCardView) {
+    const cardView = document.querySelector('.box-grid-card');
+    const listView = document.querySelector('.box-coin-list');
+    const boxSort = document.querySelector('.box-sort');
+
+    if (cardView && listView) {
+        if (isCardView) {
+            cardView.style.display = 'grid';
+            listView.style.display = 'none';
+            if (boxSort) boxSort.style.display = 'block';
+
+            // 모바일 뷰 토글 버튼 상태 업데이트
+            document.querySelectorAll('.mobile-sort-view > div').forEach(div => {
+                div.classList.toggle('active', div.classList.contains('card-view'));
+            });
+            // 데스크톱 라디오 버튼 상태 업데이트
+            const viewCard = document.getElementById('view-card');
+            if (viewCard) viewCard.checked = true;
+        } else {
+            cardView.style.display = 'none';
+            listView.style.display = 'block';
+            if (boxSort) boxSort.style.display = 'none';
+
+            // 모바일 뷰 토글 버튼 상태 업데이트
+            document.querySelectorAll('.mobile-sort-view > div').forEach(div => {
+                div.classList.toggle('active', div.classList.contains('list-view'));
+            });
+            // 데스크톱 라디오 버튼 상태 업데이트
+            const viewList = document.getElementById('view-list');
+            if (viewList) viewList.checked = true;
+        }
+
+        loadCoins("all");
+    }
+}
+
+function initMobileViewToggle() {
+    const mobileViewButtons = document.querySelectorAll('.mobile-sort-view > div');
+    
+    mobileViewButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const isCardView = button.classList.contains('card-view');
+            toggleView(isCardView);
+        });
+    });
 }
 
 function initSortAndViewToggle() {
@@ -74,28 +122,13 @@ function initSortAndViewToggle() {
     // View Radio
     const viewCard = document.getElementById('view-card');
     const viewList = document.getElementById('view-list');
-    const cardView = document.querySelector('.box-grid-card');
-    const listView = document.querySelector('.box-coin-list');
 
-    if (viewCard && viewList && cardView && listView) {
-        function toggleView() {
-            const boxSort = document.querySelector('.box-sort');
+    if (viewCard && viewList) {
+        // 초기 상태 설정
+        toggleView(viewCard.checked);
 
-            if (viewCard.checked) {
-                cardView.style.display = 'grid';
-                listView.style.display = 'none';
-                if (boxSort) boxSort.style.display = 'block';
-            } else if (viewList.checked) {
-                cardView.style.display = 'none';
-                listView.style.display = 'block';
-                if (boxSort) boxSort.style.display = 'none';
-            }
-
-            loadCoins("all");
-        }
-
-        toggleView();
-        viewCard.addEventListener('change', toggleView);
-        viewList.addEventListener('change', toggleView);
+        // 이벤트 리스너 설정
+        viewCard.addEventListener('change', () => toggleView(true));
+        viewList.addEventListener('change', () => toggleView(false));
     }
 }
