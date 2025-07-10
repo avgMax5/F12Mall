@@ -244,11 +244,18 @@ h3{
     border-radius: 50%;
     background-color: #222222;
     border: 0.125rem solid #697077;
-    margin: 1.25rem auto;
+    margin: 2rem auto;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
+}
+
+.profile > .profile-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 .profile > .profile-input{
@@ -265,8 +272,8 @@ h3{
 
 .profile > .profile-edit-icon {
     position: absolute;
-    bottom: -0.3125rem;
-    right: 0.3125rem;
+    bottom: -0.25rem;
+    right: -0.4rem;
     cursor: pointer;
     width: 1.875rem;
     height: 1.875rem;
@@ -277,18 +284,24 @@ h3{
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .profile-edit-icon:hover {
     background: rgba(0, 255, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 255, 47, 0.3);
 }
 
-.profile-edit-icon svg {
-    transition: all 0.3s ease;
+.profile-edit-icon i {
+    color: #697077;
+    font-size: 16px;
+    transition: all 0.3s ease;   
 }
 
-.profile-edit-icon:hover svg {
-    fill: #00ff2f;
+.profile-edit-icon:hover i {
+    color: #00ff2f;
+    transform: rotate(45deg);
 }
 
 .input-wrap {

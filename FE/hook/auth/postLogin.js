@@ -4,7 +4,8 @@ const API_LOGIN_URL = `${CONFIG.API_BASE_URL}/auth/login`;
 
 function handleLogin() {
     const username = document.querySelector('.login-username').value;
-    const password = document.querySelector('.login-password').value;
+    // passwordManager에서 실제 비밀번호 값 가져오기
+    const password = window.passwordManager ? window.passwordManager.getRealValue('.login-password') : document.querySelector('.login-password').value;
 
     const loginData = {
         username: username,
@@ -45,6 +46,13 @@ async function submitLogin(loginData) {
         const data = await response.json();
         window.location.href = '/main';
     } catch (err) {
+        // 로그인 실패 시 비밀번호 필드 초기화
+        const passwordInput = document.querySelector('.login-password');
+        if (passwordInput) {
+            passwordInput.value = '';
+            passwordInput.focus(); // 포커스도 비밀번호 필드로 이동
+        }
+        
         showFailAlert();
     }
 }

@@ -245,7 +245,7 @@ function initializeFormWithUserData(user) {
         }
       }
     }
-
+    
     // 경력 정보 설정 (배열의 첫 번째 요소 사용)
     if (user.career && Array.isArray(user.career) && user.career.length > 0) {
       const career = user.career[0]; // 첫 번째 경력 정보 사용
