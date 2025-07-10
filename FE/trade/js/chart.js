@@ -4,8 +4,8 @@ const chartOptions = {
     gap: 0,
     startPos: { x: 0, y: 0 }, // x: X축 시작, y: Y축 기준(위쪽이 0)
 
-    labelFont: "16px sans-serif",
-    labelColor: "#fff",
+    labelFont: "0.889rem KIMM_B",
+    labelColor: "#00ff2f",
     labelBottom: 730, // 하단 여백 위
     lineWidth: 3,
     pointRadius: 4,
@@ -36,14 +36,13 @@ const chartOptions = {
     lowData: [],
 };
 
-const canvas = document.getElementById(chartOptions.canvasId);
-if (!canvas) {
-    console.error('Canvas element not found!');
-}
 
-const ctx = canvas.getContext('2d');
-if (!ctx) {
-    console.error('Canvas context not available!');
+function getCanvasAndContext() {
+    const canvas = document.getElementById(chartOptions.canvasId);
+    if (!canvas) throw new Error('Canvas element not found');
+    const ctx = canvas.getContext('2d');
+    if (!ctx) throw new Error('Canvas context not found');
+    return { canvas, ctx };
 }
 
 // y축 변환을 위한 최소/최대값 동적 계산
@@ -78,8 +77,6 @@ function updateChartOptions() {
 
     if (width <= 0 || height <= 0) {
         console.warn('Canvas size is invalid:', width, height);
-        canvas.width = 800;
-        canvas.height = 600;
     }
 
     chartOptions.gap = Math.max(30, Math.min(80, canvas.width / 12)); // 최소 30, 최대 80
@@ -113,53 +110,43 @@ function updateChartOptions() {
 }
 
 function resizeCanvas() {
+    const { canvas } = getCanvasAndContext();
+
     const container = canvas.parentElement;
     if (!container) {
         console.error('Canvas parent container not found!');
-        // canvas.width = 0;
-        // canvas.height = 0;
-    } else {
-        canvas.width = container.clientWidth;
-        canvas.height = canvas.width * 0.8;
+        return;
     }
-    
+
+    canvas.width = container.clientWidth;
+    canvas.height = canvas.width * 0.8;
+
     updateChartOptions();
     drawChart(chartOptions);
 }
 
-function drawChart(options) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    const chartGeometry = {
-        top: options.startPos.y - options.chartHeight,
-        left: options.startPos.x,
-        right: canvas.width - options.startPos.x,
-        bottom: options.startPos.y,
-        height: options.chartHeight,
-        padding: 10,
-    };
-
-    // X축 그리기 (날짜)
+function drawXAxis(ctx, options, geo) {
     ctx.font = options.labelFont;
     ctx.fillStyle = options.labelColor;
     ctx.textAlign = "center";
-    
-    chartOptions.labels.forEach((label, i) => {
+
+    options.labels.forEach((label, i) => {
         const date = new Date(label);
-        const shortLabel = `${date.getMonth() + 1}/${date.getDate()}`;  // ex: 7/1
+        const shortLabel = `${date.getMonth() + 1}/${date.getDate()}`;
         const x = options.startPos.x + i * options.gap;
         const y = options.labelBottom;
         ctx.fillText(shortLabel, x, y);
     });
+}
 
-    // Y축 표시 (금액)
-    const allValues = chartOptions.chartRows.flatMap(row => [row.valHigh, row.valLow]);
+function drawYAxis(ctx, options, geo) {
+    const allValues = options.chartRows.flatMap(row => [row.valHigh, row.valLow]);
     const rawMax = Math.max(...allValues);
     const rawMin = Math.min(...allValues);
 
     const maxY = Math.ceil(rawMax);
     const minY = Math.floor(rawMin);
-    const tickCount = 5; // Y축 눈금 개수
+    const tickCount = 5;
     const step = (maxY - minY) / (tickCount - 1);
 
     const yTicks = [];
@@ -168,46 +155,45 @@ function drawChart(options) {
         yTicks.push(Number(v.toFixed(1)));
     }
 
-    // drawYAxisGuides 함수 (구분선)
-    function drawYAxisGuides(yTicks, geo, maxY, minY, dashed = true) {
-        yTicks.forEach((val, idx) => {
-            const y = geo.top + ((maxY - val) / (maxY - minY)) * geo.height;
-    
-            if (idx === 0 || idx === yTicks.length - 1) {
-                ctx.save();
-                ctx.setLineDash(dashed ? [3, 6] : []);
-                ctx.strokeStyle = '#fff';
-                ctx.beginPath();
-                ctx.moveTo(geo.left - geo.padding, y);
-                ctx.lineTo(geo.right + geo.padding, y);
-                ctx.stroke();
-                ctx.restore();
-            }
-    
-            ctx.fillStyle = '#fff';
-            ctx.font = '12px Pretendard, sans-serif';
-            ctx.textAlign = 'left';
-            ctx.fillText(val.toLocaleString(), geo.right + geo.padding, y + 4);
-        });
-    }
-    
-    // line Graph
-    function drawLine(data, color, geo) {
-        drawYAxisGuides(yTicks, geo, maxY, minY, true);
-    
+    yTicks.forEach((val, idx) => {
+        const y = geo.top + ((maxY - val) / (maxY - minY)) * geo.height;
+
+        if (idx === 0 || idx === yTicks.length - 1) {
+            ctx.save();
+            ctx.setLineDash([3, 6]);
+            ctx.strokeStyle = '#00ff2f';
+            ctx.beginPath();
+            ctx.moveTo(geo.left - geo.padding, y);
+            ctx.lineTo(geo.right + geo.padding, y);
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        ctx.fillStyle = '#00ff2f';
+        ctx.font = '0.667rem KIMM_B';
+        ctx.textAlign = 'left';
+        ctx.fillText(val.toLocaleString(), geo.right + geo.padding, y + 4);
+    });
+}
+
+
+function drawLineCharts(ctx, options, geo) {
+    ['highData', 'lowData'].forEach((key, idx) => {
+        const data = options[key];
+        const color = idx === 0 ? options.highLineColor : options.lowLineColor;
+
         ctx.beginPath();
         data.forEach((y, i) => {
             const x = options.startPos.x + i * options.gap;
             const yPos = valueToY(y, options.startPos.y, options.barMin, options.barMax, geo.height);
-    
             if (i === 0) ctx.moveTo(x, yPos);
             else ctx.lineTo(x, yPos);
         });
-    
+
         ctx.strokeStyle = color;
         ctx.lineWidth = options.lineWidth;
         ctx.stroke();
-    
+
         data.forEach((y, i) => {
             const x = options.startPos.x + i * options.gap;
             const yPos = valueToY(y, options.startPos.y, options.barMin, options.barMax, geo.height);
@@ -218,29 +204,50 @@ function drawChart(options) {
             ctx.lineWidth = options.pointLineWidth;
             ctx.stroke();
         });
-    }
+    });
+}
 
-    // Bar Graph
-    function drawBar(data, color, xOffset, geo) {
-        const barWidth = options.barWidth;
-        const yBase = options.barBase;
-        const yMax = options.barMax;
-        const yMin = options.barMin;
-    
+
+function drawBarCharts(ctx, options, geo) {
+    const barGroups = [
+        { data: options.highData, color: options.highBarColor, offset: options.highBarOffset },
+        { data: options.lowData, color: options.lowBarColor, offset: options.lowBarOffset },
+    ];
+
+    barGroups.forEach(({ data, color, offset }) => {
         data.forEach((y, i) => {
-            const x = options.startPos.x + i * options.gap + xOffset - barWidth / 2;
-            const barHeight = getBarHeight(y, yMin, yMax, options.barHeight);
+            const barWidth = options.barWidth;
+            const yBase = geo.barBase;
+            const x = options.startPos.x + i * options.gap + offset - barWidth / 2;
+            const barHeight = getBarHeight(y, options.barMin, options.barMax, options.barHeight);
             ctx.beginPath();
             ctx.rect(x, yBase - barHeight, barWidth, barHeight);
             ctx.fillStyle = color;
             ctx.fill();
         });
-    }
-    
-    drawLine(chartOptions.highData, options.highLineColor, chartGeometry); // 고가 라인 그래프
-    drawLine(chartOptions.lowData, options.lowLineColor, chartGeometry); // 저가 라인 그래프
-    drawBar(chartOptions.highData, options.highBarColor, options.highBarOffset, chartGeometry); // 고가 막대 그래프
-    drawBar(chartOptions.lowData, options.lowBarColor, options.lowBarOffset, chartGeometry); // 저가 막대 그래프
+    });
+}
+
+function drawChart(options) {
+    const { canvas, ctx } = getCanvasAndContext();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const geo = {
+        top: canvas.height * 0.1,
+        bottom: canvas.height * 0.7,
+        left: canvas.width * 0.1,
+        right: canvas.width * 0.9,
+        width: canvas.width * 0.8,
+        height: canvas.height * 0.6,
+        barBase: canvas.height * 0.9,
+        labelBottom: canvas.height * 0.95,
+        padding: 10
+    };
+
+    drawXAxis(ctx, options, geo);
+    drawYAxis(ctx, options, geo);
+    drawLineCharts(ctx, options, geo);
+    drawBarCharts(ctx, options, geo);
 }
 
 function groupByStartOf(type, rows) {
@@ -311,29 +318,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const coinId = window.tradeCoinId;
 
     (async (coinId) => {
-        const result = await getChartRows(coinId);
-        fetchAndRenderChart(result, 'month');
+        window.chartDataCache = await getChartRows(coinId);
+        fetchAndRenderChart(window.chartDataCache, 'day');
 
-        const btn1 = document.getElementById('chart-btn-day');
-        if (btn1) {
-            btn1.addEventListener('click', async function() {
-                fetchAndRenderChart(result, 'day');
-            });
-        }
-
-        const btn2 = document.getElementById('chart-btn-week');
-        if (btn2) {
-            btn2.addEventListener('click', async function() {
-                fetchAndRenderChart(result, 'week');
-            });
-        }
-
-        const btn3 = document.getElementById('chart-btn-month');
-        if (btn3) {
-            btn3.addEventListener('click', async function() {
-                fetchAndRenderChart(result, 'month');
-            });
-        }
+        ['day', 'week', 'month'].forEach(type => {
+            const btn = document.getElementById(`chart-btn-${type}`);
+            if (btn) {
+                btn.addEventListener('click', () => {
+                    fetchAndRenderChart(window.chartDataCache, type);
+                });
+            }
+        });
     })(coinId);
 });
 

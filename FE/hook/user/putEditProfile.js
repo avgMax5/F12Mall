@@ -12,6 +12,9 @@ export async function putEditProfile(userId, data) {
     });
 
     if (!response.ok) {
+      if (response.status === 401) {
+        window.location.href = "/__unauthorized__";
+      }
       throw new Error('프로필 수정에 실패했습니다.');
     }
 

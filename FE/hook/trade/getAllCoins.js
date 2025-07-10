@@ -13,6 +13,9 @@ export async function getAllCoins(filter = 'all') {
     });
 
     if (!response.ok) {
+      if (response.status === 401) {
+        window.location.href = "/__unauthorized__";
+      }
       throw new Error('전체 코인 정보 조회에 실패했습니다.');
     }
 

@@ -11,6 +11,9 @@ export const getMyOrderList = async (coinId) => {
     });
 
     if (!response.ok) {
+      if (response.status === 401) {
+        window.location.href = "/__unauthorized__";
+      }
       throw new Error('내 주문 목록 조회에 실패했습니다.');
     }
 
