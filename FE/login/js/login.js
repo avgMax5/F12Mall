@@ -1,3 +1,6 @@
+import { showFailAlert, showSuccessAlert, showConfirmModal } from '/common/js/modal.js';
+import { checkUsernameDuplicate } from '/hook/auth/postCheckUsername.js';
+
 function toggleForms() {
     document.querySelector('.section-login').classList.toggle('hidden');
     const signupSection = document.querySelector('.section-signup');
@@ -96,6 +99,26 @@ function updateTechStackCounter(currentCount) {
     }
 }
 
+// 프로필 이미지 미리보기 처리 함수
+function handleProfileImageUpload(event) {
+    const file = event.target.files[0];
+    const profilePreview = document.getElementById('profile-preview');
+    
+    if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            profilePreview.src = e.target.result;
+            profilePreview.style.display = 'block';
+        };
+        
+        reader.readAsDataURL(file);
+    } else if (file) {
+        showFailAlert('이미지 파일만 업로드 가능합니다.');
+        event.target.value = ''; // 파일 선택 초기화
+    }
+}
+
 // Bio textarea 실시간 글자 수 카운팅
 document.addEventListener('DOMContentLoaded', () => {
     const bioTextarea = document.querySelector('textarea[name="bio"]');
@@ -119,7 +142,48 @@ document.addEventListener('DOMContentLoaded', () => {
         initBioCharCounter();
     }
     
-    // Tech Stack 체크박스 제한 초기화
     initTechStackLimit();
+
+    // 아이디 중복확인 버튼 이벤트 리스너 등록
+    const duplicateCheckBtn = document.querySelector('.id-check-btn');
+    if (duplicateCheckBtn) {
+        duplicateCheckBtn.addEventListener('click', handleUsernameDuplicateCheck);
+    }
+
+    // 프로필 이미지 업로드 이벤트 리스너 등록
+    const profileUpload = document.getElementById('profile-upload');
+    if (profileUpload) {
+        profileUpload.addEventListener('change', handleProfileImageUpload);
+    }
 });
-  
+
+// 아이디 중복 확인 처리 함수
+async function handleUsernameDuplicateCheck() {
+    const usernameInput = document.querySelector('.id-input');
+    const username = usernameInput.value.trim();
+    
+    if (!username) {
+        showFailAlert('아이디를 입력해주세요!');
+        usernameInput.focus();
+        return;
+    }
+    
+    try {
+        const result = await checkUsernameDuplicate(username);
+        
+        if (result.success) {
+            if (result.data.is_duplicate) {
+                showFailAlert(result.data.message);
+                usernameInput.focus();
+            } else {
+                showSuccessAlert(result.data.message);
+            }
+        }
+    } catch (error) {
+        console.error('중복확인 처리 실패:', error);
+        showFailAlert(error.message);
+    }
+}
+
+window.toggleForms = toggleForms;
+window.showRightSignup = showRightSignup;

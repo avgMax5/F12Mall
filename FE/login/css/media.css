@@ -54,3 +54,25 @@
         padding: 0.1rem, 0.2rem;
     }
 }
+@media screen and (max-width: 768px) {
+    .login-form {
+        width: 80%;
+        padding: 1.5rem;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .title {
+        font-size: 8vw;
+    }
+
+    .sub-title {
+        font-size: 3vw;
+    }
+    .input-group{
+        width: 80%;
+    }
+    .input-group label{
+        font-size: 0.7rem;
+    }
+}
