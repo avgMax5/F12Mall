@@ -3,6 +3,124 @@
     html {
         font-size: 9px;
     }
+
+    .width {
+        width: 42.5rem;
+        height: 100rem;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .section-top {
+        display: flex;
+        width: 100%;
+        height: 33%;
+    }
+
+    .section-top>.container-left {
+        display: none;
+    }
+
+    .section-bottom {
+        width: 100%;
+        height: 64.5%;
+    }
+
+    .section-bottom .container-bottom .box-grid-card {
+        width: 100%;
+        height: 58rem;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        justify-content: center;
+        align-items: start;
+        padding: 1rem 0;
+    }
+
+    .box-grid-card .card-view {
+        width: 90%;
+        height: 15rem;
+        margin: 0 auto;
+    }
+
+    .card-view .card-profile {
+        padding-top: 5%;
+        padding-left: 5%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        height: 75%;
+    }
+
+    .card-profile .card-thumbnail {
+        width: 9rem;
+        height: 9rem;
+    }
+
+    .card-thumbnail img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .card-profile .card-info {
+        display: flex;
+        flex-direction: row;
+        gap: 9.25rem;
+    }
+
+    .card-info .info-change {
+        height: 100%;
+        display: flex;
+        align-items: flex-end;
+    }
+
+    .info-change::before {
+        font-size: 1rem;
+    }
+
+    .info-change .change-amount {
+        font-size: 1.5rem;
+    }
+
+    .info-change .change-percent {
+        font-size: 1.175rem;
+    }
+
+    .info-meta>.info-coin-name {
+        font-size: 2.125rem;
+        white-space-collapse: collapse;
+        text-wrap-mode: nowrap;
+        text-shadow: -0.5px 0 #00ff2f, 0.5px 0 #00ff2f, 0 -0.5px #00ff2f, 0 0.5px #00ff2f;
+    }
+
+    .info-meta .info-author {
+        font-size: 1.25rem;
+    }
+
+    .card-view .card-price {
+        display: flex;
+        align-items: flex-start;
+        justify-self: flex-end;
+        padding-right: 1rem;
+        padding-top: 0.5rem;
+    }
+
+    .card-price svg {
+        width: 2rem;
+        height: 2rem;
+        font-size: 1.25rem;
+    }
+
+    .card-price>.price-amount {
+        font-size: 2rem;
+    }
+}
+
+/* 테블릿 */
+@media (min-width: 768px) and (max-width: 1199px) {
+    html {
+        font-size: 12px;
+    }
 }
 
 /* 테블릿 */
