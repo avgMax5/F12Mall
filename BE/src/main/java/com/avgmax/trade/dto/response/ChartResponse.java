@@ -15,6 +15,8 @@ public class ChartResponse {
     private BigDecimal valClose;
     private BigDecimal valHigh;
     private BigDecimal valLow;
+    private BigDecimal buyQuantity;
+    private BigDecimal sellQuantity;
 
     public static List<ChartResponse> from(List<ClosingPrice> closingPrice) {
         return closingPrice.stream()
@@ -23,6 +25,8 @@ public class ChartResponse {
                 .valClose(cp.getUnitPrice())
                 .valHigh(cp.getHighPrice())
                 .valLow(cp.getLowPrice())
+                .buyQuantity(cp.getBuyQuantity())
+                .sellQuantity(cp.getSellQuantity())
                 .build())
             .collect(Collectors.toList());
     }

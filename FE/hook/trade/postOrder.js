@@ -16,6 +16,9 @@ export const createOrder = async (coinId, orderType, orderFis, orderPrice) => {
     });
 
     if (!response.ok) {
+      if (response.status === 401) {
+        window.location.href = "/__unauthorized__";
+      }
       throw new Error('주문 요청에 실패했습니다.');
     }
 

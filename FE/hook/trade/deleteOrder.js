@@ -9,6 +9,9 @@ export const cancelOrder = async (coinId, orderId) => {
     );
 
     if (!response.ok) {
+      if (response.status === 401) {
+        window.location.href = "/__unauthorized__";
+      }
       throw new Error('주문 취소에 실패했습니다.');
     }
 
