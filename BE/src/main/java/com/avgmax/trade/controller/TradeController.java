@@ -85,14 +85,6 @@ public class TradeController {
     public SseEmitter getRealtimeCoinInfo(HttpSession session, @PathVariable String coinId) {
         String sessionId = session.getId();
         log.debug("SSE 연결 요청: session={}, coin={}", sessionId, coinId);
-        return realtimeStreamService.connectCoinInfoStream(sessionId, coinId);
-    }
-
-    // 현재 거래상황 조회
-    @GetMapping(value = "/{coinId}/orders/orderbook", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter getOrderBook(HttpSession session, @PathVariable String coinId) {
-        String sessionId = session.getId();
-        log.debug("SSE 연결 요청: session={}, coin={}", sessionId, coinId);
-        return realtimeStreamService.connectOrderBookStream(sessionId, coinId);
+        return realtimeStreamService.connectStream(sessionId, coinId);
     }
 }

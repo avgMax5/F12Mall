@@ -1,5 +1,5 @@
 import { tradeCoinId } from '/trade/js/trade.js';
-import { getOrderbook } from '/hook/trade/getOrderbook.js';
+import { priceManager } from '/trade/js/live.js';
 import { getMyOrderList } from '/hook/trade/getMyOrderList.js';
 import { cancelOrder } from '/hook/trade/deleteOrder.js';
 import { fetchUserInform, fetchUserCoins } from '/trade/js/interface.js';
@@ -122,13 +122,25 @@ class OrderbookManager {
     }
 
     handleStreamForMode(newMode) {
+         this.closeStream();
+
         if (newMode === 'orderbook') {
-            this.closeStream();
-            this.orderbookStream = getOrderbook(tradeCoinId, this.updateOrderbook.bind(this));
+            this.ensureOrderbookSubscription();
+            this.updateMyOrderList(); // 필요 시
         } else {
-            this.closeStream();
+            // 다른 모드 로직
             this.updateMyOrderList();
         }
+    }
+
+    ensureOrderbookSubscription() {
+        if (this._orderbookSubscribed) return;
+
+        priceManager.subscribeOrderbook((orderbookData) => {
+            this.updateOrderbook(orderbookData);
+        });
+
+        this._orderbookSubscribed = true;
     }
 
     closeStream() {

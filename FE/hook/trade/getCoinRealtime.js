@@ -1,6 +1,6 @@
 import { CONFIG } from '/config.js';
 
-export function getCoinRealtime(coinId, callback) {
+export function getCoinRealtime(coinId, { onCoinInfo, onOrderBook, onError } = {}) {
     if (!coinId) {
         throw new Error('코인 ID가 필요합니다.');
     }
@@ -13,18 +13,28 @@ export function getCoinRealtime(coinId, callback) {
         console.log('SSE 연결 성공: 코인 실시간 정보');
     };
 
-    evtSource.addEventListener('coininfo', function(event) {
+    evtSource.addEventListener('coininfo', (event) => {
         try {
             const data = JSON.parse(event.data);
-            if (callback) callback(data);
+            onCoinInfo?.(data);
         } catch (error) {
-            console.error('코인 데이터 파싱 중 오류:', error);
+            console.error('coininfo 파싱 오류:', error);
         }
     });
 
-    evtSource.onerror = function(err) {
-        console.error('SSE 연결 에러: 코인 실시간 정보', err);
+    evtSource.addEventListener('orderbook', (event) => {
+        try {
+            const data = JSON.parse(event.data);
+            onOrderBook?.(data);
+        } catch (error) {
+            console.error('orderbook 파싱 오류:', error);
+        }
+    });
+
+    evtSource.onerror = (err) => {
+        console.error('SSE 연결 에러:', err);
         evtSource.close();
+        onError?.(err);
     };
 
     return evtSource;
