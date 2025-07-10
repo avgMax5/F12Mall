@@ -1,4 +1,10 @@
-import { setSortKey, loadCoins } from '/main/js/main.js';
+import {
+    setSortKey,
+    loadCoins,
+    renderCoinsByFilter,
+    getCurrentFilteredCoins,
+    getGlobalCoins
+} from '/main/js/main.js';
 
 export function initSortAndeViewHandlers() {
     const wrapper = document.getElementById('sort-view-wrapper');
@@ -49,16 +55,14 @@ function initSortAndViewToggle() {
                     case '등락률 상승순': key = 'rate'; break;
                     default: key = 'createdAt'; break;
                 }
-                // let key = 'createdAt';
-                // if (text == '금액순') key = 'price';
-                // else if (text == '거래순') key = 'volume';
-                // else if (text == '변동가 상승순') key = 'change';
-                // else if (text == '등락률 상승순') key = 'rate';
 
                 setSortKey(key);
 
                 const isCard = document.getElementById('view-card')?.checked;
-                if (isCard) loadCoins('all');
+                if (isCard) {
+                    renderCoinsByFilter('all', getCurrentFilteredCoins() || getGlobalCoins());
+                    // loadCoins('all');
+                }
             });
         });
 

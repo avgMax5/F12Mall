@@ -1,0 +1,27 @@
+/* 모바일 */
+@media (max-width: 767px) {
+    html {
+        font-size: 9px;
+    }
+}
+
+/* 테블릿 */
+@media (min-width: 768px) and (max-width: 1199px) {
+    html {
+        font-size: 12px;
+    }
+}
+
+/*맥북 14*/
+@media (min-width: 1200px) and (max-width: 1700px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+/*맥북 16이상*/
+@media (min-width: 1701px) {
+    html {
+        font-size: 18px;
+    }
+}
