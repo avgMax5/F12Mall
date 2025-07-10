@@ -13,7 +13,7 @@ export async function getAllCoins(filter = 'all') {
     });
 
     if (!response.ok) {
-      throw new Error('코인 정보 조회에 실패했습니다.');
+      throw new Error('전체 코인 정보 조회에 실패했습니다.');
     }
 
     return await response.json();

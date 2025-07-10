@@ -2,6 +2,24 @@ import { getAllCoins } from '/hook/trade/getAllCoins.js';
 import { initSortAndeViewHandlers } from '/main/js/sortAndViewHandlers.js';
 import { initListHeaderHandlers } from '/main/js/listHeaderHandlers.js';
 
+let currentFilteredCoins = null;
+
+export function setCurrentFilteredCoins(data) {
+    currentFilteredCoins = data;
+}
+export function getCurrentFilteredCoins() {
+    return currentFilteredCoins;
+}
+
+let globalCoins = [];
+
+export function setGlobalCoins(data) {
+    globalCoins = data;
+}
+export function getGlobalCoins() {
+    return globalCoins;
+}
+
 let currentSortKey = 'createdAt';
 
 export function setSortKey(key) {
@@ -70,18 +88,38 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
+    //Search
+    document.querySelector('.box-search').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const keyword = document.querySelector('.search-input').value.trim().toLowerCase();
+
+        if (keyword === '') {
+            currentFilteredCoins = null;
+            renderCoinsByFilter('all', globalCoins);
+            return;
+        }
+
+        const filtered = globalCoins.filter(coin =>
+            coin.coin_name.toLowerCase().includes(keyword) || coin.user_name.toLowerCase().includes(keyword)
+        );
+        currentFilteredCoins = filtered;
+        renderCoinsByFilter('all', filtered);
+    })
 });
 
+// CoinFetchResponse Dto by filter
 export async function loadCoins(filter = 'all') {
     try {
         const coins = await getAllCoins(filter);
+        globalCoins = coins;
         renderCoinsByFilter(filter, coins);
     } catch {
-        console.error('코인 정보를 불러오는데 실패 했습니다.');
+        console.error('전체 코인 정보를 불러오는데 실패 했습니다.');
     }
 }
 
-function renderCoinsByFilter(filter, coins) {
+export function renderCoinsByFilter(filter, coins) {
     switch (filter) {
         case 'surging':
             renderSurgingCoins(coins);
@@ -181,14 +219,6 @@ function renderAllCoins(coins) {
 
 function renderCardViewCoins(coins) {
     const sortKey = getSortKey();
-    //
-    console.log('[sortKey]', sortKey);
-
-    //
-    console.log('[정렬 전]', coins.map(c => ({
-        coin: c.coin_name,
-        createdAt: c.created_at
-    })));
 
     coins.sort((a, b) => {
         switch (sortKey) {
@@ -201,15 +231,6 @@ function renderCardViewCoins(coins) {
                 return new Date(b.created_at) - new Date(a.created_at);
         }
     });
-
-    //
-    console.log('[정렬 후]', coins.map(c => ({
-        coin: c.coin_name,
-        createdAt: c.created_at
-    })));
-
-    //
-    console.log('[created_at 기준 내림차순]', coins.map(c => c.created_at));
 
     const className = 'card-view';
     const cardContainer = document.querySelector('#card-viewer');
@@ -280,6 +301,7 @@ function renderListViewCoins(coins) {
     attachJoinEvents(className);
 }
 
+// Navigate to /trade with coin ID on click
 function attachJoinEvents(className) {
     const elements = document.querySelectorAll(`.${className}`);
     elements.forEach(element => {
