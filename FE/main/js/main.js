@@ -30,6 +30,62 @@ export function getSortKey() {
     return currentSortKey;
 }
 
+let surgingOriginalParent = null;
+let surgingOriginalNextSibling = null;
+
+let carouselIndex = 0; // 전역 carousel index
+
+// 모바일 체크 함수
+function isMobile() {
+    return window.innerWidth <= 767;
+}
+
+// Surging 제목 업데이트 함수
+function updateSurgingTitle() {
+    const surgingTitle = document.querySelector('.container-left .box-top-title, .carousel-surging-slide .box-top-title');
+    if (surgingTitle) {
+        const title = isMobile() ? 'Top 3 Surging' : 'Top 5 Surging';
+        surgingTitle.textContent = title;
+    }
+}
+
+// Carousel 제목 업데이트 함수
+function updateCarouselTitle(slideIndex) {
+    const titleElement = document.querySelector('.container-right .box-top-title');
+    if (titleElement) {
+        if (isMobile()) { 
+            // 모바일: 3개 슬라이드 - Top 3 Coin, Top 3 Surging, Advertisement
+            const titles = ['Top 3 Coin', 'Top 3 Surging', 'Advertisement'];
+            titleElement.textContent = titles[slideIndex] || titles[0];
+        } else {
+            // 데스크탑: 3개 슬라이드 - Top 5 Coin, Empty Slide, Advertisement
+            const titles = ['Top 5 Coin', 'Empty Slide', 'Advertisement'];
+            titleElement.textContent = titles[slideIndex] || titles[0];
+        }
+    }
+}
+
+// Dot click handlers - 전역으로 이동
+function updateDotClickHandlers() {
+    const currentDots = document.querySelectorAll('.carousel-indicator .dot');
+    currentDots.forEach((dot, i) => {
+        // 기존 이벤트 리스너 제거를 위해 새 함수 생성
+        dot.onclick = () => {
+            carouselIndex = i; // 전역 index 업데이트
+            const carousel = document.querySelector('.carousel-track');
+            const currentDots = document.querySelectorAll('.carousel-indicator .dot');
+            carousel.style.transition = 'transform 0.5s ease-in-out';
+            carousel.style.transform = `translateX(-${100 * i}%)`;
+            currentDots.forEach((dot, idx) => {
+                dot.classList.toggle('active', idx === i);
+            });
+            
+            // 제목 업데이트
+            updateCarouselTitle(i);
+        };
+    });
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     // Load sort/view toggle UI and handlers
     initSortAndeViewHandlers();
@@ -39,42 +95,46 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Carousel Slide
     const carousel = document.querySelector('.carousel-track');
-    const slides = Array.from(carousel.children);
-    const dots = document.querySelectorAll('.carousel-indicator .dot');
-    let index = 0;
-    const total = slides.length;
 
     function goToSlide(i) {
+        const currentDots = document.querySelectorAll('.carousel-indicator .dot');
         carousel.style.transition = 'transform 0.5s ease-in-out';
         carousel.style.transform = `translateX(-${100 * i}%)`;
-        dots.forEach((dot, idx) => {
+        currentDots.forEach((dot, idx) => {
             dot.classList.toggle('active', idx === i);
         });
+        
+        // 제목 업데이트
+        updateCarouselTitle(i);
     }
 
     function resetToStart() {
+        const currentDots = document.querySelectorAll('.carousel-indicator .dot');
         carousel.style.transition = 'none';
         carousel.style.transform = `translateX(0%)`;
-        index = 0;
-        dots.forEach((dot, idx) => {
+        carouselIndex = 0;
+        currentDots.forEach((dot, idx) => {
             dot.classList.toggle('active', idx === 0);
         });
+        
+        // 제목 업데이트
+        updateCarouselTitle(0);
     }
 
-    dots.forEach((dot, i) => {
-        dot.addEventListener('click', () => {
-            index = i;
-            goToSlide(index);
-        });
-    });
+    function getCurrentSlideCount() {
+        return carousel.children.length;
+    }
+
+    updateDotClickHandlers();
 
     setInterval(() => {
-        index++;
+        const total = getCurrentSlideCount();
+        carouselIndex++;
 
-        if (index < total) {
-            goToSlide(index);
+        if (carouselIndex < total) {
+            goToSlide(carouselIndex);
         } else {
-            goToSlide(index);
+            goToSlide(carouselIndex);
             setTimeout(resetToStart, 510);
         }
     }, 8000);
@@ -127,6 +187,31 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         });
     });
+    // DOM이 완전히 로드된 후 실행되도록 setTimeout 추가
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            moveSurgingIfMobile();
+            // 초기 제목 설정
+            updateCarouselTitle(carouselIndex);
+            updateSurgingTitle();
+        }, 100); // 100ms 지연
+    });
+    
+    // resize 이벤트는 debounce 적용
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            moveSurgingIfMobile();
+            // 화면 크기 변경 시 제목 업데이트
+            updateCarouselTitle(carouselIndex);
+            updateSurgingTitle();
+            // 코인 데이터 다시 렌더링 (개수 변경 반영)
+            if (globalCoins.length > 0) {
+                renderCoinsByFilter('all', globalCoins);
+            }
+        }, 200); // 200ms debounce
+    });
 });
 
 // CoinFetchResponse Dto by filter
@@ -137,6 +222,124 @@ export async function loadCoins(filter = 'all') {
         renderCoinsByFilter(filter, coins);
     } catch {
         console.error('전체 코인 정보를 불러오는데 실패 했습니다.');
+    }
+}
+
+function moveSurgingIfMobile() {
+    // surging 요소를 ID로 찾기 (가장 안전한 방법)
+    let surgingContainer = document.getElementById('surging-container');
+    
+    // ID로 찾지 못한 경우 클래스로 대체 시도
+    if (!surgingContainer) {
+        surgingContainer = document.querySelector('.container-left'); // 데스크탑 상태
+        if (!surgingContainer) {
+            surgingContainer = document.querySelector('.carousel-surging-slide'); // 모바일 상태
+        }
+    }
+    const carousel = document.querySelector('.carousel-track');
+    const emptySlide = document.querySelector('.carousel-empty-slide');
+
+    // null 체크 추가
+    if (!surgingContainer) {
+        return;
+    }
+    
+    if (!carousel) {
+        return;
+    }
+
+    if (surgingOriginalParent == null) {
+        surgingOriginalParent = surgingContainer.parentElement;
+        surgingOriginalNextSibling = surgingContainer.nextElementSibling;
+    }
+
+    if (isMobile()) {
+        // 모바일: 빈 화면 슬라이드를 surging으로 교체
+        if (!carousel.contains(surgingContainer) && emptySlide) {
+            // surging container를 carousel slide로 변환
+            surgingContainer.className = 'carousel-slide carousel-surging-slide';
+            
+            // 빈 화면 슬라이드를 surging으로 교체
+            carousel.replaceChild(surgingContainer, emptySlide);
+            
+            // carousel을 중앙 슬라이드(surging)로 이동
+            carousel.style.transform = 'translateX(-100%)';
+            carouselIndex = 1; // 중앙 슬라이드 인덱스로 설정
+            
+            // dot 상태 업데이트 - 중앙(surging)을 활성화
+            const dots = document.querySelectorAll('.carousel-indicator .dot');
+            dots.forEach((dot, idx) => {
+                dot.classList.toggle('active', idx === 1);
+            });
+            
+            // dot 클릭 핸들러 업데이트
+            updateDotClickHandlers();
+            
+            // 초기 제목 설정 (중앙 슬라이드)
+            updateCarouselTitle(1);
+        }
+    } else {
+        // 데스크탑: surging을 원래 위치로 복원하고 빈 화면 슬라이드 복원
+        
+        // 원래 클래스로 복원
+        surgingContainer.className = 'container-left';
+        
+        // 강제 복원 - section-top에서 container-right 앞에 배치
+        const sectionTop = document.querySelector('.section-top');
+        const containerRight = document.querySelector('.container-right');
+        
+        if (!sectionTop) {
+            return;
+        }
+        
+        if (!containerRight) {
+            return;
+        }
+        
+        // surgingContainer가 이미 section-top에 있는지 확인
+        if (!sectionTop.contains(surgingContainer)) {
+            sectionTop.insertBefore(surgingContainer, containerRight);
+        } else {
+            // 위치가 올바른지 확인하고 필요시 이동
+            if (surgingContainer.nextElementSibling !== containerRight) {
+                sectionTop.insertBefore(surgingContainer, containerRight);
+            }
+        }
+        
+        // carousel에서 surgingContainer 제거 (있다면)
+        if (carousel.contains(surgingContainer)) {
+            // 빈 화면 슬라이드를 다시 생성하여 중간 위치에 삽입
+            const newEmptySlide = document.createElement('div');
+            newEmptySlide.className = 'carousel-slide carousel-empty-slide';
+            
+            // surging을 빈 화면으로 교체
+            carousel.replaceChild(newEmptySlide, surgingContainer);
+        } else {
+            // 빈 화면 슬라이드가 없다면 추가
+            const existingEmptySlide = carousel.querySelector('.carousel-empty-slide');
+            if (!existingEmptySlide) {
+                const newEmptySlide = document.createElement('div');
+                newEmptySlide.className = 'carousel-slide carousel-empty-slide';
+                
+                const bannerSlide = carousel.querySelector('.carousel-banner');
+                if (bannerSlide) {
+                    carousel.insertBefore(newEmptySlide, bannerSlide);
+                }
+            }
+        }
+        
+        // carousel 첫 번째 슬라이드로 리셋
+        carousel.style.transform = 'translateX(0%)';
+        carouselIndex = 0;
+        
+        // dot 상태 업데이트
+        const dots = document.querySelectorAll('.carousel-indicator .dot');
+        dots.forEach((dot, idx) => {
+            dot.classList.toggle('active', idx === 0);
+        });
+        
+        // dot 클릭 핸들러 업데이트
+        updateDotClickHandlers();
     }
 }
 

@@ -30,6 +30,9 @@ function toggleView(isCardView) {
     const listView = document.querySelector('.box-coin-list');
     const boxSort = document.querySelector('.box-sort');
 
+    console.log('toggleView called:', isCardView, 'cardView:', cardView, 'listView:', listView);
+    console.log('listView current display:', listView ? window.getComputedStyle(listView).display : 'null');
+
     if (cardView && listView) {
         if (isCardView) {
             cardView.style.display = 'grid';
@@ -45,8 +48,11 @@ function toggleView(isCardView) {
             if (viewCard) viewCard.checked = true;
         } else {
             cardView.style.display = 'none';
-            listView.style.display = 'block';
+            listView.style.display = 'flex';
             if (boxSort) boxSort.style.display = 'none';
+
+            console.log('List view activated - listView display set to:', listView.style.display);
+            console.log('List view computed display:', window.getComputedStyle(listView).display);
 
             // 모바일 뷰 토글 버튼 상태 업데이트
             document.querySelectorAll('.mobile-sort-view > div').forEach(div => {
