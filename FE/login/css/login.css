@@ -381,7 +381,7 @@ h3{
 }
 
 .input-wrap .password-input{
-    color: #fff;
+    color: #00ff2f;
 }
 
 .bio-wrap > .bio-title{
@@ -871,4 +871,8 @@ input[type="number"]:autofill {
     background-color: transparent !important;
     background-image: none !important;
     color: #00FF2F !important;
+}
+
+input[type="password"] {
+    font-family: 'GALMURI_B' !important;
 }

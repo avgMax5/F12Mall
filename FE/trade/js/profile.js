@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const userName = document.querySelector('.user-name');
     const coinBio = document.querySelector('.coin-bio');
 
-    console.log('profileData', profileData);
     tradeUserId = profileData.creator_id;
 
     // 데이터 표시

@@ -23,15 +23,11 @@ let orderButton = null;
 let resetBtn = null;
 let quickOrderBtns = null;
 let orderErrorMessage = null;
+let toggleBtn = null;
 
 // 숫자 처리 유틸리티 함수
-const parseNumberFromString = str => {
-  const cleanStr = (str || '').toString().replace(/[^0-9]/g, '');
-  return cleanStr === '' ? 0 : parseInt(cleanStr, 10);
-};
-
 const formatNumber = value => {
-  return parseNumberFromString(value).toLocaleString('ko-KR');
+  return value.toLocaleString('ko-KR');
 };
 
 // DOM 요소 초기화
@@ -49,6 +45,7 @@ const initializeDOMElements = () => {
   resetBtn = document.querySelector('.reset-btn');
   quickOrderBtns = document.querySelectorAll('.quick-orders button');
   orderErrorMessage = document.querySelector('.box-order-error-message span');
+  toggleBtn = document.querySelector('.box-toggle');
 };
 
 // 현재 코인의 보유 수량 가져오기
@@ -110,73 +107,64 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 입력 필드 포맷팅
   const formatInputValue = inputElement => {
-    const value = parseNumberFromString(inputElement.value);
+    const value = inputElement.valueAsNumber || 0;
 
     // 수량 입력 필드인 경우
     if (inputElement === quantityInput && value > MAX_ORDER_QUANTITY) {
       orderErrorMessage.textContent = `구매할 수 있는 코인은 최대 ${MAX_ORDER_QUANTITY}개입니다.`;
-      inputElement.value = formatNumber(MAX_ORDER_QUANTITY);
+      inputElement.value = MAX_ORDER_QUANTITY;
       return;
     }
 
-    // 가격 입력 필드인 경우
-    if (inputElement === orderPriceInput) {
-      // 입력 중에는 100원 단위 체크를 하지 않음
-      inputElement.value = value === 0 ? '' : formatNumber(value);
-      return;
+    // NaN 체크
+    if (isNaN(value)) {
+      inputElement.value = 0;
     }
-
-    inputElement.value = value === 0 ? '' : formatNumber(value);
+    
     orderErrorMessage.textContent = '';
   };
 
   // 주문 유효성 검사
   const validateOrder = (orderFis, orderPrice) => {
-    const parsedFis = parseNumberFromString(orderFis);
-    const parsedPrice = parseNumberFromString(orderPrice);
-    const totalPrice = parsedFis * parsedPrice;
-
-    if (!parsedFis || parsedFis <= 0) {
+    if (isNaN(orderFis) || orderFis <= 0) {
       orderErrorMessage.textContent = '유효한 주문 수량을 입력해주세요.';
       throw new Error('유효한 주문 수량을 입력해주세요.');
     }
-    if (parsedFis > MAX_ORDER_QUANTITY) {
+    if (orderFis > MAX_ORDER_QUANTITY) {
       orderErrorMessage.textContent = `구매할 수 있는 코인은 최대 ${MAX_ORDER_QUANTITY}개입니다.`;
-      throw new Error(
-        `구매할 수 있는 코인은 최대 ${MAX_ORDER_QUANTITY}개입니다.`
-      );
+      throw new Error(`구매할 수 있는 코인은 최대 ${MAX_ORDER_QUANTITY}개입니다.`);
     }
-    if (!parsedPrice || parsedPrice <= 0) {
+    if (isNaN(orderPrice) || orderPrice <= 0) {
       orderErrorMessage.textContent = '유효한 주문 가격을 입력해주세요.';
       throw new Error('유효한 주문 가격을 입력해주세요.');
     }
-    if (parsedPrice % PRICE_UNIT !== 0) {
+    if (orderPrice % PRICE_UNIT !== 0) {
       orderErrorMessage.textContent = '가격은 100원 단위로만 입력 가능합니다.';
       throw new Error('가격은 100원 단위로만 입력 가능합니다.');
     }
-    if (
-      containerInterface.classList.contains('buy-mode') &&
-      totalPrice > userMoney
-    ) {
+    
+    const totalPrice = orderFis * orderPrice;
+    if (containerInterface.classList.contains('buy-mode') && totalPrice > userMoney) {
       orderErrorMessage.textContent = '주문 가능 금액을 초과했습니다.';
       throw new Error('주문 가능 금액을 초과했습니다.');
     }
+    
     orderErrorMessage.textContent = '';
     return true;
   };
 
   // 입력 필드 초기화
   const resetInputs = () => {
-    quantityInput.value = '0';
-    orderPriceInput.value = '0';
-    totalPriceInput.value = '0';
+    quantityInput.value = 0;
+    orderPriceInput.value = 0;
+    totalPriceInput.value = 0;
     orderErrorMessage.textContent = '';
   };
 
   // 총액 계산
   const calculateTotalPrice = () => {
-    const quantity = parseNumberFromString(quantityInput.value);
-    const orderPrice = parseNumberFromString(orderPriceInput.value);
+    const quantity = quantityInput.valueAsNumber || 0;
+    const orderPrice = orderPriceInput.valueAsNumber || 0;
     const isBuyMode = containerInterface.classList.contains('buy-mode');
 
     const totalPrice = isBuyMode
@@ -229,11 +217,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 퀵 오더 처리
   const handleQuickOrder = increment => {
-    const currentPrice = parseNumberFromString(orderPriceInput.value);
-    const newPrice = currentPrice + parseInt(increment);
+    const currentPrice = orderPriceInput.valueAsNumber || 0;
+    const newPrice = currentPrice + increment;
     const roundedPrice = Math.floor(newPrice / PRICE_UNIT) * PRICE_UNIT;
     if (roundedPrice > 0) {
-      orderPriceInput.value = formatNumber(roundedPrice);
+      orderPriceInput.value = roundedPrice;
       calculateTotalPrice();
     }
   };
@@ -246,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
         formatInputValue(input);
         calculateTotalPrice();
         try {
-          validateOrder(quantityInput.value, orderPriceInput.value);
+          validateOrder(quantityInput.valueAsNumber || 0, orderPriceInput.valueAsNumber || 0);
         } catch (error) {
           // 유효성 검사 실패 시 에러 메시지는 validateOrder에서 설정됨
         }
@@ -255,11 +243,14 @@ document.addEventListener('DOMContentLoaded', () => {
       // 포커스 아웃 시 추가 검증
       input?.addEventListener('blur', () => {
         if (input === orderPriceInput && input.value) {
-          const price = parseNumberFromString(input.value);
+          const price = input.valueAsNumber || 0;
           const roundedPrice = Math.floor(price / PRICE_UNIT) * PRICE_UNIT;
-          input.value = formatNumber(roundedPrice);
+          input.value = roundedPrice;
           calculateTotalPrice();
           orderErrorMessage.textContent = '';
+        } else if (input === quantityInput && input.value) {
+          input.value = input.valueAsNumber || 0;
+          calculateTotalPrice();
         }
       });
     });
@@ -270,12 +261,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 주문 버튼
     orderButton?.parentElement?.addEventListener('click', async () => {
-      const orderFis = parseNumberFromString(quantityInput.value);
-      const orderPrice = parseNumberFromString(orderPriceInput.value);
+      const orderFis = quantityInput.valueAsNumber || 0;
+      const orderPrice = orderPriceInput.valueAsNumber || 0;
 
       // 먼저 유효성 검사
       try {
-        validateOrder(quantityInput.value, orderPriceInput.value);
+        validateOrder(orderFis, orderPrice);
       } catch (error) {
         showFailAlert(error.message);
         return;
@@ -320,6 +311,31 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.addEventListener('click', () =>
         handleQuickOrder(parseInt(btn.value))
       );
+    });
+
+    // 토글 버튼 이벤트 리스너
+    toggleBtn?.addEventListener('click', () => {
+      containerInterface?.classList.toggle('show');
+    });
+
+    // 모바일에서 interface 영역 외 클릭 시 닫기
+    document.addEventListener('click', (event) => {
+      const isMobile = window.innerWidth <= 767;
+      if (!isMobile) return;
+
+      const isInterfaceClick = containerInterface?.contains(event.target);
+      const isToggleClick = toggleBtn?.contains(event.target);
+
+      if (!isInterfaceClick && !isToggleClick && containerInterface?.classList.contains('show')) {
+        containerInterface.classList.remove('show');
+      }
+    });
+
+    // 화면 크기 변경 시 모바일 아닐 때는 show 클래스 제거
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 767) {
+        containerInterface?.classList.remove('show');
+      }
     });
   };
 

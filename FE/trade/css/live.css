@@ -9,6 +9,7 @@
   font-family: 'KIMM_B';
   position: relative;
   overflow: hidden;
+  min-width: fit-content;
 }
 
 .container-live::before {
@@ -31,14 +32,18 @@
 
 .box-live-price {
   color: #66ff66;
-  text-shadow: 0 0 8px #00ff2f;
+  text-shadow: 0 0 4px #00ff2f;
   text-align: start;
   position: relative;
   transition: all 0.3s ease;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .box-live-price > span {
   font-size: 0.8rem;
+  padding: 0 1rem;
+  white-space: nowrap;
 }
 
 .box-live-price #current-price {

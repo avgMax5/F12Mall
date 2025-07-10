@@ -1,7 +1,22 @@
 .container-interface {
-  background-color: rgba(15, 15, 15, 0.7);
   display: flex;
   flex-direction: column;
+}
+
+.container-interface .box-toggle {
+  display: none;
+}
+
+.box-toggle .toggle-btn {
+  width: 100%;
+  background-color: #ff9d00;
+  color: #ffffff;
+  padding: 0.5rem;
+  border-top-left-radius: 0.7rem;
+  border-top-right-radius: 0.7rem;
+  border: none;
+  font-family: 'KIMM_B';
+  font-size: 1.2rem;
 }
 
 .container-interface .box-type-controller {
@@ -24,6 +39,7 @@
   border-top: 1px solid #00ff2f;
   border-right: 1px solid #00ff2f;
   border-left: 1px solid #00ff2f;
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 .box-type-controller > button.deactive {
@@ -38,7 +54,7 @@
   text-shadow: 0 0 5px #00ff2f;
 }
 
-.container-interface > div:nth-child(2) {
+.container-interface > div:nth-child(2) > div:nth-child(2) {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
@@ -46,6 +62,7 @@
   border-right: 1px solid #00ff2f;
   border-bottom: 1px solid #00ff2f;
   border-left: 1px solid #00ff2f;
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 .box-order-item {
@@ -95,6 +112,18 @@
   background: #000000;
   color: #00ff2f;
   font-family: 'KIMM_B';
+}
+
+/* number input의 스피너(업다운 버튼) 제거 */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 .box-order-item .quick-orders {
@@ -150,7 +179,7 @@
   font-family: 'KIMM_L';
 }
 
-.container-interface > div:nth-child(2) .box-order-btn {
+.container-interface > div:nth-child(2) > div:nth-child(2) .box-order-btn {
   display: flex;
   gap: 1rem;
 }
