@@ -14,10 +14,11 @@
     padding: 0;
   }
   .section-right-title {
-    padding: 0.6rem 0;
     width: 100%;
-    color: #ffbb00;
+    height: 1.2rem;
+    line-height: 1.2rem;
     font-size: 1rem;
+    color: #ffbb00;
   }
   .media-border-none {
     border: none !important;
@@ -38,10 +39,9 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 33%;
     border-radius: 0px 0px 30px 30px;
     box-shadow: 0px 6px 10px 5px #00ff0069;
-    background-color: #3d3d3d;
+    background-color: #000000cc;
   }
   .section-left .media-profile-right-row {
     /* display: grid;
@@ -66,7 +66,10 @@
     margin-bottom: 1.2rem;
   }
   .box-contents .media-profile-left-row #image {
-    width: 13rem;
+    width: 10rem;
+  }
+  .box-contents #link-container .link {
+    width: 1.5rem;
   }
   .container-profile .box-contents #position {
     margin-top: 2rem;
@@ -77,6 +80,7 @@
   }
   .section-right {
     height: calc(85vh - 20rem);
+    gap: 4rem;
     margin-top: 2rem;
   }
   .container-ratio {
@@ -98,41 +102,55 @@
   }
   .box-list-main {
     background-color: #000000ab;
-    height: 84%;
   }
   .box-list-main .coin-list {
     width: 90%;
+    height: 85%;
     margin-top: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    grid-template-columns: repeat(2, 48%);
   }
   /* 코인 */
   .box-list-main .coin-list .coin {
     position: relative;
     height: 6.6rem;
     margin-bottom: 1rem;
+    grid-template-rows: 1fr 3fr;
   }
   .coin .info-container {
-    display: inline-block;
+    padding: 0 1.2rem;
+  }
+  .coin .info-container #creator-image {
+    width: 3.5rem;
+    border-radius: 3px;
   }
   .coin .result-container {
     display: inline-block;
     position: absolute;
     right: 0rem;
-    bottom: 1.4rem;
+    bottom: 1rem;
   }
 }
 
 /* 테블릿 */
 @media (min-width: 768px) and (max-width: 1199px) {
   html {
-    font-size: 11px;
+    font-size: 10px;
   }
-  .container-list-coins {
-    margin-top: 2rem;
-    height: 50%;
+  .section-right-title {
+    font-size: 0.6rem;
   }
   .box-contents #stack-container .stack {
     font-size: 0.5rem;
+    border-radius: 0.6rem;
+  }
+  .box-contents #link-container .link {
+    width: 1.6rem;
+  }
+  .container-ratio .box-coins {
+    margin-top: 2rem;
+  }
+  .coin-container {
+    font-size: 0.6rem !important;
   }
   .total-money-container #valuation-rate {
     height: 2rem;
@@ -143,8 +161,25 @@
   .total-money-container .line {
     font-size: 1rem;
   }
+
+  .container-information,
+  .container-list-coins {
+    gap: 0.2rem;
+    grid-template-rows: 1.3rem 1fr;
+  }
+  .container-list-coins {
+    margin-top: 2rem;
+    height: 50%;
+  }
   .box-list-main {
     height: 52%;
+  }
+  .box-list-main .coin-list {
+    grid-template-columns: repeat(2, 48.6%) !important;
+  }
+  .box-list-main .total-info {
+    font-size: 0.7rem;
+    padding: 0.6rem;
   }
 }
 
@@ -152,8 +187,31 @@
   html {
     font-size: 16px;
   }
+  .section-left {
+    grid-template-rows: 2.4fr 1fr;
+  }
   .box-contents #stack-container .stack {
     font-size: 0.5rem;
+    border-radius: 0.6rem;
+  }
+  .box-contents #link-container .link {
+    width: 1.8rem;
+  }
+  .coin-container .coin {
+    width: 0.6rem;
+    height: 0.6rem;
+  }
+  /* section-right */
+  .section-right {
+    gap: 0.6rem;
+  }
+  .section-right-title {
+    font-size: 0.5rem;
+  }
+  .container-information,
+  .container-list-coins {
+    gap: 0.4rem;
+    grid-template-rows: 1.1rem 1fr;
   }
   .box-inform-main .main-left {
     font-size: 0.8rem;
@@ -166,6 +224,20 @@
   }
   .total-money-container .line {
     font-size: 0.8rem;
+  }
+  .box-list-main .coin-list {
+    grid-template-columns: repeat(3, 32%);
+  }
+  .box-list-main .total-info {
+    font-size: 0.6rem;
+    padding: 0.6rem;
+  }
+  .box-coins .coin-container {
+    font-size: 0.6rem;
+  }
+  .coin-container .circle {
+    width: 0.6rem;
+    height: 0.6rem;
   }
 }
 
