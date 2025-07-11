@@ -159,21 +159,44 @@ body {
 }
 
 .surging-entry .entry-right {
+  color: #ffffff;
   display: flex;
   font-size: 0.875rem;
-  color: #e01200;
   align-items: center;
   padding-right: 0.25rem;
   white-space: nowrap;
 }
 
+.entry-change.up {
+  color: #e01200;
+}
+
+.entry-change.down {
+  color: #1376ee;
+}
+
 .entry-right>.entry-change.up::before {
   content: '▲';
+  color: #e01200;
+  
   font-size: 0.5rem;
-  display: inline-block;
-  vertical-align: middle;
   margin-bottom: 0.1875rem;
   padding-right: 0.1875rem;
+
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.entry-right>.entry-change.down::before {  
+  content: '▼';
+  color: #1376ee;
+
+  font-size: 0.5rem;
+  margin-bottom: 0.1875rem;
+  padding-right: 0.1875rem;
+
+  display: inline-block;
+  position: middle;
 }
 
 /* api 연동 시 따로 분리 또는 동적 생성 */
@@ -294,6 +317,7 @@ body {
 .card-price>.card-change {
   font-size: 0.6875rem;
   display: flex;
+  color: #ffffff;
   justify-content: flex-end;
   align-items: baseline;
 }
@@ -620,6 +644,7 @@ sect-bot : card-view (container-bottom)
 
 .card-info .info-change {
   height: 50%;
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: start;
