@@ -3,11 +3,7 @@ package com.avgmax.user.dto.request;
 import java.util.List;
 import com.avgmax.user.dto.data.LinkData;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
-
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 // @NoArgsConstructor
