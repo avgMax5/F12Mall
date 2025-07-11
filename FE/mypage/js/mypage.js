@@ -34,9 +34,14 @@ function renderUserProfile(user) {
   document.querySelector('#name').textContent = user.name;
   document.querySelector('#email').textContent = user.email;
   document.querySelector('#coin-name').textContent = user.username;
-  const profileImage = user.image ? user.image : `${CONFIG.DEFAULT_PROFILE_IMG}`;
-  document.querySelector('#image').style.backgroundImage = `url(${profileImage})`;
-  document.querySelector('#money').textContent = user.money.toLocaleString('ko-KR');
+  const profileImage = user.image
+    ? user.image
+    : `${CONFIG.DEFAULT_PROFILE_IMG}`;
+  document.querySelector(
+    '#image'
+  ).style.backgroundImage = `url(${profileImage})`;
+  document.querySelector('#money').textContent =
+    user.money.toLocaleString('ko-KR');
   document.querySelector('#position').textContent = user.position;
   document.querySelector('#bio').textContent = user.bio;
 
@@ -78,6 +83,7 @@ function renderUserProfile(user) {
 
 function renderCoinList(coins) {
   const coinList = document.querySelector('.coin-list');
+  console.log(coins);
 
   fetch('/mypage/component/coin.html')
     .then(res => res.text())
@@ -87,6 +93,7 @@ function renderCoinList(coins) {
         wrapper.innerHTML = template;
 
         const coin = wrapper.querySelector('.coin');
+        const resultContainer = coin.querySelector('.result-container');
         const defaultImage = `${CONFIG.DEFAULT_PROFILE_IMG}`;
 
         // class로 접근하여 데이터 주입
@@ -109,6 +116,26 @@ function renderCoinList(coins) {
           coinData.current_price.toLocaleString('ko-KR');
         coin.querySelector('#valuation-rate').textContent =
           coinData.valuation_rate;
+        const valuationRateElem = coin.querySelector('#valuation-rate');
+
+        // 기존 % span이 있으면 재사용, 없으면 새로 생성
+        let percent = resultContainer.querySelector('span.percent-sign');
+        if (!percent) {
+          percent = document.createElement('span');
+          percent.className = 'percent-sign';
+          resultContainer.appendChild(percent);
+        }
+        percent.textContent = '%';
+
+        if (valuationRateElem) {
+          if (coinData.valuation_rate > 0) {
+            valuationRateElem.style.color = '#e01200'; // 빨간색(수익)
+            percent.style.color = '#e01200';
+          } else if (coinData.valuation_rate < 0) {
+            valuationRateElem.style.color = '#1376ee'; // 파란색(손실)
+            percent.style.color = '#1376ee';
+          }
+        }
 
         coinList.appendChild(coin);
       });
@@ -144,6 +171,14 @@ function calculateCoin(coins, userMoney) {
     totalMoneyContainer.querySelector('#subtract-amount');
   subtractAmountElemt.textContent =
     subtractAmount.toLocaleString('ko-KR') + ` (${rateDisplay})`;
+  // 색상 동적 적용
+  if (subtractAmount > 0) {
+    subtractAmountElemt.style.color = '#e01200'; // 빨간색(수익)
+  } else if (subtractAmount < 0) {
+    subtractAmountElemt.style.color = '#1376ee'; // 파란색(손실)
+  } else {
+    subtractAmountElemt.style.color = '#fff'; // 0일 때 흰색
+  }
 
   const totalInfo = document.querySelector('.total-info');
   totalInfo.querySelector('#total-coins').textContent = totalCoins;
@@ -192,8 +227,8 @@ function calculateRatio(coins) {
   const boxCoins = document.querySelector('.box-coins');
   if (!boxCoins) return;
   boxCoins.innerHTML = '';
-  // top3
-  top3.forEach((coin, idx) => {
+  // top3 높은 순서대로 추가 (비동기 순서 보장)
+  const top3Promises = top3.map((coin, idx) =>
     fetch('/mypage/component/coin-element.html')
       .then(res => res.text())
       .then(template => {
@@ -210,25 +245,28 @@ function calculateRatio(coins) {
           else if (idx === 1) circle.style.backgroundColor = '#008C1A';
           else if (idx === 2) circle.style.backgroundColor = '#00C943';
         }
-        boxCoins.appendChild(container);
-      });
+        return container;
+      })
+  );
+  Promise.all(top3Promises).then(containers => {
+    containers.forEach(c => boxCoins.appendChild(c));
+    // etc
+    if (etcRatio > 0) {
+      fetch('/mypage/component/coin-element.html')
+        .then(res => res.text())
+        .then(template => {
+          const wrapper = document.createElement('div');
+          wrapper.innerHTML = template;
+          const container = wrapper.querySelector('.coin-container');
+          container.classList.add('etc');
+          container.querySelector('#username').textContent = '기타';
+          container.querySelector('#ratio').textContent = etcRatio.toFixed(1);
+          const circle = container.querySelector('.circle');
+          if (circle) circle.style.backgroundColor = '#B0B0B0';
+          boxCoins.appendChild(container);
+        });
+    }
   });
-  // etc
-  if (etcRatio > 0) {
-    fetch('/mypage/component/coin-element.html')
-      .then(res => res.text())
-      .then(template => {
-        const wrapper = document.createElement('div');
-        wrapper.innerHTML = template;
-        const container = wrapper.querySelector('.coin-container');
-        container.classList.add('etc');
-        container.querySelector('#username').textContent = '기타';
-        container.querySelector('#ratio').textContent = etcRatio.toFixed(1);
-        const circle = container.querySelector('.circle');
-        if (circle) circle.style.backgroundColor = '#B0B0B0';
-        boxCoins.appendChild(container);
-      });
-  }
 }
 
 function fetchMyQuantity(coins, userId) {

@@ -3,7 +3,6 @@
   border: 1px solid #00ff2f;
 }
 .section-right-title {
-  margin-bottom: 0.6rem;
   width: 10rem;
   padding: 0.25rem 0;
   text-align: center;
@@ -29,10 +28,10 @@ canvas {
   height: 100vh;
 }
 #wrapper {
-  position: relative;
-  width: 100%;
-  min-width: 393px;
-  max-width: 270rem;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
 }
 .width {
   width: 90%;
@@ -51,7 +50,6 @@ canvas {
   gap: 1rem;
   position: relative;
   background-color: #98989859;
-  height: calc(100vh - 8rem);
   margin-right: 0.8rem;
   padding: 1rem 1rem;
 }
@@ -142,7 +140,7 @@ canvas {
 .container-ratio {
   width: 100%;
   height: 100%;
-  background-color: #00000088;
+  background-color: #000000a1;
 }
 .container-ratio > div:first-child {
   font-size: 0.8rem;
@@ -174,7 +172,9 @@ canvas {
 .section-right {
   position: relative;
   padding: 1rem 1rem;
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   grid-template-rows: 2fr 5fr;
   color: #fff;
   height: calc(100vh - 8rem);
@@ -182,11 +182,6 @@ canvas {
 }
 
 /* coin information 영역 */
-.container-information {
-  /* height: 40%; */
-  display: flex;
-  flex-direction: column;
-}
 .container-information > .box-inform-main {
   display: grid;
   grid-template-columns: 36% 64%;
@@ -269,23 +264,28 @@ span:nth-child(6) {
 }
 .main-right .graph-container {
   position: relative;
-  height: 300px; /* 적절한 높이 지정 */
   width: 100%;
+  min-height: 2rem;
+  height: 100%; /* 화면 크기에 따라 유동적으로 */
+  /* max-height: 10rem; */
 }
 #graph {
   width: 100%;
-  height: 100%; /* 부모 높이 꽉 채움 */
+  height: 100%;
+  min-height: 2rem;
+  /* max-height: 10rem; */
 }
 
 /* list of coins 영역 */
+.container-information,
 .container-list-coins {
-  position: relative;
-  margin-top: 1.6rem;
-  height: 87%;
+  height: 100%;
+  display: grid;
+  gap: 0.8rem;
+  grid-template-rows: 1.5rem 1fr;
 }
 .box-list-main {
-  margin-top: 0.5rem;
-  height: 92%;
+  /* height: 100%; */
   background-color: #00000088;
   overflow-y: auto;
 }
@@ -307,18 +307,25 @@ span:nth-child(6) {
   /* height: 86%; */
   margin: 0 auto;
   overflow-y: auto;
+  overflow-x: hidden;
   box-sizing: border-box;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE, Edge */
+}
+.box-list-main .coin-list::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
 }
 .coin {
   width: 100%;
-  height: 10rem;
+  height: 11rem;
+  display: grid;
+  grid-template-rows: 1fr 3fr 1fr;
 }
 .coin .name-container {
   display: flex;
   justify-content: space-between;
   text-align: center;
   line-height: 1.5rem;
-  /* height: 1.5rem; */
   margin-bottom: 0.5rem;
   padding: 0 12px;
   border-bottom: 0.8px solid #00ff2f;
@@ -331,17 +338,21 @@ span:nth-child(6) {
 }
 
 .coin .info-container {
-  /* height: 60%; */
-  display: flex;
-  margin: 0 0.8rem;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 0.8rem;
+  margin-top: 0.4rem;
+  padding: 0 0.8rem;
 }
 
 .info-container #creator-image {
-  width: 4rem;
-  /* height: 4rem; */
-  margin-right: 0.8rem;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  height: auto;
   border-radius: 6px;
   background-color: rgb(153, 153, 153);
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 .info-container .group {
   position: relative;
@@ -380,17 +391,16 @@ span:nth-child(6) {
 .coin .result-container {
   margin-top: 3px;
   padding: 0 10px;
-  /* height: 1.2rem; */
   color: #ff1d1d;
   text-align: right;
 }
 
 .result-container .unit-text {
-  font-size: 9px;
+  font-size: 0.5rem;
 }
 .result-container #valuation-rate {
-  font-size: 20px;
-  margin-left: 15px;
+  font-size: 1.1rem;
+  margin-left: 0.9rem;
 }
 /* 추가추가추가 */
 .bar-container {

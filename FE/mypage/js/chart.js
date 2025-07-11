@@ -5,24 +5,29 @@ export function renderPieChart(myQuantity) {
 
   const sellQuantity = 1000 - myQuantity;
 
+  const legendFontSize = window.innerWidth < 600 ? 9 : 12;
+
   const option = {
     tooltip: {
       trigger: 'item',
     },
     legend: {
-      bottom: '5%',
+      bottom: '0',
       left: 'center',
       itemGap: 20,
+      itemWidth: 18, // ← 색상 박스 가로 크기 (기본 25)
+      itemHeight: 10, // ← 색상 박스 세로 크기 (기본 14)
       textStyle: {
         color: '#ffffff',
-        fontSize: 12,
+        fontSize: legendFontSize,
       },
     },
     series: [
       {
         name: '보유 현황',
         type: 'pie',
-        radius: ['30%', '80%'],
+        radius: ['30%', '70%'],
+        center: ['50%', '45%'], // 차트 자체를 위로 올림 (기본은 50%)
         avoidLabelOverlap: false,
         itemStyle: {
           borderRadius: 4,
@@ -36,7 +41,7 @@ export function renderPieChart(myQuantity) {
         emphasis: {
           label: {
             show: true,
-            fontSize: 30,
+            fontSize: legendFontSize,
             fontWeight: 'bold',
             color: '#ffffff',
           },
