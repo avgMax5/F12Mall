@@ -48,8 +48,7 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<UserLogoutResponse> logout(HttpSession session, HttpServletResponse response) {
-        log.info("로그아웃 시도");
-        
+        log.info("로그아웃 시도: {}", session.getAttribute("user"));      
         session.invalidate();
         
         Cookie cookie = new Cookie("JSESSIONID", null);
@@ -64,7 +63,7 @@ public class AuthController {
 
     @PostMapping("/check-username")
     public ResponseEntity<UsernameCheckResponse> checkUsernameDuplicate(@RequestBody UsernameCheckRequest request) {
-        log.info("Username 중복 확인: {}", request.getUsername());
+        log.info("Username 중복 확인 요청: {}", request.getUsername());
         UsernameCheckResponse response = authService.isUsernameDuplicate(request.getUsername());
         return ResponseEntity.ok(response);
     }

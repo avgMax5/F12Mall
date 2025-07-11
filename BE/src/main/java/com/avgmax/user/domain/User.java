@@ -83,7 +83,7 @@ public class User extends BaseTimeEntity  {
         if (!Objects.equals(this.username, username)) {
             this.username = username;
         }
-        if (rawPassword != null && !rawPassword.isBlank()) {
+        if (rawPassword != null && !rawPassword.isBlank() && !rawPassword.equals("undefined")) {
             if (this.pwd == null || !encoder.matches(rawPassword, this.pwd)) {
                 this.pwd = encoder.encode(rawPassword);
             }

@@ -58,8 +58,7 @@ async function collectFormData() {
   const uploadResult = await uploadFiles(profileFile, resumeFile, certificateUpload, educationCertUpload, careerCertUpload);
   
   const username = document.querySelector('.id-input').value;
-  const passwordInput = document.querySelector('input[placeholder="비밀번호"]');
-  const pwd = passwordInput.value;
+  const passwordInput = document.querySelector('.password-input');
   const email = document.querySelector('.email-input').value;
   const name = document.querySelector('.name-input').value;
   const position = document.querySelector('.position-input').value;
@@ -78,7 +77,7 @@ async function collectFormData() {
   const modifiedUserData = {
     image: uploadResult?.profile?.[0] ?? `${user.image}`,
     username: username.trim() === '' ? `${user.username}` : username,
-    pwd: pwd.trim() === '' ? `${user.pwd}` : pwd,
+    pwd: passwordInput?.value.trim() ?? '',
     email: email.trim() === '' ? user.email : email,
     name: name.trim() === '' ? user.name : name,
     position: position.trim() === '' ? user.position : position,
