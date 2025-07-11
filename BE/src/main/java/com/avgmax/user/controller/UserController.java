@@ -63,23 +63,23 @@ public class UserController {
 
       if (profile != null && !profile.isEmpty()) {
          result.put("profile", fileService.uploadForUser(profile));
-         log.info("upload profile file");
+         log.info("프로필 업로드 완료");
       }
       if (resume != null && !resume.isEmpty()) {
          result.put("resume", fileService.uploadForUser(resume));
-         log.info("upload resume file");
+         log.info("이력서 업로드 완료");
       }
       if (certification != null && !certification.isEmpty()) {
          result.put("certification", fileService.uploadForUser(certification));
-         log.info("upload certification file");
+         log.info("자격증 업로드 완료");
       }
       if (education != null && !education.isEmpty()) {
          result.put("education", fileService.uploadForUser(education));
-         log.info("upload education file");
+         log.info("학력 업로드 완료");
       }
       if (career != null && !career.isEmpty()) {
          result.put("career", fileService.uploadForUser(career));
-         log.info("upload career file");
+         log.info("커리어 업로드 완료");
       }
 
       return ResponseEntity.ok(result);
@@ -89,7 +89,7 @@ public class UserController {
    @GetMapping("/me/coins")
    public ResponseEntity<List<UserCoinResponse>> getUserCoinList(HttpSession session){
       String userId = (String) session.getAttribute("user");
-      log.info("GET 보유 코인 목록 조회 userId: {}", userId);
+      log.debug("GET 보유 코인 목록 조회 userId: {}", userId);
       List<UserCoinResponse> responses = userService.getUserCoinList(userId);
       return ResponseEntity.ok(responses);
    }
@@ -101,6 +101,7 @@ public class UserController {
          @RequestBody UserProfileUpdateRequest request
       ){
          String userId = (String) session.getAttribute("user");
+         log.info("프로필 정보 수정 userId: {}", userId);
          UserProfileUpdateResponse response = userService.updateUserProfile(userId, request);
          return ResponseEntity.ok(response);
    }
