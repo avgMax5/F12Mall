@@ -43,7 +43,7 @@ function renderUserProfile(user) {
   document.querySelector('#money').textContent =
     user.money.toLocaleString('ko-KR');
   document.querySelector('#position').textContent = user.position;
-  document.querySelector('#bio').textContent = user.bio;
+  document.querySelector('#bio').innerHTML = (user.bio || '').replace(/\n/g, '<br>');
 
   //stack element 넣어주기
   const stackContainer = document.querySelector('#stack-container');

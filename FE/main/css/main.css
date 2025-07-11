@@ -767,15 +767,22 @@ sect-bot : list-view (container-bottom)
 }
 
 /* up & down */
+
+.col.col-diff{
+  color:#ffffff;
+}
+
+.col.col-diff.up{
+  color: #e01200;
+}
+
+.col.col-diff.down{
+  color: #1376ee;
+}
+
 .col.col-diff.up::before {
   content: '▲';
   font-size: 0.75rem;
-  padding-right: 0.5rem;
-}
-
-.col.col-rate.up::before {
-  content: '+';
-  font-size: 0.875rem;
   padding-right: 0.5rem;
 }
 
@@ -783,6 +790,25 @@ sect-bot : list-view (container-bottom)
   content: '▼';
   font-size: 0.75rem;
   padding-right: 0.625rem;
+}
+
+
+.col.col-rate{
+  color:#ffffff;
+}
+
+.col.col-rate.up{
+  color: #e01200;
+}
+
+.col.rate-diff.down{
+  color: #1376ee;
+}
+
+.col.col-rate.up::before {
+  content: '+';
+  font-size: 0.875rem;
+  padding-right: 0.5rem;
 }
 
 .col.col-rate.down::before {

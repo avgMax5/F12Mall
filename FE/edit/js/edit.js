@@ -3,8 +3,6 @@ import { putEditProfile } from '/hook/user/putEditProfile.js';
 import { CONFIG } from '/config.js';
 
 export let editUserId = null;
-
-const toNullIfEmpty = (value) => value.trim() === '' ? null : value;
 const API_UPLOAD_URL = `${CONFIG.API_BASE_URL}/users/upload`;
 
 const MAX_FILE_SIZE_MB = 5; // 업로드 파일사이즈 5MB 제한 (1개당)

@@ -14,7 +14,7 @@ export async function initModalContent(userId) {
   document.getElementById('modal-profile-realname').innerText = data.name || '';
   document.getElementById('modal-profile-role').innerText = data.position || 'Role not specified';
   document.getElementById('modal-profile-email').innerText = data.email || 'No email provided';
-  document.getElementById('modal-profile-desc').textContent = data.bio || 'No bio provided';
+  document.getElementById('modal-profile-desc').innerHTML = (data.bio || 'No bio provided').replace(/\n/g, '<br>');
 
   // Tech Stack
   const techStackList = document.getElementById('modal-tech-stack-list');

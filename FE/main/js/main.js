@@ -378,7 +378,7 @@ function renderSurgingCoins(coins) {
                 <span class="entry-name">${coin.coin_name}</span>
             </div>
             <div class="entry-right">
-                <span class="entry-change ${upOrDown}">${coin.fluctuation_rate.toFixed(2)}%</span>
+                <span class="entry-change ${upOrDown}">${Math.abs(coin.fluctuation_rate.toFixed(2))}%</span>
             </div>`;
 
         surgingList.appendChild(entry);
@@ -413,8 +413,8 @@ function renderPriceCoins(coins) {
                 </div>
                 <div class="card-price">
                     <div class="card-change ${upOrDown}">
-                        ${coin.change_price.toLocaleString(undefined, { maximumFractionDigits: 0 })}
-                        <span class="change-percent">(${coin.fluctuation_rate.toFixed(2)}%)</span>
+                        ${Math.abs(coin.change_price.toLocaleString(undefined, { maximumFractionDigits: 0 }))}
+                        <span class="change-percent">(${Math.abs(coin.fluctuation_rate.toFixed(2))}%)</span>
                     </div>
                     <div class="price-icon">
                         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -479,8 +479,8 @@ function renderCardViewCoins(coins) {
                         <div class="info-author">${coin.user_name}</div>
                     </div>
                     <div class="info-change ${upOrDown}">
-                        <span class="change-amount">${coin.change_price.toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
-                        <span class="change-percent">(${coin.fluctuation_rate.toFixed(2)}%)</span>
+                        <span class="change-amount">${Math.abs(coin.change_price.toLocaleString(undefined, { maximumFractionDigits: 0 }))}</span>
+                        <span class="change-percent">(${Math.abs(coin.fluctuation_rate.toFixed(2))}%)</span>
                     </div>
                 </div>
             </div>
@@ -506,7 +506,7 @@ function renderListViewCoins(coins) {
 
     coins.forEach((coin) => {
         const table = document.createElement('div');
-        const upOrDown = coin.change_price >= 0 ? 'up' : 'down';
+        const upOrDown = coin.fluctuation_rate > 0 ? 'up' : (coin.fluctuation_rate < 0 ? 'down' : '');
 
         table.className = className;
         table.dataset.coinId = `${coin.coin_id}`;
@@ -514,8 +514,8 @@ function renderListViewCoins(coins) {
             `<div class="col col-coin">${coin.coin_name}</div>
             <div class="col col-name">${coin.user_name}</div>
             <div class="col col-price">${coin.current_price.toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
-            <div class="col col-diff ${upOrDown}">${coin.change_price.toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
-            <div class="col col-rate ${upOrDown}">${coin.fluctuation_rate.toFixed(2)}%</div>
+            <div class="col col-diff ${upOrDown}">${Math.abs(coin.change_price.toLocaleString(undefined, { maximumFractionDigits: 0 }))}</div>
+            <div class="col col-rate ${upOrDown}">${Math.abs(coin.fluctuation_rate).toFixed(2)}%</div>
             <div class="col col-volume">${coin.trade_volume.toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
             <div class="col col-low">${coin.lowest_price.toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
             <div class="col col-high">${coin.highest_price.toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>`;
