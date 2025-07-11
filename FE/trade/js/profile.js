@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     if (coinBio) {
-      coinBio.textContent = profileData.bio || '';
+      coinBio.innerHTML = (profileData.bio || '').replace(/\n/g, '<br>');
     }
 
   } catch (error) {

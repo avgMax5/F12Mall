@@ -6,12 +6,6 @@ async function updateHeaderInfo() {
     const user = await getMyProfile();
     const coins = await getUserCoins();
 
-    // 프로필 이미지 업데이트
-    // const profileImg = document.getElementById("header-profile-img");
-    // if (profileImg && user.image) {
-    //   profileImg.src = user.image;
-    // }
-
     // 총 자산 계산 및 표시
     let currentCoinAmount = 0;
     coins.forEach(element => {

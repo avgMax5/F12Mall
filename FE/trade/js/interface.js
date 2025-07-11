@@ -66,7 +66,7 @@ export const updateAvailableAmount = () => {
     availableAmount.textContent = `₩ ${formatNumber(userMoney)}`;
   } else {
     const holdQuantity = getCurrentCoinHoldQuantity();
-    availableAmount.textContent = `${holdQuantity} 개`;
+    availableAmount.textContent = `${holdQuantity} FIS`;
   }
 };
 
@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 수량 입력 필드인 경우
     if (inputElement === quantityInput && value > MAX_ORDER_QUANTITY) {
-      orderErrorMessage.textContent = `구매할 수 있는 코인은 최대 ${MAX_ORDER_QUANTITY}개입니다.`;
+      orderErrorMessage.textContent = `구매할 수 있는 코인은 최대 ${MAX_ORDER_QUANTITY} FIS 입니다.`;
       inputElement.value = MAX_ORDER_QUANTITY;
       return;
     }
@@ -131,8 +131,8 @@ document.addEventListener('DOMContentLoaded', () => {
       throw new Error('유효한 주문 수량을 입력해주세요.');
     }
     if (orderFis > MAX_ORDER_QUANTITY) {
-      orderErrorMessage.textContent = `구매할 수 있는 코인은 최대 ${MAX_ORDER_QUANTITY}개입니다.`;
-      throw new Error(`구매할 수 있는 코인은 최대 ${MAX_ORDER_QUANTITY}개입니다.`);
+      orderErrorMessage.textContent = `구매할 수 있는 코인은 최대 ${MAX_ORDER_QUANTITY} FIS 입니다.`;
+      throw new Error(`구매할 수 있는 코인은 최대 ${MAX_ORDER_QUANTITY} FIS 입니다.`);
     }
     if (isNaN(orderPrice) || orderPrice <= 0) {
       orderErrorMessage.textContent = '유효한 주문 가격을 입력해주세요.';
@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
     sellButton.classList.toggle('deactive', isBuyMode);
 
     orderPriceLabel.textContent = isBuyMode ? '매수 가격' : '매도 가격';
-    quantityUnit.textContent = isBuyMode ? 'FIS' : '개';
+    quantityUnit.textContent = !isBuyMode ? 'FIS' : '개';
     orderButton.textContent = isBuyMode ? '매수' : '매도';
 
     updateAvailableAmount();

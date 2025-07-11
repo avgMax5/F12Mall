@@ -365,6 +365,7 @@ function renderSurgingCoins(coins) {
 
     coins.forEach((coin, idx) => {
         const entry = document.createElement('li');
+        const upOrDown = coin.fluctuation_rate > 0 ? 'up' : (coin.fluctuation_rate < 0 ? 'down' : '');
 
         entry.className = `surging-entry rank-${idx + 1}`;
         entry.dataset.coinId = `${coin.coin_id}`;
@@ -377,7 +378,7 @@ function renderSurgingCoins(coins) {
                 <span class="entry-name">${coin.coin_name}</span>
             </div>
             <div class="entry-right">
-                <span class="entry-change up">${coin.fluctuation_rate.toFixed(2)}%</span>
+                <span class="entry-change ${upOrDown}">${coin.fluctuation_rate.toFixed(2)}%</span>
             </div>`;
 
         surgingList.appendChild(entry);
@@ -394,7 +395,7 @@ function renderPriceCoins(coins) {
 
     coins.forEach((coin) => {
         const card = document.createElement('div');
-        const upOrDown = coin.change_price >= 0 ? 'up' : 'down';
+        const upOrDown = coin.fluctuation_rate > 0 ? 'up' : (coin.fluctuation_rate < 0 ? 'down' : '');
 
         card.className = className;
         card.dataset.coinId = `${coin.coin_id}`;
@@ -463,7 +464,7 @@ function renderCardViewCoins(coins) {
 
     coins.forEach((coin, idx) => {
         const card = document.createElement('div');
-        const upOrDown = coin.change_price >= 0 ? 'up' : 'down';
+        const upOrDown = coin.fluctuation_rate > 0 ? 'up' : (coin.fluctuation_rate < 0 ? 'down' : '');
 
         card.className = className;
         card.dataset.coinId = `${coin.coin_id}`;
