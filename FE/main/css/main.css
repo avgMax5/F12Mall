@@ -424,6 +424,7 @@ body {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+  margin: 0;
 }
 
 .box-search .search-input {
@@ -492,6 +493,7 @@ body {
 }
 
 .mobile-sort-view > div {
+  height: 100%;
   flex: 1;
   display: flex;
   justify-content: center;
@@ -509,7 +511,7 @@ body {
 }
 
 .mobile-sort-view > div span {
-  font-size: 1rem;
+  font-size: 1.75rem;
 }
 
 /* input[type="radio"]#view-card:checked+label,
@@ -524,8 +526,8 @@ sect-bot : card-view (container-bottom)
 
 .section-bottom .container-bottom {
   width: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
+  /* overflow-y: auto;
+  overflow-x: hidden; */
   scrollbar-width: none;
   box-sizing: border-box;
   display: flex;
@@ -688,7 +690,6 @@ sect-bot : list-view (container-bottom)
   height: 31rem;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
   font-size: 1rem;
   margin-top: 0.5rem;
 }
@@ -697,13 +698,15 @@ sect-bot : list-view (container-bottom)
 .box-coin-list .table-body {
   margin-top: 0.75rem;
   flex: 1;
-  /* scrollbar-width: none;
-  -ms-overflow-style: none; */
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-/* .table-body::-webkit-scrollbar {
+.table-body::-webkit-scrollbar {
   display: none;
-} */
+}
 
 .table-row {
   display: flex;

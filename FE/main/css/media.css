@@ -53,13 +53,12 @@
         left: 0;
         transform: none;
         width: 100%;
-        height: 3rem;
+        height: 4.75rem;
         background-color: #000000f2;
         border: 1px solid #00ff2f;
         box-shadow: 0 0 5px rgba(0, 255, 47, 0.25);
         display: flex;
         align-items: center;
-        border-radius: 0.4rem;
     }
 
     .section-bottom .container-top-mobile .box-search .search-input {
@@ -75,7 +74,7 @@
 
     .section-bottom .container-top-mobile .box-search .search-divider {
         width: 0.0625rem;
-        height: 1.5625rem;
+        height: 3rem;
         background-color: #00ff2f;
     }
 
@@ -89,10 +88,10 @@
     }
 
     .section-bottom .container-top-mobile .box-search .search-btn svg {
-        width: 1.5625rem;
-        height: 1.5625rem;
+        width: 2.25rem;
+        height: 2.25rem;
         stroke: #00ff2f;
-        stroke-width: 0.0625rem;
+        stroke-width: 0.25rem;
         stroke-linecap: round;
         stroke-linejoin: round;
         vertical-align: middle;
@@ -125,9 +124,11 @@
     }
 
     .box-grid-card .card-view {
-        width: 90%;
+        width: 100%;
+        max-width: 36.25rem;
         height: 15rem;
         margin: 0 auto;
+        border: 4px solid #00ff2f;
     }
 
     .card-view .card-profile {
@@ -302,6 +303,14 @@
         min-width: 120px !important;
     }
 
+    .carousel-cap-cards .cap-card:nth-child(n+4) {
+        display: block !important;
+    }
+
+    .surging-list .surging-entry:nth-child(n+4) {
+        display: flex !important;
+    }
+
     .carousel-banner {
         width: 90%;
         height: 90%;
@@ -318,16 +327,40 @@
         margin: auto;
         background-position: center center;
     }
-}
 
-/* 데스크탑에서는 모든 요소 표시 (모바일 제한 해제) */
-@media (min-width: 768px) {
-    .carousel-cap-cards .cap-card:nth-child(n+4) {
-        display: block !important;
+    .section-bottom .container-bottom .box-coin-list {
+        height: 100%;
+        overflow: hidden !important;
     }
 
-    .surging-list .surging-entry:nth-child(n+4) {
-        display: flex !important;
+    .box-coin-list .table-header {
+        height: 4rem;
+        font-size: 1.5rem;
+    }
+
+    /* #table-body-wrapper {
+        height: 95%;
+        overflow-y: auto;
+    } */
+
+    .table-body > .table-row {
+        height: 4rem;
+        font-size: 1.275rem;
+    }
+
+    .col-name,
+    .col-diff,
+    .col-volume,
+    .col-low,
+    .col-high {
+        display: none !important;
+    }
+
+    .table-header .col,
+    .table-row .col {
+        flex: 1 1 33.33%;
+        max-width: 33.33%;
+        box-sizing: border-box;
     }
 }
 
