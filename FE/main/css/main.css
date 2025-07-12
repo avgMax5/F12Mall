@@ -178,7 +178,7 @@ body {
 .entry-right>.entry-change.up::before {
   content: '▲';
   color: #e01200;
-  
+
   font-size: 0.5rem;
   margin-bottom: 0.1875rem;
   padding-right: 0.1875rem;
@@ -187,7 +187,7 @@ body {
   vertical-align: middle;
 }
 
-.entry-right>.entry-change.down::before {  
+.entry-right>.entry-change.down::before {
   content: '▼';
   color: #1376ee;
 
@@ -516,7 +516,7 @@ body {
   justify-content: space-between;
 }
 
-.mobile-sort-view > div {
+.mobile-sort-view>div {
   height: 100%;
   flex: 1;
   display: flex;
@@ -528,13 +528,13 @@ body {
   padding: 0.5rem 0;
 }
 
-.mobile-sort-view > div.active {
+.mobile-sort-view>div.active {
   background: #00FF2F;
   color: #000000;
   border-radius: 0.5rem;
 }
 
-.mobile-sort-view > div span {
+.mobile-sort-view>div span {
   font-size: 1.75rem;
 }
 
@@ -550,14 +550,16 @@ sect-bot : card-view (container-bottom)
 
 .section-bottom .container-bottom {
   width: 100%;
+  height: 31rem;
   /* overflow-y: auto;
   overflow-x: hidden; */
   scrollbar-width: none;
   box-sizing: border-box;
-  display: flex;
+  display: block;
   justify-content: center;
   align-items: flex-start;
   padding: 0 2rem 10rem 2rem;
+  overflow: hidden;
 }
 
 .section-bottom .container-bottom::-webkit-scrollbar {
@@ -567,7 +569,7 @@ sect-bot : card-view (container-bottom)
 /* gird card */
 .section-bottom .container-bottom .box-grid-card {
   width: 100%;
-  height: auto;
+  height: 31rem;
   min-height: 31rem;
   display: grid;
   justify-content: center;
@@ -576,7 +578,7 @@ sect-bot : card-view (container-bottom)
   box-sizing: border-box;
   margin: 1rem 0;
   padding-top: 1rem;
-  overflow: visible;
+  overflow-y: auto;
 }
 
 .container-bottom>.box-grid-card::-webkit-scrollbar {
@@ -711,12 +713,12 @@ sect-bot : list-view (container-bottom)
 --------------------------------------*/
 
 .section-bottom .container-bottom .box-coin-list {
-  width: 90%;
+  width: 100%;
   height: 31rem;
   display: flex;
   flex-direction: column;
   font-size: 1rem;
-  margin-top: 0.5rem;
+  margin: 0 auto;
 }
 
 /* table list */
@@ -768,15 +770,15 @@ sect-bot : list-view (container-bottom)
 
 /* up & down */
 
-.col.col-diff{
-  color:#ffffff;
+.col.col-diff {
+  color: #ffffff;
 }
 
-.col.col-diff.up{
+.col.col-diff.up {
   color: #e01200;
 }
 
-.col.col-diff.down{
+.col.col-diff.down {
   color: #1376ee;
 }
 
@@ -793,15 +795,15 @@ sect-bot : list-view (container-bottom)
 }
 
 
-.col.col-rate{
-  color:#ffffff;
+.col.col-rate {
+  color: #ffffff;
 }
 
-.col.col-rate.up{
+.col.col-rate.up {
   color: #e01200;
 }
 
-.col.rate-diff.down{
+.col.rate-diff.down {
   color: #1376ee;
 }
 
