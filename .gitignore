@@ -5,6 +5,6 @@ target
 .project
 .settings
 .vscode
-application.yml
-config.js
-docker-compose.dev.yml
+# application.yml
+# config.js
+# docker-compose.dev.yml
