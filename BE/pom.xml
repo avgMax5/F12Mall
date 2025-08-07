@@ -4,10 +4,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<!-- 아래 부분은 프로젝트에 맞게 수정 -->
-	<groupId>spring_legacy_setting</groupId>
-	<artifactId>spring_legacy_setting</artifactId>
+	<groupId>com.avgmax</groupId>
+	<artifactId>f12mall</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<properties>
 		<maven.compiler.source>11</maven.compiler.source>
@@ -47,7 +47,6 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>4.0.1</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -59,26 +58,16 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
-			<version>5.7.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-config</artifactId>
-			<version>5.7.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-crypto</artifactId>
-			<version>5.7.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-web</artifactId>
 			<version>5.8.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
+			<version>5.8.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-crypto</artifactId>
 			<version>5.8.0</version>
 		</dependency>
 
@@ -208,16 +197,11 @@
 				</configuration>
 			</plugin>
 
-			<!-- WAR exploded -->
+			<!-- JAR plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>3.3.2</version>
-				<configuration>
-					<warName>f12mall</warName>
-					<outputDirectory>${project.build.directory}</outputDirectory>
-					<failOnMissingWebXml>false</failOnMissingWebXml>
-				</configuration>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.3.0</version>
 			</plugin>
 		</plugins>
 	</build>
