@@ -16,7 +16,10 @@ public class CorsConfig {
         CorsConfiguration config = new CorsConfiguration();
         
         // 특정 origin을 명시적으로 허용 (credentials와 함께 사용할 때 필수)
-        config.setAllowedOrigins(Arrays.asList("http://localhost:3001", "http://localhost:3000"));
+        config.setAllowedOrigins(Arrays.asList(
+            "http://localhost:3001", 
+            "http://localhost:3000",
+            "http://localhost:8080"));
         
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");

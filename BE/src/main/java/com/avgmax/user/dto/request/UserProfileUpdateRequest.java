@@ -23,7 +23,6 @@ public class UserProfileUpdateRequest {
     private List<EducationRequest> education;
     private List<CareerRequest> career;
 
-    @Override
     public String toString() {
         return "UserProfileUpdateRequest{" +
                 "image='" + image + '\'' +
