@@ -6,7 +6,8 @@ export const CONFIG = {
   ENV,
   ...{
     DEV: {
-      API_BASE_URL: 'http://localhost:8080/api',
+      // API_BASE_URL: 'http://localhost:8080/api',
+      API_BASE_URL: 'http://avgmax.dustbox.kr/api',
       DEFAULT_PROFILE_IMG: '/assets/images/common/headerImg.png'
     },
     STAG: {

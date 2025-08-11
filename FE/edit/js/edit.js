@@ -80,7 +80,7 @@ async function collectFormData() {
     name: name.trim() === '' ? user.name : name,
     position: position.trim() === '' ? user.position : position,
     bio: bio.trim() === '' ? user.bio : bio,
-    stack: stack.length > 0 ? stack : `${user.stack}`,
+    stack: stack.length > 0 ? stack : [],
     resume: uploadResult?.resume?.[0] ?? `${user.resume}`,
     certificate_url: (uploadResult?.certification ?? []).map(certificate_url => ({ certificate_url })),
     link: {
