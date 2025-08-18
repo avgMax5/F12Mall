@@ -772,9 +772,9 @@ sect-bot : list-view (container-bottom)
 
 /* up & down */
 
-.col.col-diff {
+/* .col.col-diff {
   color: #ffffff;
-}
+} */
 
 .col.col-diff.up {
   color: #e01200;
