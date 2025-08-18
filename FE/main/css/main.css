@@ -303,8 +303,10 @@ body {
 }
 
 .card-info img {
-  width: 100%;
-  height: 100%;
+  /* width: 100%;
+  height: 100%; */
+  width: 9.75rem;
+  height: 9rem;
   object-fit: cover;
 }
 
@@ -770,9 +772,9 @@ sect-bot : list-view (container-bottom)
 
 /* up & down */
 
-.col.col-diff {
+/* .col.col-diff {
   color: #ffffff;
-}
+} */
 
 .col.col-diff.up {
   color: #e01200;
