@@ -1,0 +1,463 @@
+/* 공통 */
+.border {
+  border: 1px solid #00ff2f;
+}
+.section-right-title {
+  width: 10rem;
+  padding: 0.25rem 0;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #00ff2f;
+  background: rgba(30, 30, 30, 0.656);
+}
+
+/* body */
+html {
+  font-size: 16px;
+  box-sizing: border-box;
+}
+body {
+  background: black;
+  overflow: hidden;
+  margin: 0;
+}
+canvas {
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+}
+#wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+.width {
+  width: 90%;
+  display: grid;
+  grid-template-columns: 3fr 6.8fr;
+  padding: 4rem 0;
+  margin: 0 auto;
+  font-family: 'KIMM_B';
+  font-size: 0.78rem;
+}
+
+/* section : left  */
+.section-left {
+  display: grid;
+  grid-template-rows: 3fr 1fr;
+  gap: 1rem;
+  position: relative;
+  background-color: #98989859;
+  margin-right: 0.8rem;
+  padding: 1rem 1rem;
+}
+/* 프로필 영역 */
+.container-profile {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  background-color: #00000088;
+}
+.container-profile .box-contents {
+  height: 90%;
+  width: 90%;
+  margin: 1rem auto;
+  color: #fff;
+}
+.container-profile .box-contents #image {
+  background-image: url('../../assets/images/main/Masha.jpeg');
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  margin: 0 auto;
+  width: 90%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  border: 0.6px solid#00ff00;
+  box-shadow: 9px 9px 9px #00000051;
+}
+.container-profile .box-contents #name {
+  margin-top: 1rem;
+  font-size: 1.75rem;
+}
+.container-profile .box-contents #username {
+  font-size: 1.375rem;
+  margin-top: 0.5rem;
+  color: #ff9d00;
+}
+.container-profile .box-contents #position {
+  font-size: 1rem;
+  margin-top: 0.7rem;
+  -webkit-text-stroke: 0.5px #00ff00;
+}
+.container-profile .box-contents #email {
+  font-size: 0.875rem;
+  font-family: 'KIMM_L';
+  -webkit-text-stroke: 0.2px #00ff00;
+}
+.container-profile .box-contents #stack-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.7rem;
+}
+.box-contents #stack-container .stack {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-items: center;
+  padding: 0.4rem;
+  border: 1.5px solid #00ff00;
+  border-radius: 0.8rem;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #00ff00;
+  background-color: #222222;
+  box-shadow: 0px 3px 3px #00ff2f55;
+}
+.box-contents #link-container .link {
+  width: 2rem;
+  margin-right: 1.8rem;
+  margin-top: 0.8rem;
+}
+.container-profile .detail-btn {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  width: 7rem;
+  height: 1.5rem;
+  text-align: center;
+  line-height: 1.5rem;
+  background-color: #66ff66;
+  box-shadow: 4px 4px 4px #00000040;
+}
+
+/* 코인 비율 영역 */
+.container-ratio {
+  width: 100%;
+  height: 100%;
+  background-color: #000000a1;
+}
+.container-ratio > div:first-child {
+  font-size: 0.8rem;
+  height: 1.55rem;
+  padding: 2px 5px;
+  text-align: left;
+  line-height: 1.55rem;
+  color: #00ff00;
+  border-bottom: 0.8px solid #00ff2f;
+}
+.box-ratio-bar {
+  width: 90%;
+  height: 1.6rem;
+  background-color: #000;
+  margin: 1.55rem auto;
+  border-radius: 25px;
+  border: 1.2px solid #ffbb00;
+}
+.box-coins {
+  display: flex;
+  flex-wrap: wrap;
+  width: 90%;
+  height: 5rem;
+  margin: 0 auto;
+  margin-top: 2.8rem;
+}
+
+/* section : right  */
+.section-right {
+  position: relative;
+  padding: 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  grid-template-rows: 2fr 5fr;
+  color: #fff;
+  height: calc(100vh - 8rem);
+  background-color: #98989859;
+}
+
+/* coin information 영역 */
+.container-information > .box-inform-main {
+  display: grid;
+  grid-template-columns: 36% 64%;
+  justify-content: center;
+  padding: 1rem 1rem;
+  box-sizing: border-box;
+  background-color: #00000088;
+}
+.box-inform-main .main-left {
+  /* height: 95%; */
+  padding: 0.35rem;
+  margin-right: 1.2rem;
+  font-size: 1rem;
+}
+.box-inform-main .main-left .left-top {
+  display: flex;
+  justify-content: space-between;
+  /* height: 1.3rem; */
+  padding: 4px;
+  color: #ff9d00;
+  text-align: center;
+  line-height: 20px;
+}
+.box-inform-main .main-left #bio {
+  width: 90%;
+  line-height: 1.2;
+  letter-spacing: 1.5px;
+  margin: 2px auto;
+}
+.box-inform-main .main-right {
+  /* height: 95%; */
+  padding: 0.35rem;
+}
+.box-inform-main .main-right > div:nth-child(2) {
+  display: grid;
+  grid-template-columns: 6fr 4fr;
+  margin: 0.8rem 0.8rem;
+  /* height: 83%; */
+}
+.main-right .right-top {
+  /* height: 1.2rem; */
+  padding-right: 0.25rem;
+  line-height: 1.3rem;
+  text-align: right;
+  font-size: 0.9rem;
+}
+.main-right .right-top span:nth-child(3) {
+  color: #8c8c8c;
+  margin-right: 0.25rem;
+}
+.main-right .right-top span:nth-child(5),
+span:nth-child(6) {
+  color: #ff9d00;
+  margin-left: 0.25rem;
+}
+.main-right .total-money-container {
+  position: relative;
+  padding: 1rem;
+  max-height: 100%;
+  background-color: rgb(68, 68, 68, 0.7);
+  font-size: 1rem;
+  margin-right: 1rem;
+}
+.main-right .line {
+  margin-bottom: 0.5rem;
+}
+.total-money-container #subtract-amount {
+  position: relative;
+  width: 90%;
+  /* height: 3rem; */
+  background-color: black;
+  border: 1px solid #00ff2f;
+  text-align: center;
+  line-height: 3rem;
+  margin: 0 auto;
+  margin-top: 10%;
+  color: #ff1d1d;
+  font-size: 1.2rem;
+  padding: 0 0.6rem;
+}
+.main-right .graph-container {
+  position: relative;
+  width: 100%;
+  min-height: 2rem;
+  height: 100%; /* 화면 크기에 따라 유동적으로 */
+  /* max-height: 10rem; */
+}
+#graph {
+  width: 100%;
+  height: 100%;
+  min-height: 2rem;
+  /* max-height: 10rem; */
+}
+
+/* list of coins 영역 */
+.container-information,
+.container-list-coins {
+  height: 100%;
+  display: grid;
+  gap: 0.8rem;
+  grid-template-rows: 1.5rem 1fr;
+}
+.box-list-main {
+  /* height: 100%; */
+  background-color: #00000088;
+  overflow-y: auto;
+}
+.box-list-main .total-info {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 0.9rem;
+  padding: 0.8rem;
+}
+.total-info div:nth-child(2) {
+  color: #ff9d00;
+  margin-left: 10px;
+}
+.box-list-main .coin-list {
+  display: grid;
+  grid-template-columns: repeat(3, 32%);
+  gap: 1rem;
+  width: 97%;
+  /* height: 86%; */
+  margin: 0 auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE, Edge */
+}
+.box-list-main .coin-list::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+.coin {
+  width: 100%;
+  height: 11rem;
+  display: grid;
+  grid-template-rows: 1fr 3fr 1fr;
+}
+.coin .name-container {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  line-height: 1.5rem;
+  margin-bottom: 0.5rem;
+  padding: 0 12px;
+  border-bottom: 0.8px solid #00ff2f;
+}
+.name-container #creator-name {
+  font-size: 0.625rem;
+}
+.name-container #coin-name {
+  font-size: 1rem;
+}
+
+.coin .info-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 0.8rem;
+  margin-top: 0.4rem;
+  padding: 0 0.8rem;
+}
+
+.info-container #creator-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  height: auto;
+  border-radius: 6px;
+  background-color: rgb(153, 153, 153);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.info-container .group {
+  position: relative;
+  width: 8rem;
+  max-width: 100%;
+}
+
+.info-container .group .line {
+  display: flex;
+  margin-bottom: 0.6rem;
+}
+.info-container .group .label-text {
+  font-weight: 400;
+  -webkit-text-stroke: 0.2px #00ff19;
+  font-size: 0.6rem;
+  width: 4.2rem;
+  line-height: normal;
+}
+.info-container .group .value-text {
+  font-weight: 400;
+  font-size: 0.6rem;
+  min-width: 2rem;
+  text-align: left;
+  line-height: normal;
+  margin-left: 0.1rem;
+}
+.info-container .group .unit-text {
+  font-weight: 400;
+  font-size: 0.6rem;
+  width: 1.3rem; /* ₩ 기호 정렬 */
+  text-align: right;
+  flex-shrink: 0;
+  line-height: normal;
+}
+
+.coin .result-container {
+  margin-top: 3px;
+  padding: 0 10px;
+  color: #ff1d1d;
+  text-align: right;
+}
+
+.result-container .unit-text {
+  font-size: 0.5rem;
+}
+.result-container #valuation-rate {
+  font-size: 1.1rem;
+  margin-left: 0.9rem;
+}
+/* 추가추가추가 */
+.bar-container {
+  width: 90%;
+  height: 1.2rem;
+  margin: 2rem auto 0 auto;
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-end;
+}
+.bar {
+  height: 100% !important;
+  min-width: 3.5rem;
+  color: #fff;
+  font-weight: bold;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 8px #00ff2f55;
+  /* background: #00c943; 기본 배경 제거 */
+  transition: width 0.4s;
+  padding-bottom: 0.3rem;
+  margin-bottom: 0;
+  border-radius: 0;
+}
+.bar.top1 {
+  background: #00450a;
+  border-bottom-left-radius: 16px;
+  border-top-left-radius: 16px;
+}
+.bar.top2 {
+  background: #008c1a;
+}
+.bar.top3 {
+  background: #00c943;
+}
+.bar.etc {
+  background: #b0b0b0;
+  color: #222;
+  border-bottom-right-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+.coin-container {
+  display: flex;
+  gap: 0.2rem;
+  width: 50%;
+  color: #00ff2f;
+  font-size: 0.9rem;
+}
+.coin-container .circle {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+}
+.coin-container #username {
+  margin-right: 0.2rem;
+  color: #fff;
+}

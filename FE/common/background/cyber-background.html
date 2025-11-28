@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @font-face {
+            font-family: 'KIMM_Bold';
+            src: url('/assets/fonts/KIMM_BOLD.ttf') format('truetype');
+            font-weight: bold;
+            font-style: normal;
+        }
+
+        :root {
+            --cube-size: 60px;
+            --ring-size: min(300px, 50vw);
+            --particle-size: min(4px, 1vw);
+            --cube-translate-z: calc(var(--cube-size) * 0.5);
+
+            /* 메인 색상 - 네온 그린 */
+            --primary-color: #33ff33;
+            --primary-color-dark: #00cc00;
+            --primary-color-light: #66ff66;
+            
+            /* 투명도가 있는 색상 */
+            --primary-color-10: rgba(51, 255, 51, 0.1);
+            --primary-color-20: rgba(51, 255, 51, 0.2);
+            --primary-color-30: rgba(51, 255, 51, 0.3);
+            --primary-color-50: rgba(51, 255, 51, 0.5);
+            --primary-color-80: rgba(51, 255, 51, 0.8);
+            
+            /* 배경 색상 */
+            --bg-color: #0a0a0f;
+            
+            /* 글로우 효과 색상 */
+            --glow-color-1: #2bff2b;
+            --glow-color-2: #6bff6b;
+        }
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: var(--bg-color);
+            width: 100vw;
+            height: 100vh;
+            perspective: 1000px;
+        }
+
+        /* 글리치 효과 오버레이 */
+        .glitch-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            mix-blend-mode: color-dodge;
+            animation: glitchEffect 8s infinite;
+            background: repeating-linear-gradient(
+                0deg,
+                var(--primary-color-10) 0px,
+                transparent 1px,
+                transparent 2px
+            );
+            opacity: 0.3;
+        }
+
+        @keyframes glitchEffect {
+            0%, 100% { transform: translateX(0); }
+            5%, 95% { transform: translateX(-2px); }
+            10%, 90% { transform: translateX(2px); }
+            15%, 85% { transform: skewX(2deg); }
+            20%, 80% { transform: skewX(-2deg); }
+        }
+
+        /* 수직 빛줄기 강화 */
+        .light-beam {
+            position: absolute;
+            width: min(2px, 0.4vw);
+            background: linear-gradient(to bottom, 
+                transparent,
+                var(--glow-color-1),
+                var(--glow-color-2),
+                var(--glow-color-1),
+                transparent
+            );
+            filter: blur(1px);
+            box-shadow: 
+                0 0 10px var(--glow-color-1),
+                0 0 20px var(--glow-color-1),
+                0 0 30px var(--glow-color-1);
+            animation: fallDown 3s linear infinite;
+        }
+
+        /* 네온 파티클 */
+        .neon-particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            filter: blur(1px);
+            box-shadow: 
+                0 0 5px var(--primary-color),
+                0 0 10px var(--primary-color),
+                0 0 15px var(--primary-color);
+            animation: floatParticle 4s ease-in-out infinite;
+        }
+
+        @keyframes floatParticle {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(20px, -20px) scale(1.5); }
+            50% { transform: translate(-20px, -40px) scale(0.8); }
+            75% { transform: translate(-10px, -10px) scale(1.2); }
+        }
+
+        /* 사이버 링 */
+        .cyber-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: var(--ring-size);
+            height: var(--ring-size);
+            border: min(2px, 0.3vw) solid var(--primary-color-10);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: rotate 10s linear infinite;
+            box-shadow: 
+                0 0 min(20px, 3vw) var(--primary-color-10),
+                inset 0 0 min(20px, 3vw) var(--primary-color-10);
+        }
+
+        .cyber-ring::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: min(2px, 0.3vw) solid var(--primary-color-20);
+            border-radius: 50%;
+            animation: pulseRing 2s ease-out infinite;
+            box-shadow: 
+                0 0 min(30px, 4vw) var(--primary-color),
+                inset 0 0 min(30px, 4vw) var(--primary-color);
+        }
+
+        /* 3D 그리드 */
+        .grid-container {
+            position: fixed;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            transform-style: preserve-3d;
+            animation: gridRotate 20s linear infinite;
+        }
+
+        .grid-line {
+            position: absolute;
+            width: 100%;
+            height: min(1px, 0.2vw);
+            background: linear-gradient(90deg, 
+                transparent,
+                var(--primary-color-30),
+                transparent
+            );
+            transform-origin: center;
+            animation: gridPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes gridRotate {
+            from { transform: rotateX(60deg) rotateZ(0deg); }
+            to { transform: rotateX(60deg) rotateZ(360deg); }
+        }
+
+        @keyframes gridPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+        }
+
+        /* 에너지 웨이브 */
+        .energy-wave {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(
+                circle at center,
+                transparent 0%,
+                var(--primary-color-20) 30%,
+                var(--primary-color-10) 50%,
+                transparent 70%
+            );
+            animation: pulse 3s ease-in-out infinite;
+            mix-blend-mode: screen;
+        }
+
+        .energy-wave::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(
+                circle at center,
+                transparent 0%,
+                var(--primary-color-10) 40%,
+                var(--primary-color-10) 60%,
+                transparent 80%
+            );
+            animation: pulse 3s ease-in-out infinite 1.5s;
+            mix-blend-mode: screen;
+        }
+
+        /* 레이저 스캔 라인 */
+        .scanner-beam {
+            position: absolute;
+            width: 100vw;
+            height: min(4px, 0.8vw);
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(
+                to right,
+                transparent,
+                var(--primary-color),
+                #ffffff,
+                #ffffff,
+                var(--primary-color),
+                transparent
+            );
+            opacity: 0;
+            filter: blur(min(2px, 0.4vw));
+            box-shadow: 
+                0 0 min(15px, 3vw) var(--primary-color),
+                0 0 min(30px, 6vw) var(--primary-color),
+                0 0 min(45px, 9vw) #ffffff;
+            animation: scannerFlash 3s ease-in-out infinite;
+        }
+
+        @keyframes scannerFlash {
+            0%, 100% { 
+                opacity: 0;
+                filter: blur(min(2px, 0.4vw));
+                height: min(4px, 0.8vw);
+            }
+            10% {
+                opacity: 1;
+                filter: blur(min(3px, 0.6vw));
+                height: min(6px, 1.2vw);
+            }
+            7%, 30% {
+                opacity: 0.3;
+                filter: blur(min(2px, 0.4vw));
+                height: min(4px, 0.8vw);
+            }
+            70% {
+                opacity: 0;
+                filter: blur(min(2px, 0.4vw));
+                height: min(4px, 0.8vw);
+            }
+        }
+
+        /* 홀로그램 큐브 */
+        .holo-cube {
+            position: absolute;
+            width: var(--cube-size);
+            height: var(--cube-size);
+            transform-style: preserve-3d;
+            opacity: 0;
+            transform: scale(0);
+            transition: opacity 1s ease-out, transform 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .holo-cube .cube-wrapper {
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            animation: none;
+            border: 1px solid var(--primary-color-30);
+        }
+
+        .holo-cube.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .holo-cube.active .cube-wrapper {
+            animation: holoCubeRotate 8s linear infinite;
+        }
+
+        .holo-cube.fade-out {
+            opacity: 0;
+            transform: scale(0);
+        }
+
+        .holo-cube .cube-face {
+            position: absolute;
+            width: var(--cube-size);
+            height: var(--cube-size);
+            border: min(1px, 0.2vw) solid var(--primary-color-30);
+            background: var(--primary-color-10);
+            box-shadow: 0 0 min(10px, 2vw) var(--primary-color-20);
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            transform-style: preserve-3d;
+        }
+
+        .holo-cube.active .cube-face {
+            opacity: 1;
+        }
+
+        @keyframes holoCubeRotate {
+            from { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+            to { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+        }
+
+        /* 기존 애니메이션 키프레임들 유지 */
+        @keyframes fallDown {
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+
+        @keyframes rotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes pulseRing {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        /* @keyframes scan {
+            0%, 100% { 
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            50% {
+                transform: translateY(100vh);
+                opacity: 0.8;
+            }
+        } */
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(0.8); opacity: 0.3; }
+            50% { transform: scale(1.2); opacity: 0.6; }
+        }
+
+        /* 반딧불 효과 */
+        .firefly {
+            position: absolute;
+            width: var(--particle-size);
+            height: var(--particle-size);
+            background: var(--primary-color);
+            border-radius: 50%;
+            opacity: 0;
+            filter: blur(min(1px, 0.2vw));
+            box-shadow: 
+                0 0 min(10px, 2vw) var(--primary-color),
+                0 0 min(20px, 3vw) var(--primary-color),
+                0 0 min(30px, 4vw) var(--primary-color);
+            animation: fireflyFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes fireflyFloat {
+            0% {
+                transform: translate(0, 0) scale(0.2);
+                opacity: 0;
+            }
+            20% {
+                transform: translate(20px, -20px) scale(1);
+                opacity: 0.8;
+            }
+            40% {
+                transform: translate(-10px, -40px) scale(0.6);
+                opacity: 0.6;
+            }
+            60% {
+                transform: translate(15px, -25px) scale(0.8);
+                opacity: 0.8;
+            }
+            80% {
+                transform: translate(-5px, -10px) scale(0.4);
+                opacity: 0.4;
+            }
+            100% {
+                transform: translate(0, 0) scale(0.2);
+                opacity: 0;
+            }
+        }
+
+        /* 미디어 쿼리 추가 */
+        @media screen and (max-width: 768px) {
+            .grid-container {
+                width: 300%;
+                height: 300%;
+                top: -100%;
+                left: -100%;
+            }
+
+            .grid-line {
+                height: min(1px, 0.2vw);
+            }
+
+            .light-beam {
+                width: min(2px, 0.4vw);
+            }
+
+            .scanner-beam {
+                height: min(2px, 0.4vw);
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            :root {
+                --cube-size: 8vw;
+                --ring-size: 40vw;
+                --particle-size: 0.8vw;
+            }
+
+            .grid-container {
+                width: 400%;
+                height: 400%;
+                top: -150%;
+                left: -150%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="background">
+        <div class="glitch-overlay"></div>
+        <div class="grid-container"></div>
+        <div class="energy-wave"></div>
+        <div class="cyber-ring"></div>
+        <div class="scanner-beam"></div>
+        
+        <script>
+            // 3D 그리드 생성
+            const gridContainer = document.querySelector('.grid-container');
+            for (let i = 0; i < 20; i++) {
+                const line = document.createElement('div');
+                line.className = 'grid-line';
+                line.style.top = `${i * 10}%`;
+                gridContainer.appendChild(line);
+            }
+
+            // 빛줄기 생성 함수
+            function createLightBeam() {
+                const background = document.getElementById('background');
+                const existingBeams = background.querySelectorAll('.light-beam');
+                
+                // 최대 개수(15개) 제한
+                if (existingBeams.length >= 15) return;
+                
+                const beam = document.createElement('div');
+                beam.className = 'light-beam';
+                beam.style.left = Math.random() * 100 + 'vw';
+                beam.style.height = Math.random() * 50 + 100 + 'px';
+                background.appendChild(beam);
+                
+                // 애니메이션 완료 후 요소 제거
+                beam.addEventListener('animationend', () => beam.remove());
+            }
+
+            // 빛줄기 생성 시작 (200ms 간격으로 생성)
+            const createLightBeamsInterval = setInterval(createLightBeam, 200);
+
+            // 네온 파티클 생성
+            function createNeonParticle() {
+                const particle = document.createElement('div');
+                particle.className = 'neon-particle';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.top = Math.random() * 100 + 'vh';
+                document.body.appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 4000);
+            }
+
+            // 홀로그램 큐브 생성
+            function createHoloCube() {
+                const cube = document.createElement('div');
+                cube.className = 'holo-cube';
+                cube.style.left = Math.random() * 80 + 10 + 'vw';
+                cube.style.top = Math.random() * 80 + 10 + 'vh';
+                
+                // 랜덤 크기 설정 (40px ~ 80px)
+                const randomSize = Math.random() * 40 + 40;
+                cube.style.setProperty('--cube-size', `${randomSize}px`);
+                cube.style.setProperty('--cube-translate-z', `${randomSize * 0.5}px`);
+                
+                // 큐브 래퍼 생성
+                const wrapper = document.createElement('div');
+                wrapper.className = 'cube-wrapper';
+                cube.appendChild(wrapper);
+                
+                // 큐브 면 생성
+                const faces = [
+                    { rotateX: 0, rotateY: 0 },    // 앞면
+                    { rotateX: 0, rotateY: 180 },  // 뒷면
+                    { rotateX: 90, rotateY: 0 },   // 윗면
+                    { rotateX: -90, rotateY: 0 },  // 아랫면
+                    { rotateX: 0, rotateY: 90 },   // 오른쪽
+                    { rotateX: 0, rotateY: -90 }   // 왼쪽
+                ];
+
+                faces.forEach(({ rotateX, rotateY }) => {
+                    const face = document.createElement('div');
+                    face.className = 'cube-face';
+                    face.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(var(--cube-translate-z))`;
+                    wrapper.appendChild(face);
+                });
+                
+                document.body.appendChild(cube);
+                
+                // 페이드 인 효과를 위한 지연
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        cube.classList.add('active');
+                    });
+                });
+                
+                // 페이드 아웃 효과
+                setTimeout(() => {
+                    cube.classList.remove('active');
+                    cube.classList.add('fade-out');
+                    cube.addEventListener('transitionend', (e) => {
+                        if (e.propertyName === 'transform') {
+                            cube.remove();
+                        }
+                    }, { once: true });
+                }, 7200);
+            }
+            
+            // 홀로그램 큐브 생성 시작
+            const createHoloCubeInterval = setInterval(createHoloCube, 3000);
+
+            // 반딧불 생성 함수
+            function createFirefly() {
+                const background = document.getElementById('background');
+                const existingFireflies = background.querySelectorAll('.firefly');
+                
+                // 최대 개수(20개) 제한
+                if (existingFireflies.length >= 20) return;
+                
+                const firefly = document.createElement('div');
+                firefly.className = 'firefly';
+                
+                // 랜덤한 시작 위치 설정
+                firefly.style.left = Math.random() * 100 + 'vw';
+                firefly.style.top = Math.random() * 100 + 'vh';
+                
+                // 랜덤한 크기 설정 (2px ~ 5px)
+                const size = (Math.random() * 3 + 2) + 'px';
+                firefly.style.width = size;
+                firefly.style.height = size;
+                
+                // 랜덤한 지연 시간으로 애니메이션 시작
+                firefly.style.animationDelay = Math.random() * 4 + 's';
+                
+                background.appendChild(firefly);
+                
+                // 애니메이션 완료 후 요소 제거
+                firefly.addEventListener('animationend', () => {
+                    firefly.remove();
+                });
+            }
+
+            // 반딧불 생성 시작 (300ms 간격으로 생성)
+            const createFireflyInterval = setInterval(createFirefly, 300);
+
+            // 페이지 언로드 시 인터벌 정리
+            window.addEventListener('unload', () => {
+                clearInterval(createLightBeamsInterval);
+                clearInterval(createHoloCubeInterval);
+                clearInterval(createFireflyInterval);
+            });
+        </script>
+    </div>
+</body>
+</html>

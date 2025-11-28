@@ -1,0 +1,292 @@
+.container-orderbook {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.container-orderbook .box-list-controller {
+  display: flex;
+  width: 100%;
+}
+
+.box-list-controller > button {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 0.7rem;
+  font-size: 1rem;
+  cursor: pointer;
+  font-family: 'KIMM_B';
+}
+
+.box-list-controller > button.active {
+  color: #00ff2f;
+  border-top: 1px solid #00ff2f;
+  border-right: 1px solid #00ff2f;
+  border-left: 1px solid #00ff2f;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.box-list-controller > button.deactive {
+  color: #ffffff;
+  border-bottom: 1px solid #00ff2f;
+  transition: all 0.3s ease;
+}
+
+.box-list-controller > button.deactive:hover {
+  background-color: rgba(0, 255, 47, 0.1);
+  box-shadow: 0 0 8px rgba(0, 255, 47, 0.3);
+  text-shadow: 0 0 5px #00ff2f;
+}
+
+.container-orderbook .box-content {
+  display: none;
+  flex-direction: column;
+  padding: 1rem 0.6rem;
+  border-right: 1px solid #00ff2f;
+  border-bottom: 1px solid #00ff2f;
+  border-left: 1px solid #00ff2f;
+  background-color: rgba(0, 0, 0, 0.5);
+  flex: 1;
+  width: 100%;
+}
+
+.box-content.active {
+  display: flex;
+}
+
+.box-content.deactive {
+  display: none;
+}
+
+.box-content.orderbook-content {
+  gap: 0.3rem;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+/* Chrome, Safari, Opera에서 스크롤바 숨기기 */
+.box-content.orderbook-content::-webkit-scrollbar {
+  display: none;
+}
+
+.box-content.orderbook-content .orderbook-row {
+  display: flex;
+  background-color: rgba(62, 62, 62, 0.5);
+  height: 2rem;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-family: 'KIMM_B';
+  padding: 0.4rem 0.5rem;
+}
+
+.orderbook-row.current-price {
+  background-color: rgba(127, 146, 129, 0.5) !important;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 255, 47, 0.3);
+}
+
+.orderbook-row.current-price::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px solid rgba(0, 255, 47, 0.3);
+  transition: all 0.5s ease-in-out;
+  animation: neonBorder 1s ease-in-out infinite;
+}
+
+@keyframes neonBorder {
+  0%, 100% {
+    border-color: rgba(0, 255, 47, 0.3);
+    box-shadow: 0 0 1px rgba(0, 255, 47, 0.3);
+  }
+  50% {
+    border-color: rgba(0, 255, 47, 0.6);
+    box-shadow: 0 0 5px rgba(0, 255, 47, 0.5);
+  }
+}
+
+.orderbook-row .quantity-wrapper {
+    position: relative;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.quantity-wrapper .ordered-quantity {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    opacity: 0.5;
+}
+
+.quantity-wrapper .quantity-text {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    color: white;
+    z-index: 1;
+    font-weight: bold;
+}
+
+.orderbook-row .ordered-price {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 0.2rem 0.4rem;
+}
+
+.orderbook-row .fluctuation-rate {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 0.2rem 0.4rem;
+}
+
+.box-content.myorderlist-content {
+  padding: 0;
+  overflow: hidden;
+}
+
+.box-content.myorderlist-content .myorderlist-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  padding: 0.4rem 0.5rem;
+  background-color: #000000;
+  border-bottom: 0.5px solid #00ff2f;
+  font-size: 0.6rem;
+  color: #ffffff;
+  font-family: 'KIMM_B';
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.myorderlist-col > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.myorderlist-col > div > span:nth-child(2) {
+  font-size: 0.45rem;
+}
+
+.box-content.myorderlist-content .myorderlist-data {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: 1rem 0.6rem;
+  max-height: calc(100% - 2.5rem);
+}
+
+.box-content.myorderlist-content .myorderlist-data::-webkit-scrollbar {
+  display: none;
+}
+
+.myorderlist-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  padding: 0.4rem 0.5rem;
+  background-color: rgba(70, 70, 70, 0.5);
+  font-size: 0.6rem;
+  font-family: 'KIMM_B';
+}
+
+.myorderlist-row > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.myorderlist-row.buy {
+  color: #e01200;
+}
+
+.myorderlist-row.sell {
+  color: #1376ee;
+}
+
+.myorderlist-row .ordered-time-row {
+  display: flex;
+  flex-direction: column;
+  font-family: 'KIMM_L';
+  color: #ffffff;
+  position: relative;
+}
+
+.myorderlist-row .ordered-time-row .order-time {
+  font-size: 0.45rem;
+}
+
+.myorderlist-row .order-total {
+  transition: opacity 0.3s ease;
+}
+
+.myorderlist-row .cancel-btn {
+  position: absolute;
+  padding: 0.2rem 0.4rem;
+  background-color: rgba(255, 192, 91, 0.5);
+  border: 1px solid #ff9d00;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: none;
+  opacity: 0;
+  font-size: 0.6rem;
+  font-family: 'KIMM_B';
+}
+
+.myorderlist-row .cancel-btn:hover {
+  background-color: #ff9d00;
+  color: #ffffff;
+}
+
+.myorderlist-row:hover .order-total {
+  opacity: 0;
+}
+
+.myorderlist-row:hover .cancel-btn {
+  display: block;
+  opacity: 1;
+}
+
+.sortable {
+  cursor: pointer;
+  position: relative;
+}
+
+.sort-icon {
+  display: none;
+  color: #00ff2f;
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.4rem;
+}
+
+.sortable.asc .sort-icon {
+  display: inline;
+  content: "▲";
+}
+
+.sortable.desc .sort-icon {
+  display: inline;
+  content: "▼";
+}

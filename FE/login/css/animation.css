@@ -1,0 +1,205 @@
+@keyframes glitch {
+    0% {
+        transform: skew(0deg);
+        text-shadow: 
+            0.05em 0 0 rgba(0, 255, 0, 0.75),
+            -0.05em -0.025em 0 rgba(0, 255, 0, 0.75),
+            -0.025em 0.05em 0 rgba(0, 0, 255, 0.75);
+    }
+    14% {
+        transform: skew(-13deg);
+        text-shadow: 
+            0.05em 0 0 rgba(0, 255, 0, 0.75),
+            -0.05em -0.025em 0 rgba(0, 255, 0, 0.75),
+            -0.025em 0.05em 0 rgba(0, 0, 255, 0.75);
+    }
+    15% {
+        transform: skew(13deg);
+        text-shadow: 
+            -0.05em -0.025em 0 rgba(0, 255, 0, 0.75),
+            0.025em 0.025em 0 rgba(0, 255, 0, 0.75),
+            -0.05em -0.05em 0 rgba(0, 0, 255, 0.75);
+    }
+    49% {
+        transform: skew(-13deg);
+    }
+    50% {
+        transform: skew(0deg);
+    }
+    100% {
+        transform: skew(0deg);
+    }
+}
+
+@keyframes glitchText {
+    0% {
+        opacity: 1;
+    }
+    10% {
+        opacity: 0.8;
+        clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+    }
+    11% {
+        clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+    }
+    12% {
+        clip-path: none;
+    }
+    20% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    91% {
+        opacity: 0.9;
+    }
+    92% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInTitle {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes glitch-1 {
+    0% {
+        clip: rect(20px, 900px, 89px, 0);
+    }
+    5.8823529412% {
+        clip: rect(46px, 900px, 76px, 0);
+    }
+    11.7647058824% {
+        clip: rect(77px, 900px, 87px, 0);
+    }
+    17.6470588235% {
+        clip: rect(94px, 900px, 98px, 0);
+    }
+    23.5294117647% {
+        clip: rect(32px, 900px, 67px, 0);
+    }
+    29.4117647059% {
+        clip: rect(26px, 900px, 67px, 0);
+    }
+    35.2941176471% {
+        clip: rect(56px, 900px, 97px, 0);
+    }
+    41.1764705882% {
+        clip: rect(24px, 900px, 87px, 0);
+    }
+    47.0588235294% {
+        clip: rect(45px, 900px, 88px, 0);
+    }
+    52.9411764706% {
+        clip: rect(31px, 900px, 89px, 0);
+    }
+    58.8235294118% {
+        clip: rect(34px, 900px, 89px, 0);
+    }
+    64.7058823529% {
+        clip: rect(35px, 900px, 78px, 0);
+    }
+    70.5882352941% {
+        clip: rect(12px, 900px, 89px, 0);
+    }
+    76.4705882353% {
+        clip: rect(23px, 900px, 67px, 0);
+    }
+    82.3529411765% {
+        clip: rect(43px, 900px, 78px, 0);
+    }
+    88.2352941176% {
+        clip: rect(34px, 900px, 87px, 0);
+    }
+    94.1176470588% {
+        clip: rect(45px, 900px, 91px, 0);
+    }
+    100% {
+        clip: rect(21px, 900px, 89px, 0);
+    }
+}
+
+@keyframes glitch-2 {
+    0% {
+        clip: rect(3px, 900px, 94px, 0);
+    }
+    5.8823529412% {
+        clip: rect(7px, 900px, 64px, 0);
+    }
+    11.7647058824% {
+        clip: rect(10px, 900px, 87px, 0);
+    }
+    17.6470588235% {
+        clip: rect(14px, 900px, 98px, 0);
+    }
+    23.5294117647% {
+        clip: rect(32px, 900px, 67px, 0);
+    }
+    29.4117647059% {
+        clip: rect(26px, 900px, 67px, 0);
+    }
+    35.2941176471% {
+        clip: rect(56px, 900px, 97px, 0);
+    }
+    41.1764705882% {
+        clip: rect(24px, 900px, 87px, 0);
+    }
+    47.0588235294% {
+        clip: rect(45px, 900px, 88px, 0);
+    }
+    52.9411764706% {
+        clip: rect(31px, 900px, 89px, 0);
+    }
+    58.8235294118% {
+        clip: rect(34px, 900px, 89px, 0);
+    }
+    64.7058823529% {
+        clip: rect(35px, 900px, 78px, 0);
+    }
+    70.5882352941% {
+        clip: rect(12px, 900px, 89px, 0);
+    }
+    76.4705882353% {
+        clip: rect(23px, 900px, 67px, 0);
+    }
+    82.3529411765% {
+        clip: rect(43px, 900px, 78px, 0);
+    }
+    88.2352941176% {
+        clip: rect(34px, 900px, 87px, 0);
+    }
+    94.1176470588% {
+        clip: rect(98px, 900px, 86px, 0);
+    }
+    100% {
+        clip: rect(6px, 900px, 84px, 0);
+    }
+}
+
+@keyframes cyber-fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(25px) skewY(3deg);
+    }
+    to {
+        opacity: 0.7;
+        transform: translateY(0) skewY(0deg);
+    }
+}
+
+@keyframes content-fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

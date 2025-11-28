@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.avgmax.user.mapper.CertificationMapper">
+
+    <insert id="insert" parameterType="com.avgmax.user.domain.Certification">
+        INSERT INTO CERTIFICATION (CERTIFICATION_ID, USER_ID, CERTIFICATE_URL, CREATED_AT, UPDATED_AT) 
+        VALUES (#{certificationId}, #{userId}, #{certificateUrl}, #{createdAt}, #{updatedAt})
+    </insert>
+
+    <select id="selectByUserId" parameterType="String" resultType="com.avgmax.user.domain.Certification">
+        SELECT CERTIFICATION_ID, USER_ID, CERTIFICATE_URL
+        FROM CERTIFICATION
+        WHERE USER_ID = #{userId}
+    </select>
+    
+    <delete id="deleteByUserId" parameterType="String">
+        DELETE FROM CERTIFICATION WHERE USER_ID = #{userId}
+    </delete>
+</mapper>

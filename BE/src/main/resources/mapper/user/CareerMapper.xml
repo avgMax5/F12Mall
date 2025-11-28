@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.avgmax.user.mapper.CareerMapper">
+
+    <insert id="insert" parameterType="com.avgmax.user.domain.Career">
+        INSERT INTO CAREER (CAREER_ID, USER_ID, COMPANY_NAME, STATUS, POSITION, START_DATE, END_DATE, CERTIFICATE_URL, CREATED_AT, UPDATED_AT) 
+        VALUES (#{careerId}, #{userId}, #{companyName}, #{status}, #{position}, #{startDate}, #{endDate}, #{certificateUrl}, #{createdAt}, #{updatedAt})
+    </insert>
+
+    <select id="selectByUserId" parameterType="String" resultType="com.avgmax.user.domain.Career">
+        SELECT CAREER_ID, USER_ID, COMPANY_NAME, STATUS, POSITION, START_DATE, END_DATE, CERTIFICATE_URL
+        FROM CAREER
+        WHERE USER_ID = #{userId}
+    </select>
+
+    <delete id="deleteByUserId" parameterType="String">
+        DELETE FROM CAREER WHERE USER_ID = #{userId}
+    </delete>
+</mapper>

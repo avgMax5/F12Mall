@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.avgmax.trade.mapper.UserCoinMapper">
+
+    <insert id="insert" parameterType="com.avgmax.trade.domain.UserCoin">
+        INSERT INTO USER_COIN (USER_COIN_ID, HOLDER_ID, COIN_ID, HOLD_QUANTITY, TOTAL_BUY_AMOUNT, CREATED_AT, UPDATED_AT)
+        VALUES (#{userCoinId}, #{holderId}, #{coinId}, #{holdQuantity}, #{totalBuyAmount}, #{createdAt}, #{updatedAt})
+    </insert>
+
+    <update id="update" parameterType="com.avgmax.trade.domain.UserCoin">
+        UPDATE USER_COIN 
+        SET HOLD_QUANTITY = #{holdQuantity}, TOTAL_BUY_AMOUNT = #{totalBuyAmount}, UPDATED_AT = NOW()
+        WHERE USER_COIN_ID = #{userCoinId}
+    </update>
+
+    <select id="selectByHolderIdAndCoinId" resultType="com.avgmax.trade.domain.UserCoin">
+        SELECT * FROM USER_COIN WHERE HOLDER_ID = #{holderId} AND COIN_ID = #{coinId}
+    </select>
+
+    <select id="selectAllByHolderId" parameterType="String" resultType="com.avgmax.trade.dto.query.UserCoinWithCoinWithCreatorQuery">
+        SELECT 
+        uc.USER_COIN_ID AS userCoinId, 
+        uc.HOLDER_ID AS holderId, 
+        uc.HOLD_QUANTITY AS holdQuantity, 
+        uc.TOTAL_BUY_AMOUNT AS totalBuyAmount, 
+        
+        c.COIN_ID AS coinId, 
+        c.CREATOR_ID AS creatorId, 
+        c.CURRENT_PRICE AS coinCurrentPrice, 
+        c.CLOSING_PRICE AS coinClosingPrice, 
+
+        creator.NAME AS creatorName, 
+        creator.IMAGE AS creatorImage, 
+        creator.USERNAME AS creatorUsername 
+        
+        FROM USER_COIN uc 
+        JOIN COIN c 
+            ON uc.COIN_ID = c.COIN_ID 
+        JOIN USER creator 
+            ON c.CREATOR_ID = creator.USER_ID 
+        WHERE uc.HOLDER_ID = #{holderId}
+    </select>
+
+</mapper>

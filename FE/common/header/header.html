@@ -1,0 +1,87 @@
+<style>
+    .header {
+        position: fixed;
+        top: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        height: 4rem;
+        background: linear-gradient(to bottom,
+                rgba(4, 91, 4, 0.4) 0%,
+                rgba(0, 100, 0, 0.4) 20%,
+                rgba(0, 0, 0, 0.8) 100%);
+        font-family: 'KIMM_B';
+        font-size: 1rem;
+        text-decoration: underline;
+        color: #fff;
+        z-index: 9998;
+    }
+
+    .header-right {
+        display: flex;
+        align-items: center;
+        margin-right: 1.3rem;
+    }
+
+    .header-right .total-assets {
+        margin-right: 1rem;
+    }
+
+    .header-right>img {
+        display: block;
+        cursor: pointer;
+    }
+
+    .header-right>a {
+        display: block;
+        cursor: pointer;
+    }
+    
+
+    .box-menu {
+        position: absolute;
+        right: 2.2rem;
+        top: 3rem;
+        z-index: 9999;
+    }
+
+    .box-menu ul {
+        list-style: none;
+        padding: 0.8rem;
+        margin: 0;
+        border: 1px solid #00ff2f;
+        background: #000000;
+        color: #00ff00;
+        font-family: 'KIMM_B';
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    ul:hover {
+        background: #212a23;
+    }
+
+    .hidden {
+        display: none;
+    }
+</style>
+<div class="header">
+    <a href="/main" style="height: 50%; margin-left: 2rem">
+        <img src="/assets/images/common/F12_All.png" alt="logo-img" style="height: 100%; margin-left: 2rem"/>
+    </a>
+    <div class="header-right">
+        <span>₩</span>
+        <span class="total-assets"></span>
+        <img src="/assets/images/common/headerImg.png" id="header-profile-img" alt="헤더 사람모양" style="height: 2.3rem" />
+    </div>
+    <div class="box-menu hidden" id="header-box-menu">
+        <ul class="mymenu">
+            마이메뉴
+        </ul>
+        <ul class="logout">
+            로그아웃
+        </ul>
+    </div>
+</div>

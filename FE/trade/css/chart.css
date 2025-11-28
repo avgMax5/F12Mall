@@ -1,0 +1,79 @@
+.container-chart {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    gap: 0.28rem; /* 0.5rem */
+    padding: 1rem;
+    box-shadow: 0 0 0.11rem #00ff41, inset 0 0 0.11rem rgba(0, 255, 65, 0.4); /* 2px */
+}
+
+.container-chart > .chart-header {
+    width: inherit;
+    z-index: 2;
+    position: absolute;  
+    display: flex;
+    top: 0;
+    margin-top: 0.56rem; /* 10px */
+    margin-left: 0.56rem; /* 10px */
+}
+
+.chart-header > .tab {
+    border: 0.11rem solid #ffffff; /* 2px */
+    margin-left: 0.56rem; /* 10px */
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.chart-header > .tab.active {
+    color: #66FF66;
+    border-color: #66FF66;
+    font-weight: bold;
+    box-shadow: 0 0.11rem 0.44rem rgba(0, 255, 65, 0.4); /* 2px 8px */
+}
+
+.chart-header > .chart-title {
+    color: #ffffff;
+    flex: 1;
+    text-align: center;
+    font-size: 1.2em; /* 상대 단위 그대로 유지 */
+    font-weight: bold;
+    padding-right: 5.56rem; /* 100px */
+    font-family: 'KIMM_B';
+}
+
+.container-chart > .chart-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+/* 모바일 */
+@media (max-width: 767px) {
+  html {
+    font-size: 9px;
+  }
+}
+/* 태블릿 */
+@media (min-width: 768px) and (max-width: 1199px) {
+  html {
+    font-size: 12px;
+  }
+}
+/* 맥북 14 */
+@media (min-width: 1200px) and (max-width: 1700px) {
+  html {
+    font-size: 16px;
+  }
+}
+/* 맥북 16 이상 */
+@media (min-width: 1701px) {
+  html {
+    font-size: 18px;
+  }
+}

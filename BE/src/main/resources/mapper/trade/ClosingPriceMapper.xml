@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.avgmax.trade.mapper.ClosingPriceMapper">
+
+    <insert id="insert" parameterType="com.avgmax.trade.domain.ClosingPrice">
+        INSERT INTO CLOSING_PRICE (CLOSING_PRICE_ID, COIN_ID, UNIT_PRICE, TRADE_DATE, HIGH_PRICE, LOW_PRICE, BUY_QUANTITY, SELL_QUANTITY, CREATED_AT, UPDATED_AT)
+        VALUES (#{closingPriceId}, #{coinId}, #{unitPrice}, #{tradeDate}, #{highPrice}, #{lowPrice}, #{buyQuantity}, #{sellQuantity}, #{createdAt}, #{updatedAt})
+    </insert>
+
+    <select id="selectBycoinId" parameterType="String" resultType="com.avgmax.trade.domain.ClosingPrice">
+        SELECT * FROM CLOSING_PRICE WHERE COIN_ID = #{coinId}
+    </select>
+
+    <select id="selectBycoinIdDuring180" parameterType="String" resultType="com.avgmax.trade.domain.ClosingPrice">
+        SELECT *
+        FROM CLOSING_PRICE
+        WHERE COIN_ID = #{coinId}
+        ORDER BY TRADE_DATE DESC 
+        LIMIT 180
+    </select>
+
+    <insert id="bulkInsert">
+        INSERT INTO CLOSING_PRICE (
+            CLOSING_PRICE_ID,
+            COIN_ID,
+            UNIT_PRICE,
+            TRADE_DATE,
+            HIGH_PRICE,
+            LOW_PRICE,
+            BUY_QUANTITY,
+            SELL_QUANTITY,
+            CREATED_AT,
+            UPDATED_AT
+        )
+        VALUES
+        <foreach collection="list" item="cp" separator=",">
+            (
+                #{cp.closingPriceId},
+                #{cp.coinId},
+                #{cp.unitPrice},
+                #{cp.tradeDate},
+                #{cp.highPrice},
+                #{cp.lowPrice},
+                #{cp.buyQuantity},
+                #{cp.sellQuantity},
+                #{cp.createdAt},
+                #{cp.updatedAt}
+            )
+        </foreach>
+    </insert>
+
+    <select id="selectSummaryByDateRange" resultType="com.avgmax.trade.dto.query.TradeWithCoinQuery">
+        SELECT
+            t.COIN_ID,
+            c.CURRENT_PRICE AS UNIT_PRICE,
+            CASE WHEN t.HIGH_PRICE = 0 THEN c.CURRENT_PRICE ELSE t.HIGH_PRICE END AS HIGH_PRICE,
+            t.LOW_PRICE,
+            t.BUY_QUANTITY,
+            t.SELL_QUANTITY
+        FROM
+            (SELECT
+                a.COIN_ID,
+                a.HIGH_PRICE,
+                a.LOW_PRICE,
+                sum(a.BUY_QUANTITY) AS BUY_QUANTITY,
+                sum(a.SELL_QUANTITY) AS SELL_QUANTITY
+            FROM (SELECT
+                    COIN_ID,
+                    MAX(UNIT_PRICE) as HIGH_PRICE,
+                    MIN(UNIT_PRICE) as LOW_PRICE,
+                    SUM(QUANTITY) as BUY_QUANTITY,
+                    SUM(QUANTITY) as SELL_QUANTITY
+                FROM TRADE
+                WHERE CREATED_AT BETWEEN #{startDate} AND #{endDate}
+                GROUP BY COIN_ID
+
+                UNION ALL
+
+                SELECT
+                    COIN_ID,
+                    0 AS HIGH_PRICE,
+                    0 AS LOW_PRICE,
+                    SUM(CASE WHEN ORDER_TYPE = 'BUY' THEN QUANTITY ELSE 0 END) as BUY_QUANTITY,
+                    SUM(CASE WHEN ORDER_TYPE = 'SELL' THEN QUANTITY ELSE 0 END) as SELL_QUANTITY
+                FROM `ORDER`
+                WHERE CREATED_AT BETWEEN #{startDate} AND #{endDate}
+                GROUP BY COIN_ID) AS a
+            GROUP BY COIN_ID) AS t
+        JOIN COIN c ON t.COIN_ID = c.COIN_ID;
+    </select>
+
+</mapper>

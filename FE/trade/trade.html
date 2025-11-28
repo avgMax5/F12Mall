@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>F12_All-Trade</title>
+    <link rel="icon" href="/favicon.png" />
+    <link rel="stylesheet" href="/trade/css/trade.css" />
+    <link rel="stylesheet" href="/trade/css/profile.css" />
+    <link rel="stylesheet" href="/trade/css/live.css" />
+    <link rel="stylesheet" href="/trade/css/chart.css" />
+    <link rel="stylesheet" href="/trade/css/interface.css" />
+    <link rel="stylesheet" href="/trade/css/orderbook.css" />
+    <link rel="stylesheet" href="/trade/css/media.css" />
+    <link rel="stylesheet" href="/fonts.css" />
+    <script type="module" src="/config.js"></script>
+    <script type="module" src="/trade/js/trade.js"></script>
+    <script type="module" src="/trade/js/profile.js"></script>
+    <script type="module" src="/trade/js/live.js"></script>
+    <script type="module" src="/trade/js/modal.js"></script>
+    <script type="module" src="/hook/trade/getChart.js"></script>
+    <script type="module" src="/trade/js/chart.js"></script>
+    <script type="module" src="/trade/js/interface.js"></script>
+    <script type="module" src="/trade/js/orderbook.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+  </head>
+  <body>
+    <iframe
+      src="/common/background/cyber-background.html"
+      frameborder="0"
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+      "
+    ></iframe>
+    <div id="include-detail-modal"></div>
+    <div id="wrapper">
+      <div id="include-header"></div>
+      <div class="width">
+        <div class="section-left">
+          <div>
+            <div class="container-profile">
+              <div class="box-profile-image">
+                <img src="favicon.png" alt="Profile Image" />
+              </div>
+              <div class="box-coin-info">
+                <div class="coin-info-top">
+                  <span class="coin-name"></span>
+                  <span class="user-name"></span>
+                </div>
+                <div class="coin-info-middle">
+                  <p class="coin-bio"></p>
+                </div>
+                <div class="coin-info-bottom">
+                  <button class="coin-detail-btn" onclick="setModal()">
+                    <span>상세 정보 ></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="container-live">
+              <div class="box-live-price">
+                <span>
+                  <span id="current-price">--</span>KRW
+                  <span class="live-indicator"></span>
+                </span>
+              </div>
+              <div class="box-price-change">
+                <span class="price-direction"></span>
+                <span id="daily-change" class="change-amount"></span>
+                <span class="change-ratio"
+                  >(<span id="fluctuation-rate"></span>)</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="container-chart">
+            <div class="chart-header">
+              <button class="tab active" id="chart-btn-day">일</button>
+              <button class="tab" id="chart-btn-week">주</button>
+              <button class="tab" id="chart-btn-month">월</button>
+              <span class="chart-title">Trading Chart</span>
+            </div>
+            <canvas class="chart-canvas" id="trading-chart"></canvas>
+          </div>
+        </div>
+        <div class="section-right">
+          <div class="container-interface buy-mode">
+            <div class="box-toggle">
+              <button class="toggle-btn">
+                <span class="toggle-arrow">ORDER</span>
+              </button>
+            </div>
+            <div>
+              <div class="box-type-controller">
+                <button class="sell-type-btn active">
+                  <span>매수</span>
+                </button>
+                <button class="buy-type-btn deactive">
+                  <span>매도</span>
+                </button>
+              </div>
+              <div>
+                <div class="box-order-item available">
+                  <label>주문 가능</label>
+                  <span><span id="money"></span></span>
+                </div>
+                <div class="box-order-item quantity">
+                  <label>주문 수량</label>
+                  <div class="input-group">
+                    <input
+                      id="order-fis"
+                      type="number"
+                      min="0"
+                      step="1"
+                      placeholder="0"
+                    />
+                    <span>FIS</span>
+                  </div>
+                </div>
+                <div class="box-order-item order-price">
+                  <label>매수 가격</label>
+                  <div class="input-group">
+                    <input
+                      id="order-price"
+                      type="number"
+                      min="0"
+                      step="100"
+                      placeholder="0"
+                    />
+                    <span>원</span>
+                  </div>
+                </div>
+                <div class="box-order-item">
+                  <label></label>
+                  <div class="quick-orders">
+                    <button value="100">+100원</button>
+                    <button value="200">+200원</button>
+                    <button value="500">+500원</button>
+                    <button value="1000">+1000원</button>
+                  </div>
+                </div>
+                <div class="box-order-item total-price">
+                  <label>주문 총액</label>
+                  <div class="input-group">
+                    <input
+                      id="order-total"
+                      type="text"
+                      placeholder="0"
+                      readonly
+                    />
+                    <span>원</span>
+                  </div>
+                </div>
+                <div class="box-fee-info">
+                  <span>수수료 <span id="fee-rate">1</span>%</span>
+                </div>
+                <div class="box-order-error-message">
+                  <span>보유 금액이 부족합니다</span>
+                </div>
+                <div class="box-order-btn">
+                  <button class="reset-btn">
+                    <span>초기화</span>
+                  </button>
+                  <button class="order-btn">
+                    <span id="order-type">매수</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="container-orderbook orderbook-mode">
+            <div class="box-list-controller">
+              <button class="orderbook-btn active">
+                <span>Orderbook</span>
+              </button>
+              <button class="myorderlist-btn deactive">
+                <span>MyOrderList</span>
+              </button>
+            </div>
+            <div class="box-content orderbook-content">
+              <!-- 실시간 호가창 데이터가 추가됩니다 -->
+            </div>
+            <div class="box-content myorderlist-content">
+              <div class="myorderlist-col">
+                <div class="ordered-time-col sortable">
+                  <span>주문시간</span>
+                  <span class="sort-icon"></span>
+                </div>
+                <div class="order-type-col sortable">
+                  <span>구분</span>
+                  <span class="sort-icon"></span>
+                </div>
+                <div class="ordered-quantity-col sortable">
+                  <span>수량</span><span>(FIS)</span>
+                  <span class="sort-icon"></span>
+                </div>
+                <div class="ordered-price-col sortable">
+                  <span>단가</span><span>(WON)</span>
+                  <span class="sort-icon"></span>
+                </div>
+                <div class="order-total-col sortable">
+                  <span>정산금액</span>
+                  <span class="sort-icon"></span>
+                </div>
+              </div>
+              <div class="myorderlist-data">
+                <!-- 주문 목록 데이터가 여기에 동적으로 추가됩니다 -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- script -->
+    <script type="module" src="/common/header/header.js"></script>
+    <script type="module" src="/hook/auth/postLogout.js"></script>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.avgmax.user.mapper.UserSkillMapper">
+
+    <insert id="insert" parameterType="com.avgmax.user.domain.UserSkill">
+        INSERT INTO USER_SKILL (USER_ID, SKILL_ID, CREATED_AT, UPDATED_AT) 
+        VALUES (#{userId}, #{skillId}, #{createdAt}, #{updatedAt})
+    </insert>
+
+    <select id="selectByStack" parameterType="list" resultType="java.lang.String">
+        SELECT SKILL_ID
+        FROM SKILL
+        WHERE STACK IN 
+        <foreach item="stack" collection="list" open="(" separator="," close=")">
+            #{stack}
+        </foreach>
+    </select>
+
+    <select id="selectByUserId" parameterType="String" resultType="com.avgmax.user.dto.query.UserSkillWithSkillQuery">
+        SELECT USER_SKILL.USER_ID AS userId, USER_SKILL.SKILL_ID as skillId, SKILL.STACK AS stack
+        FROM USER_SKILL
+        JOIN SKILL ON USER_SKILL.SKILL_ID = SKILL.SKILL_ID
+        WHERE USER_ID = #{userId}
+    </select>
+    
+    <delete id="deleteByUserId" parameterType="String">
+        DELETE FROM USER_SKILL WHERE USER_ID = #{userId}
+    </delete>
+</mapper>

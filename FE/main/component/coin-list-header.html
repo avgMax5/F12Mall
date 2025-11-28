@@ -1,0 +1,160 @@
+<style>
+  /* table title */
+  .box-coin-list .table-header {
+    display: flex;
+    height: 2.5rem;
+    font-size: 1.25rem;
+    color: #d5f0a4;
+    background-color: #1f1f1f;
+    box-shadow: 0 2px 5px rgba(0, 255, 47, 0.8);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .sortable {
+    cursor: pointer;
+    gap: 0.5rem;
+  }
+
+  .sortable:hover {
+    color: #00ff2f;
+  }
+
+  .sort-arrow {
+    stroke: #b3ffc7;
+    fill: #b3ffc7;
+    transition: stroke 0.2s ease;
+  }
+
+  .sortable.asc .sort-arrow .arrow-up {
+    fill: #1376ee;
+    stroke: #1376ee;
+  }
+
+  .sortable.desc .sort-arrow .arrow-down {
+    fill: #e01200;
+    stroke: #e01200;
+  }
+
+  .sort-arrow .arrow-up,
+  .sort-arrow .arrow-down {
+    stroke-opacity: 0.6;
+  }
+
+  .sortable.asc .arrow-up,
+  .sortable.desc .arrow-down {
+    stroke-opacity: 1;
+  }
+</style>
+
+<div class="table-header">
+  <div class="col col-coin">코인이름</div>
+  <div class="col col-name">이름</div>
+  <div class="col col-price sortable" data-key="price">
+    현재가
+    <svg
+      class="sort-arrow"
+      width="12"
+      height="20"
+      viewBox="0 0 12 20"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      stroke="#888"
+      stroke-width="1.5"
+    >
+      <path
+        class="arrow-up"
+        d="M2 8 L6 4 L10 8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        class="arrow-down"
+        d="M2 12 L6 16 L10 12"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  </div>
+  <div class="col col-diff sortable" data-key="diff">
+    변동가
+    <svg
+      class="sort-arrow"
+      width="12"
+      height="20"
+      viewBox="0 0 12 20"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      stroke="#888"
+      stroke-width="1.5"
+    >
+      <path
+        class="arrow-up"
+        d="M2 8 L6 4 L10 8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        class="arrow-down"
+        d="M2 12 L6 16 L10 12"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  </div>
+  <div class="col col-rate sortable" data-key="rate">
+    등락률
+    <svg
+      class="sort-arrow"
+      width="12"
+      height="20"
+      viewBox="0 0 12 20"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      stroke="#888"
+      stroke-width="1.5"
+    >
+      <path
+        class="arrow-up"
+        d="M2 8 L6 4 L10 8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        class="arrow-down"
+        d="M2 12 L6 16 L10 12"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  </div>
+  <div class="col col-volume sortable" data-key="volume">
+    거래량
+    <svg
+      class="sort-arrow"
+      width="12"
+      height="20"
+      viewBox="0 0 12 20"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      stroke="#888"
+      stroke-width="1.5"
+    >
+      <path
+        class="arrow-up"
+        d="M2 8 L6 4 L10 8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        class="arrow-down"
+        d="M2 12 L6 16 L10 12"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  </div>
+  <div class="col col-low">최저가</div>
+  <div class="col col-high">최고가</div>
+</div>

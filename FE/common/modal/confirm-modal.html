@@ -1,0 +1,187 @@
+<style>
+@keyframes fade-in {
+  from { opacity: 0; transform: translate(-50%, -60%) scale(0.95); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+.confirm-modal-backdrop {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.72);
+  z-index: 99998;
+  backdrop-filter: blur(1.5px);
+}
+
+.confirm-modal {
+  width: 360px;
+  border: 1px solid #00ff2f;
+  background: #000;
+  box-shadow: 2.25px 2.25px 2.25px 0.9px #00ff2f;
+  z-index: 99999;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'KIMM_BOLD', 'Pretendard', 'sans-serif';
+  overflow: hidden;
+  transition: opacity 0.38s cubic-bezier(.4,1.4,.6,1), transform 0.38s cubic-bezier(.4,1.4,.6,1);
+  border-radius: 8px;
+}
+
+.confirm-modal-header {
+  background: #001a00;
+  padding: 10px 0;
+  border-bottom: 2px solid #00ff2f;
+}
+
+.confirm-modal-body {
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 20px 25px 20px;
+}
+
+.confirm-price {
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #00ff2f;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+.confirm-message {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 30px;
+  text-shadow: 0 0 6px #00ff2f, 0 0 2px #fff;
+  letter-spacing: 0.5px;
+}
+
+.confirm-buttons {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+  justify-content: center;
+}
+
+.confirm-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'KIMM_BOLD', 'Pretendard', 'sans-serif';
+  min-width: 100px;
+}
+
+.confirm-btn-cancel {
+  background: #666;
+  color: #fff;
+  border: 2px solid #666;
+}
+
+.confirm-btn-cancel:hover {
+  background: #555;
+  border-color: #555;
+  transform: translateY(-1px);
+}
+
+.confirm-btn-confirm {
+  background: #00ff2f;
+  color: #000;
+  border: 2px solid #00ff2f;
+  text-shadow: none;
+}
+
+.confirm-btn-confirm:hover {
+  background: #00cc26;
+  border-color: #00cc26;
+  transform: translateY(-1px);
+  box-shadow: 0 0 10px #00ff2f;
+}
+
+</style>
+
+<script>
+  function showConfirmModal(price, action = '매수', onConfirm = null, onCancel = null) {
+    if (document.querySelector('.confirm-modal')) return;
+    
+    fetch('/common/modal/confirm-modal.html')
+        .then(res => res.text())
+        .then(html => {
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = html;
+            document.body.appendChild(wrapper);
+
+            // 동적으로 내용 업데이트
+            const priceElement = wrapper.querySelector('.confirm-price');
+            const messageElement = wrapper.querySelector('.confirm-message');
+            const confirmButton = wrapper.querySelector('.confirm-btn-confirm');
+            
+            if (priceElement) priceElement.textContent = `${price}FIS`;
+            if (messageElement) messageElement.textContent = `${action}하시겠습니까?`;
+            if (confirmButton) confirmButton.textContent = `${action}하기`;
+
+            // 버튼 이벤트 연결
+            const cancelBtn = wrapper.querySelector('.confirm-btn-cancel');
+            const confirmBtn = wrapper.querySelector('.confirm-btn-confirm');
+            
+            if (cancelBtn) {
+                cancelBtn.onclick = () => {
+                    if (onCancel) onCancel();
+                    wrapper.remove();
+                };
+            }
+            
+            if (confirmBtn) {
+                confirmBtn.onclick = () => {
+                    if (onConfirm) onConfirm();
+                    wrapper.remove();
+                };
+            }
+
+            // 모달 fade-in 트리거
+            const modal = wrapper.querySelector('.confirm-modal');
+            if (modal) {
+                modal.style.opacity = '0';
+                modal.style.transform = 'translate(-50%, -60%) scale(0.95)';
+                // 강제 리플로우
+                void modal.offsetWidth;
+                // 트랜지션 적용
+                modal.style.transition = 'opacity 0.38s cubic-bezier(.4,1.4,.6,1), transform 0.38s cubic-bezier(.4,1.4,.6,1)';
+                modal.style.opacity = '1';
+                modal.style.transform = 'translate(-50%, -50%) scale(1)';
+            }
+
+            // 배경 클릭시 모달 닫기
+            const backdrop = wrapper.querySelector('.confirm-modal-backdrop');
+            if (backdrop) {
+                backdrop.onclick = () => {
+                    if (onCancel) onCancel();
+                    wrapper.remove();
+                };
+            }
+        });
+  }
+</script>
+
+<div class="confirm-modal-wrapper">
+  <div class="confirm-modal-backdrop"></div>
+  <div class="confirm-modal">
+    <div class="confirm-modal-header"></div>
+    <div class="confirm-modal-body">
+      <div class="confirm-price">1200FIS</div>
+      <div class="confirm-message">매수하시겠습니까?</div>
+      <div class="confirm-buttons">
+        <button class="confirm-btn confirm-btn-cancel">취소</button>
+        <button class="confirm-btn confirm-btn-confirm">매수하기</button>
+      </div>
+    </div>
+  </div>
+</div>

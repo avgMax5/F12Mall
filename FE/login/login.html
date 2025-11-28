@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F12_ALL</title>
+    <link rel="icon" href="/favicon.png" />
+    <link rel="stylesheet" href="/login/css/login.css">
+    <link rel="stylesheet" href="/login/css/media.css">
+    <link rel="stylesheet" href="/login/css/animation.css">
+    <script type="module" src="/login/js/login.js"></script>
+    <link rel="stylesheet" href="/fonts.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script type="module" src="/config.js"></script>
+    <script type="module" src="/hook/auth/postCheckUsername.js"></script>
+    <script type="module" src="/hook/auth/postLogin.js"></script>
+    <script type="module" src="/hook/auth/postSignup.js"></script>
+</head>
+<body>
+    <!-- input, tech-stack input, 표 추후에 컴포넌트화 예정-->
+    <iframe src="/common/background/cyber-background.html" frameborder="0" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;"></iframe>
+
+    <div class="wrapper">
+        <div class="section-login">
+            <div class="container">
+                <h1 class="title">F12_All</h1>
+                <h2 class="sub-title">Hello World</h2>
+                <form class="login-form">
+                    <div class="input-group">
+                        <label>Username</label>
+                        <input type="text" name="username" class="login-username" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" name="password" class="login-password" required>
+                    </div>
+                    <button type="submit" class="login-btn">LOGIN</button>
+                    <button type="button" class="signup-btn" id="signup-btn" onclick="toggleForms()">SIGN UP</button>
+                </form>
+            </div>
+        </div>
+        
+        <form class="section-signup hidden" id="signupForm" action="javascript:void(0);" method="post" onsubmit="event.preventDefault(); return false;">
+            <div class="container-left-signup">
+                <div class="box-logo">
+                    <button class="f12-key" id="f12-btn">F12</button>
+                     _ALL
+                </div>
+                <div class="box-left-signup">
+                    <div class="profile">
+                        <input type="file" id="profile-upload" accept="image/*" style="display: none;">
+                        <img class="profile-preview" id="profile-preview" src="" alt="프로필 이미지" style="display: none;">
+                        <label for="profile-upload" class="profile-edit-icon">
+                            <i class="fa-solid fa-gear"></i>
+                        </label>
+                    </div>
+                    <div class="input-wrap">
+                        <i class="fa-regular fa-f input-icon"></i>
+                        <input type="text" name="username" placeholder="아이디" class="id-input">
+                        <button class="id-check-btn">확인</button>
+                    </div>
+                    
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input type="password" name="password" placeholder="비밀번호" class="password-input">
+                    </div>
+
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input type="password" name="password-check" placeholder="비밀번호 확인" class="password-check-input">
+                    </div>
+                    
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-envelope input-icon"></i>
+                        <input type="email" name="email" placeholder="이메일" class="email-input">
+                    </div>
+                    
+
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-user input-icon"></i>
+                        <input type="text" name="name" placeholder="이름" class="name-input">
+                    </div>
+                    
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-laptop input-icon"></i>
+                        <input type="text" name="position" placeholder="직책" class="position-input">
+                    </div>
+                    
+                    <div class="bio-wrap">
+                        <div class="bio-title">
+                            <span>[ BIO ]</span>
+                            <div class="char-counter">
+                                <span class="current-count">0</span>/<span class="max-count">100</span>
+                            </div>
+                        </div>
+                        <textarea name="bio" class="bio-area" placeholder="자신을 소개해주세요!" maxlength="100"></textarea>
+                    </div>
+                    <button class="next-btn" type="button" onclick="showRightSignup()">다음으로</button>
+                </div>
+            </div>
+
+            <div class="container-right-signup hidden">
+                <div class="box-right-signup">
+                    <div class="tech-stack">
+                        <div class="about-tech-stack">
+                            <span class="tech-stack-title">[ TECH STACK ] </span>
+                            <span class="stack-max">최대 3개</span>
+                        </div>
+                        <div class="tech-stack-list">
+                            <label class="tech-stack-item">
+                                <input type="checkbox" name="stack" value="HTML">
+                                <span>HTML</span>
+                            </label>
+                            <label class="tech-stack-item">
+                                <input type="checkbox" name="stack" value="CSS">
+                                <span>CSS</span>
+                            </label>
+                            <label class="tech-stack-item">
+                                <input type="checkbox" name="stack" value="JS">
+                                <span>JS</span>
+                            </label>
+                            <label class="tech-stack-item">
+                                <input type="checkbox" name="stack" value="React">
+                                <span>React</span>
+                            </label>
+                            <label class="tech-stack-item">
+                                <input type="checkbox" name="stack" value="Vue">
+                                <span>Vue</span>
+                            </label>
+                            <label class="tech-stack-item">
+                                <input type="checkbox" name="stack" value="TypeScript">
+                                <span>TypeScript</span>
+                            </label>
+                            <label class="tech-stack-item">
+                                <input type="checkbox" name="stack" value="NextJS">
+                                <span>NextJS</span>
+                            </label>
+                            <label class="tech-stack-item">
+                                <input type="checkbox" name="stack" value="NodeJS">
+                                <span>NodeJS</span>
+                            </label>
+                            <label class="tech-stack-item">
+                                <input type="checkbox" name="stack" value="Java">
+                                <span>Java</span>
+                            </label>
+                            <label class="tech-stack-item">
+                                <input type="checkbox" name="stack" value="SpringBoot">
+                                <span>SpringBoot</span>
+                            </label>
+                            <label class="tech-stack-item">
+                                <input type="checkbox" name="stack" value="Python">
+                                <span>Python</span>
+                            </label>
+                            <label class="tech-stack-item">
+                                <input type="checkbox" name="stack" value="Django">
+                                <span>Django</span>
+                            </label>
+                            <label class="tech-stack-item">
+                                <input type="checkbox" name="stack" value="MariaDB">
+                                <span>MariaDB</span>
+                            </label>
+                            <label class="tech-stack-item">
+                                <input type="checkbox" name="stack" value="MySQL">
+                                <span>MySQL</span>
+                            </label>
+                            <label class="tech-stack-item">
+                                <input type="checkbox" name="stack" value="PostgreSQL">
+                                <span>PostgreSQL</span>
+                            </label>
+                            <label class="tech-stack-item">
+                                <input type="checkbox" name="stack" value="FireBase">
+                                <span>FireBase</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="middle-grid">
+                        <div class="left-column">
+                            <div class="resume">
+                                <h3>[ RESUME ]</h3>
+                                <div class="file-upload">
+                                    <input type="file" id="resume-upload" accept="application/pdf" style="display: none;" placeholder="이력서 파일을 업로드하세요">
+                                    <label for="resume-upload" class="resume-upload-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#697077" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-icon lucide-file input-icon">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                            <path d="M14 2v6h6"/>
+                                        </svg>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="certification">
+                                <h3>[ LICENSE ]</h3>
+                                <div class="file-upload">
+                                    <input type="file" id="certificate-upload" accept="application/pdf" style="display: none;" placeholder="자격증 파일을 업로드하세요">
+                                    <label for="certificate-upload" class="resume-upload-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#697077" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-icon lucide-file input-icon">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                            <path d="M14 2v6h6"/>
+                                        </svg>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="right-column">
+                            <div class="link">
+                                <h3>[ LINK ]</h3>
+                                <div class="input-wrap">
+                                    <i class="fa-brands fa-github input-icon"></i>
+                                    <input type="text" name="github" placeholder="Github" class="github-input">
+                                </div>
+                                
+                                <div class="input-wrap">
+                                    <i class="fa-brands fa-vimeo input-icon"></i>
+                                    <input type="text" name="blog" placeholder="블로그" class="blog-input">
+                                </div>
+                    
+                                <div class="input-wrap">
+                                    <i class="fa-solid fa-share-nodes input-icon"></i>
+                                    <input type="text" name="sns" placeholder="SNS" class="sns-input">
+                                </div>
+                                    
+                                <div class="input-wrap">
+                                    <i class="fa-brands fa-linkedin input-icon"></i>
+                                    <input type="text" name="linkedin" placeholder="링크드인" class="linkedin-input">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="education">
+                        <h3>[ EDUCATION ]</h3>
+                        <div class="table-container">
+                            <table class="form-table">
+                            <thead>
+                                <tr class="form-header">
+                                    <th>학교명</th>
+                                    <th>재학 상태</th>
+                                    <th>학과</th>
+                                    <th>입학</th>
+                                    <th>졸업</th>
+                                    <th>파일</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="form-row">
+                                    <td class="form-cell">
+                                        <input type="text" placeholder="서울대학교" class="school-name">
+                                    </td>
+                                    <td class="form-cell">
+                                        <div class="radio-group">
+                                            <div class="radio-item">
+                                                <input type="radio" name="education-status" id="enrolled" checked>
+                                                <label for="enrolled">재학</label>
+                                            </div>
+                                            <div class="radio-item">
+                                                <input type="radio" name="education-status" id="graduated">
+                                                <label for="graduated">졸업</label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="form-cell">
+                                        <input type="text" placeholder="컴퓨터공학과" class="major">
+                                    </td>
+                                    <td class="form-cell">
+                                        <input type="text" placeholder="2019-03-04" class="admission-date">
+                                    </td>
+                                    <td class="form-cell">
+                                        <input type="text" placeholder="2023-02-28" class="graduation-date">
+                                    </td>
+                                    <td class="form-cell">
+                                        <input type="file" id="education-cert-upload" accept="application/pdf,image/*" style="display: none;">
+                                        <label for="education-cert-upload" class="file-upload-label">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#697077" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-paperclip">
+                                                <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+                                            </svg>
+                                        </label>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="career">
+                        <h3>[ CAREER ]</h3>
+                        <div class="table-container">
+                            <table class="form-table">
+                            <thead>
+                                <tr class="form-header">
+                                    <th>회사명</th>
+                                    <th>재직 상태</th>
+                                    <th>직무</th>
+                                    <th>입사</th>
+                                    <th>퇴사</th>
+                                    <th>파일</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="form-row">
+                                    <td class="form-cell">
+                                        <input type="text" placeholder="신한DS" class="company-name">
+                                    </td>
+                                    <td class="form-cell">
+                                        <div class="radio-group">
+                                            <div class="radio-item">
+                                                <input type="radio" name="career-status" id="employed" checked>
+                                                <label for="employed">재직</label>
+                                            </div>
+                                            <div class="radio-item">
+                                                <input type="radio" name="career-status" id="resigned">
+                                                <label for="resigned">퇴사</label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="form-cell">
+                                        <input type="text" placeholder="백엔드 개발자" class="job">
+                                    </td>
+                                    <td class="form-cell">
+                                        <input type="text" placeholder="2019-03-04" class="admission-date">
+                                    </td>
+                                    <td class="form-cell">
+                                        <input type="text" placeholder="2023-02-28" class="graduation-date">
+                                    </td>
+                                    <td class="form-cell">
+                                        <input type="file" id="career-cert-upload" accept="application/pdf,image/*" style="display: none;">
+                                        <label for="career-cert-upload" class="file-upload-label">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#697077" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-paperclip">
+                                                <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+                                            </svg>
+                                        </label>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <button type="button" class="signup-btn" onclick="handleSignup()">시작하기</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html> 

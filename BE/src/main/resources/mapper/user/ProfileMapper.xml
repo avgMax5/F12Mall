@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.avgmax.user.mapper.ProfileMapper">
+
+    <insert id="insert" parameterType="com.avgmax.user.domain.Profile">
+        INSERT INTO PROFILE (USER_ID, POSITION, BIO, GITHUB, BLOG, SNS, LINKEDIN, RESUME, CREATED_AT, UPDATED_AT) 
+        VALUES (#{userId}, #{position}, #{bio}, #{github}, #{blog}, #{sns}, #{linkedin}, #{resume}, #{createdAt}, #{updatedAt})
+    </insert>
+
+    <select id="selectByUserId" parameterType="String" resultType="com.avgmax.user.domain.Profile">
+        SELECT USER_ID, POSITION, BIO, GITHUB, BLOG, SNS, LINKEDIN, RESUME, CREATED_AT, UPDATED_AT
+        FROM PROFILE
+        WHERE USER_ID = #{userId}
+    </select>
+
+    <update id="update" parameterType="com.avgmax.user.domain.Profile">
+        UPDATE PROFILE
+        SET
+            POSITION = #{position},
+            BIO = #{bio},
+            GITHUB = #{github}, 
+            BLOG = #{blog}, 
+            SNS = #{sns}, 
+            LINKEDIN = #{linkedin}, 
+            RESUME = #{resume}
+        WHERE USER_ID = #{userId}
+    </update>
+    
+</mapper>

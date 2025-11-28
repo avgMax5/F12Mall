@@ -1,0 +1,18 @@
+db:
+  mariadb:
+    driver: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://mariadb:3306/testdb?useUnicode=true&characterEncoding=utf8mb4
+    username: HJH
+    password: HJH
+    mapper: classpath*:mapper/**/*.xml
+file:
+  minio:
+    server: https://minio.avgmax.team
+    publicUrl: https://minio.avgmax.team
+    region: us-east-1
+    userId: avgmaxminioadmin
+    userPw: avgmaxminioadmin
+    bucketName: f12mall
+app:
+  trade:
+    fee-rate: 1

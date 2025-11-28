@@ -1,0 +1,127 @@
+<style>
+    @keyframes fade-in {
+      from { opacity: 0; transform: translate(-50%, -60%) scale(0.95); }
+      to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    }
+    .success-alert-backdrop {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.72);
+      z-index: 99998;
+      backdrop-filter: blur(1.5px);
+    }
+    .success-alert-modal {
+      width: 340px;
+      border: 1px solid #00ff2f;
+      background: #000;
+      box-shadow: 2.25px 2.25px 2.25px 0.9px #00ff2f;
+      z-index: 99999;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'KIMM_BOLD', 'Pretendard', 'sans-serif';
+      overflow: hidden;
+      transition: opacity 0.38s cubic-bezier(.4,1.4,.6,1), transform 0.38s cubic-bezier(.4,1.4,.6,1);
+    }
+    .success-alert-header {
+      background: #01460d;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 16px 6px 12px;
+      font-size: 1.05rem;
+      font-weight: bold;
+      border-bottom: 1.5px solid #00ff2f;
+      letter-spacing: 0.5px;
+    }
+    .success-alert-title {
+      font-size: 1.05rem;
+      color: #fff;
+      text-shadow: 0 0 8px #00ff2f, 0 0 2px #fff;
+    }
+    .success-alert-close {
+      background: none;
+      border: none;
+      color: #00ff2f;
+      font-size: 1.2rem;
+      cursor: pointer;
+      font-weight: bold;
+      transition: color 0.15s;
+      text-shadow: 0 0 4px #00ff2f;
+    }
+    .success-alert-close:hover {
+      color: #fff;
+    }
+    .success-alert-body {
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 28px 18px 18px 18px;
+    }
+    .success-alert-icon {
+      width: 90px;
+      height: 90px;
+      margin-bottom: 18px;
+      filter: drop-shadow(0 0 8px #00ff2f);
+    }
+    .success-alert-message {
+      color: #fff;
+      font-size: 1.02rem;
+      font-weight: 600;
+      text-align: center;
+      margin-top: 2px;
+      text-shadow: 0 0 8px #00ff2f, 0 0 2px #fff;
+      letter-spacing: 0.2px;
+    }
+    
+    </style>
+    <script>
+      function showSuccessAlert(message = '작업이 완료되었습니다.') {
+        if (document.querySelector('.success-alert-modal')) return;
+        fetch('/common/modal/success-modal.html')
+            .then(res => res.text())
+            .then(html => {
+                const wrapper = document.createElement('div');
+                wrapper.innerHTML = html;
+                document.body.appendChild(wrapper);
+
+                // 동적으로 메시지 업데이트
+                const messageElement = wrapper.querySelector('.success-alert-message');
+                if (messageElement) {
+                    messageElement.textContent = message;
+                }
+    
+                // 모달 fade-in 트리거
+                const modal = wrapper.querySelector('.success-alert-modal');
+                if (modal) {
+                    modal.style.opacity = '0';
+                    modal.style.transform = 'translate(-50%, -60%) scale(0.95)';
+                    // 강제 리플로우
+                    void modal.offsetWidth;
+                    // 트랜지션 적용
+                    modal.style.transition = 'opacity 0.38s cubic-bezier(.4,1.4,.6,1), transform 0.38s cubic-bezier(.4,1.4,.6,1)';
+                    modal.style.opacity = '1';
+                    modal.style.transform = 'translate(-50%, -50%) scale(1)';
+                }
+            });
+      }
+    </script>
+    <div class="success-alert-wrapper">
+      <div class="success-alert-backdrop"></div>
+      <div class="success-alert-modal">
+        <div class="success-alert-header">
+          <span class="success-alert-title">Success</span>
+          <button class="success-alert-close" onclick="this.closest('.success-alert-wrapper').remove()">✕</button>
+        </div>
+        <div class="success-alert-body">
+          <img src="/assets/images/common/success.png" alt="success icon" class="success-alert-icon" />
+          <div class="success-alert-message">로그인에<br/>성공하였습니다!</div>
+        </div>
+      </div>
+    </div>
+    
+    

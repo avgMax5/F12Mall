@@ -1,0 +1,436 @@
+@media (min-width: 768px) and (max-width: 1199px) {
+  .section-header {
+    max-width: 80%;
+    padding: 8px 0;
+    flex-direction: row;
+  }
+  
+  .section-header .container {
+    max-width: 80%;
+    padding: 0 15px;
+  }
+  
+  .box-search {
+    width: 20rem;
+    margin: 0 1.25rem;
+  }
+  
+  .box-logo > .f12-key {
+    width: 50px;
+    height: 25px;
+    font-size: 0.8125rem;
+    line-height: 25px;
+  }
+  
+  .section-nav .container {
+    max-width: 100%;
+    padding: 0 15px;
+  }
+  
+  .section-nav .box-ul {
+    gap: 40px;
+  }
+  
+  .box-ul > .nav-item > .nav-link {
+    font-size: 0.875rem;
+  }
+  
+  .section-adv {
+    padding: 40px 0;
+  }
+  
+  .section-adv .container {
+    max-width: 100%;
+    padding: 0 15px;
+  }
+  
+  .section-adv .box {
+    gap: 40px;
+  }
+  
+  .keyboard {
+    max-width: 350px;
+  }
+  
+  .key {
+    width: 20px;
+    height: 20px;
+    font-size: 6px;
+  }
+  
+  .key.space {
+    width: 140px;
+  }
+  
+  .key.tab {
+    width: 30px;
+  }
+  
+  .key.caps {
+    width: 36px;
+  }
+  
+  .key.shift {
+    width: 48px;
+  }
+  
+  .key.ctrl,
+  .key.alt {
+    width: 30px;
+  }
+  
+  .key.enter,
+  .key.backspace {
+    width: 40px;
+  }
+  
+  .key.function {
+    font-size: 5px;
+  }
+  
+  .key.f12-logo {
+    font-size: 6px;
+  }
+  
+  .key-row {
+    gap: 3px;
+    padding: 0 4px;
+  }
+  
+  .key.function-row {
+    padding: 0 25px;
+  }
+  
+  .key.number-row {
+    padding-left: 25px;
+  }
+  
+  .key.alpha-row {
+    padding-left: 12px;
+  }
+  
+  .key.bottom-row {
+    padding-left: 25px;
+  }
+  
+  /* .content h1 {
+    font-size: 2.25rem;
+  }
+  
+  .content p {
+    font-size: 1rem;
+  } */
+  
+  /* .features {
+    justify-content: center;
+  }
+  
+  .feature-item {
+    font-size: 0.875rem;
+  } */
+  
+  .section-products {
+    padding: 40px 0;
+  }
+  
+  .section-products .container-products-row {
+    max-width: 100%;
+    padding: 0 15px;
+  }
+  
+  .container-products-row {
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .box-product-column {
+    max-width: 100%;
+  }
+  
+  .header {
+    margin-bottom: 30px;
+  }
+  
+  .title {
+    font-size: 1.25rem;
+  }
+  
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 15px;
+  }
+  
+  .card {
+    max-width: 100%;
+    max-height: none;
+    padding: 15px;
+  }
+  
+  .card > .image {
+    height: 160px;
+  }
+  
+  .card > .name {
+    font-size: 1rem;
+  }
+  
+  .card > .price > .sale {
+    font-size: 1.125rem;
+  }
+}
+
+  @media (max-width: 767px) {
+    .section-header {
+      max-width: 100%;
+      padding: 5px 0;
+    }
+    
+    .section-header .container {
+      max-width: 100%;
+      padding: 0 10px;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .box-logo {
+      font-size: 0.875rem;
+      flex-shrink: 0;
+    }
+    
+    .box-search {
+      width: 10rem;
+      margin: 0 1.25rem;
+    }
+    
+    .login {
+      font-size: 0.875rem;
+      flex-shrink: 0;
+    }
+    
+    .box-logo > .f12-key {
+      width: 40px;
+      height: 20px;
+      font-size: 0.6875rem;
+      line-height: 20px;
+    }
+    
+    /* .box-search > .search-input {
+      padding: 8px 35px 8px 12px;
+      font-size: 0.8125rem;
+    } */
+    
+    .section-nav {
+      padding: 10px 0;
+    }
+    
+    .section-nav .container {
+      max-width: 100%;
+      padding: 0 10px;
+    }
+    
+    .section-nav .box-ul {
+      gap: 25px;
+      min-width: max-content;
+    }
+    
+    .box-ul > .nav-item > .nav-link {
+      font-size: 0.8125rem;
+      padding-bottom: 10px;
+    }
+    
+    .dropdown {
+      min-width: 120px;
+    }
+    
+    .dropdown-item {
+      padding: 8px 15px;
+      font-size: 0.75rem;
+    }
+    
+    .section-adv {
+      padding: 30px 0;
+    }
+    
+    .section-adv .container {
+      max-width: 100%;
+      padding: 0 10px;
+    }
+    
+    .section-adv .box {
+      gap: 30px;
+    }
+    
+    .keyboard {
+      max-width: 250px;
+    }
+    
+    .key {
+      width: 15px;
+      height: 15px;
+      font-size: 5px;
+    }
+    
+    .key.space {
+      width: 105px;
+    }
+    
+    .key.tab {
+      width: 23px;
+    }
+    
+    .key.caps {
+      width: 27px;
+    }
+    
+    .key.shift {
+      width: 36px;
+    }
+    
+    .key.ctrl,
+    .key.alt {
+      width: 23px;
+    }
+    
+    .key.enter,
+    .key.backspace {
+      width: 30px;
+    }
+    
+    .key.function {
+      font-size: 4px;
+    }
+    
+    .key.f12-logo {
+      font-size: 5px;
+    }
+    
+    .key-row {
+      gap: 2px;
+      padding: 0 3px;
+    }
+    
+    .key.function-row {
+      padding: 0 20px;
+    }
+    
+    .key.number-row {
+      padding-left: 20px;
+    }
+    
+    .key.alpha-row {
+      padding-left: 10px;
+    }
+    
+    .key.bottom-row {
+      padding-left: 20px;
+    }
+    
+    .content h1 {
+      font-size: 1.75rem;
+      margin-bottom: 15px;
+    }
+    
+    .content p {
+      font-size: 0.875rem;
+      margin-bottom: 20px;
+    }
+    
+    .features {
+      margin-bottom: 30px;
+    }
+    
+    .feature-item {
+      font-size: 0.8125rem;
+      margin-bottom: 10px;
+    }
+    
+    .feature-icon {
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
+      font-size: 0.625rem;
+    }
+    
+    .button {
+      padding: 12px 25px;
+      font-size: 0.875rem;
+    }
+    
+    .section-products {
+      padding: 30px 0;
+    }
+    
+    .section-products .container-products-row {
+      max-width: 100%;
+      padding: 0 10px;
+    }
+    
+    .container-products-row {
+      flex-direction: column;
+      gap: 25px;
+    }
+    
+    .box-product-column {
+      max-width: 100%;
+    }
+    
+    .header {
+      margin-bottom: 20px;
+    }
+    
+    .title {
+      font-size: 1.125rem;
+    }
+    
+    .more {
+      font-size: 0.75rem;
+    }
+    
+    .grid {
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
+    }
+    
+    .card {
+      max-width: 100%;
+      max-height: none;
+      padding: 12px;
+    }
+    
+    .card > .image {
+      height: 120px;
+      margin-bottom: 10px;
+    }
+    
+    .card > .name {
+      font-size: 0.875rem;
+      margin-bottom: 6px;
+    }
+    
+    .card > .price {
+      margin-bottom: 8px;
+    }
+    
+    .card > .price > .original {
+      font-size: 0.75rem;
+    }
+    
+    .card > .price > .sale {
+      font-size: 1rem;
+    }
+    
+    .card > .info {
+      font-size: 0.6875rem;
+    }
+    
+    .card > .info > .delivery {
+      font-size: 0.625rem;
+    }
+    
+    .card > .image > .sale-badge {
+      padding: 3px 6px;
+      font-size: 0.625rem;
+    }
+  }

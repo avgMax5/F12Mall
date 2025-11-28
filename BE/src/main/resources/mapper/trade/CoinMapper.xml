@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.avgmax.trade.mapper.CoinMapper">
+
+    <insert id="insert" parameterType="com.avgmax.trade.domain.Coin">
+        INSERT INTO COIN (COIN_ID, CREATOR_ID, CURRENT_PRICE, CLOSING_PRICE, CREATED_AT, UPDATED_AT)
+        VALUES (#{coinId}, #{creatorId}, #{currentPrice}, #{closingPrice}, #{createdAt}, #{updatedAt})
+    </insert>
+
+    <select id="selectById" parameterType="String" resultType="com.avgmax.trade.domain.Coin">
+        SELECT * FROM COIN WHERE COIN_ID = #{coinId}
+    </select>
+
+    <select id="selectWithCreatorWithProfileById" parameterType="String" resultType="com.avgmax.trade.dto.query.CoinWithCreatorWithProfileQuery">
+        SELECT
+            c.COIN_ID AS COIN_ID,
+            c.CREATOR_ID AS CREATOR_ID,
+            c.CURRENT_PRICE AS CURRENT_PRICE,
+            c.CLOSING_PRICE AS CLOSING_PRICE,
+            (c.CURRENT_PRICE - c.CLOSING_PRICE) AS CHANGE_PRICE,
+            ((c.CURRENT_PRICE - c.CLOSING_PRICE) / c.CLOSING_PRICE * 100) AS FLUCTUATION_RATE,
+            u.NAME AS CREATOR_NAME,
+            u.USERNAME AS CREATOR_USERNAME,
+            u.IMAGE AS CREATOR_IMAGE,
+            p.POSITION AS PROFILE_POSITION,
+            p.BIO AS PROFILE_BIO,
+            c.CREATED_AT AS CREATED_AT
+        FROM COIN c
+        JOIN USER u ON c.CREATOR_ID = u.USER_ID
+        JOIN PROFILE p ON u.USER_ID = p.USER_ID
+        WHERE c.COIN_ID = #{coinId}
+    </select>
+    
+    <select id="selectAllWithCreatorWithProfile" resultType="com.avgmax.trade.dto.query.CoinWithCreatorWithProfileQuery">
+        SELECT
+            c.COIN_ID AS COIN_ID,
+            c.CREATOR_ID AS CREATOR_ID,
+            c.CURRENT_PRICE AS CURRENT_PRICE,
+            c.CLOSING_PRICE AS CLOSING_PRICE,
+            (c.CURRENT_PRICE - c.CLOSING_PRICE) AS CHANGE_PRICE,
+            ((c.CURRENT_PRICE - c.CLOSING_PRICE) / c.CLOSING_PRICE * 100) AS FLUCTUATION_RATE,
+            u.NAME AS CREATOR_NAME,
+            u.USERNAME AS CREATOR_USERNAME,
+            u.IMAGE AS CREATOR_IMAGE,
+            p.POSITION AS PROFILE_POSITION,
+            p.BIO AS PROFILE_BIO,
+            c.CREATED_AT AS CREATED_AT
+        FROM COIN c
+        JOIN USER u ON c.CREATOR_ID = u.USER_ID
+        JOIN PROFILE p ON u.USER_ID = p.USER_ID
+    </select>
+
+    <update id="updateCurrentPrice">
+        UPDATE COIN SET CURRENT_PRICE = #{currentPrice}, UPDATED_AT = NOW() WHERE COIN_ID = #{coinId}
+    </update>
+</mapper>

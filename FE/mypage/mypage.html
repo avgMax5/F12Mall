@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/mypage/css/mypage.css" />
+    <link rel="stylesheet" href="/mypage/css/media.css" />
+    <link rel="stylesheet" href="/fonts.css" />
+    <link rel="icon" href="/favicon.png" />
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+    <title>F12_ALL-Mypage</title>
+  </head>
+  <body>
+    <div id="wrapper">
+      <canvas id="matrix"></canvas>
+      <div id="include-header"></div>
+      <div id="include-detail-modal"></div>
+      <div class="width">
+        <!-- section : left  -->
+        <div class="section-left">
+          <div class="container-profile border media-border-none">
+            <div class="box-contents">
+              <div class="media-profile-left-row">
+                <div id="image"></div>
+                <div class="media-name-container">
+                  <div id="name"></div>
+                  <div id="username"></div>
+                </div>
+              </div>
+              <div id="position"></div>
+              <div id="email"></div>
+              <div id="stack-container"></div>
+              <div id="link-container">
+                <!-- 깃허브 링크,이미지 / 벨로그 링크.이미지 -->
+              </div>
+            </div>
+            <div class="detail-btn media-display-none" onclick="setModal()">
+              DETAIL
+            </div>
+          </div>
+          <div class="media-profile-right-row">
+            <div class="container-ratio border media-border-none">
+              <div class="media-border-none">MyCoin Ratio</div>
+              <!-- <div class="box-ratio-bar"></div> -->
+              <div class="bar-container"></div>
+              <div class="box-coins">
+                <div class="coin-container">
+                  <div class="circle"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- section : right -->
+        <div class="section-right">
+          <div class="container-information">
+            <div class="border section-right-title">Coin Information</div>
+            <div class="box-inform-main border">
+              <div class="main-left border media-border-none">
+                <div class="left-top media-display-none">
+                  <span id="coin-name"></span>
+                </div>
+                <div id="bio"></div>
+              </div>
+              <div class="main-right border">
+                <div class="right-top">
+                  <span id="my-coin-quantity"></span><span>/</span
+                  ><span>1000</span><span>FIS</span> <span>₩</span
+                  ><span id="total-value"></span>
+                </div>
+                <div>
+                  <div class="total-money-container">
+                    <div class="line">
+                      <span>현금 : </span><span>₩</span><span id="money"></span>
+                    </div>
+                    <div class="line">
+                      <span>코인 평가 금액 : </span><span>₩</span
+                      ><span id="current-coin-amount"></span>
+                    </div>
+                    <div class="line">
+                      <span>코인 매수 원금 : </span><span>₩</span
+                      ><span id="total-coin-amount"></span>
+                    </div>
+                    <div class="line">
+                      <span>총 보유 자산 : </span><span>₩</span
+                      ><span id="total-amount"></span>
+                    </div>
+                    <div id="subtract-amount"></div>
+                  </div>
+                  <div class="graph-container">
+                    <div id="graph"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="container-list-coins">
+            <div class="border section-right-title">List of Coins</div>
+            <div class="box-list-main border">
+              <div class="total-info">
+                <div><span id="total-coins"></span><span> FIS</span></div>
+                <div><span>₩</span><span id="total-coin-price"></span></div>
+              </div>
+              <div class="coin-list"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- script -->
+    <script src="/mypage/js/background.js"></script>
+    <script type="module" src="/common/header/header.js"></script>
+    <script type="module" src="/hook/auth/postLogout.js"></script>
+    <script src="/mypage/js/coinElement.js"></script>
+    <script src="/mypage/js/mobile.js"></script>
+    <script type="module" src="/config.js"></script>
+    <script type="module" src="/mypage/js/mypage.js"></script>
+    <script type="module" src="/mypage/js/modal.js"></script>
+  </body>
+</html>

@@ -1,0 +1,138 @@
+.container-profile {
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    gap: 0.5rem;
+    padding: 1rem;
+    box-shadow: 0 0 2px #00ff41, inset 0 0 2px rgba(0, 255, 65, 0.4);
+    min-width: fit-content;
+    min-width: 70%;
+  }
+  
+  .container-profile .box-profile-image {
+    flex-shrink: 0;
+    width: 9rem;
+    height: 9rem;
+    background-color: #000000;
+    border: 1px solid #66ff66;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .box-profile-image > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .container-profile .box-coin-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-width: 0;
+    padding: 0.5rem;
+  }
+  
+  .box-coin-info .coin-info-top {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    flex-shrink: 0;
+    font-family: 'KIMM_B';
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  
+  .coin-info-top .coin-name {
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+    color: #ffffff;
+    white-space: nowrap;
+  }
+  
+  .coin-info-top .user-name {
+    font-size: 0.8rem;
+    color: #999999;
+    white-space: nowrap;
+  }
+  
+  .box-coin-info .coin-info-middle {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .coin-info-middle .coin-bio {
+    font-size: 0.7rem;
+    color: #ffffff;
+    font-family: 'KIMM_L';
+  }
+  
+  .box-coin-info .coin-info-bottom {
+    display: flex;
+    justify-content: flex-end;
+    flex-shrink: 0;
+  }
+  
+  .coin-info-bottom .coin-detail-btn {
+    background-color: #66ff66;
+    color: #000000;
+    border: none;
+    cursor: pointer;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 3px 3px 2px rgba(102, 255, 102, 0.3);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    animation: neonPulse 2s infinite;
+  }
+  
+  .coin-detail-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s;
+  }
+  
+  .coin-detail-btn:hover::before {
+    left: 100%;
+  }
+  
+  .coin-detail-btn:hover {
+    background-color: #7fff7f;
+    box-shadow: 
+      0 0 5px #66ff66,
+      0 0 10px #66ff66,
+      0 0 15px #66ff66,
+      0 0 20px #66ff66;
+    transform: scale(1.05);
+  }
+  
+  @keyframes neonPulse {
+    0%, 100% {
+      box-shadow: 
+        3px 3px 2px rgba(102, 255, 102, 0.3),
+        0 0 5px rgba(102, 255, 102, 0.5);
+    }
+    50% {
+      box-shadow: 
+        3px 3px 2px rgba(102, 255, 102, 0.3),
+        0 0 10px rgba(102, 255, 102, 0.8),
+        0 0 15px rgba(102, 255, 102, 0.6);
+    }
+  }
+  
+  .coin-detail-btn > span {
+    font-family: 'KIMM_B';
+    padding: 0.3rem 0.8rem;
+  }

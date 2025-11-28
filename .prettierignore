@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+target/
+build/
+dist/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Compiled files
+*.class
+*.jar
+*.war
+
+# Generated files
+*.min.js
+*.min.css 

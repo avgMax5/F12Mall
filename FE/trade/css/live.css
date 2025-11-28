@@ -1,0 +1,110 @@
+.container-live {
+  background-color: rgba(0, 0, 0, 0.95);
+  box-shadow: 0 0 2px #00ff41, inset 0 0 2px rgba(0, 255, 65, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  font-family: 'KIMM_B';
+  position: relative;
+  overflow: hidden;
+  min-width: fit-content;
+}
+
+.container-live::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.1), transparent);
+  animation: liveUpdate 3s infinite;
+  pointer-events: none;
+}
+
+@keyframes liveUpdate {
+  0% { left: -100%; }
+  50% { left: 100%; }
+  100% { left: 100%; }
+}
+
+.box-live-price {
+  color: #66ff66;
+  text-shadow: 0 0 4px #00ff2f;
+  text-align: start;
+  position: relative;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.box-live-price > span {
+  font-size: 0.8rem;
+  padding: 0 1rem;
+  white-space: nowrap;
+}
+
+.box-live-price #current-price {
+  font-size: 2.5rem;
+}
+
+.box-price-change {
+  font-size: 1.2rem;
+}
+
+/* 상승 시 스타일 */
+.box-price-change.up {
+    color: #e01200;
+}
+
+.box-price-change.up {
+    text-shadow: 0 0 8px #e01200;
+}
+
+/* 하락 시 스타일 */
+.box-price-change.down {
+    color: #1376ee;
+}
+
+.box-price-change.down {
+    text-shadow: 0 0 8px #1376ee;
+}
+
+.box-price-change > span.change-ratio {
+  font-size: 0.9rem;
+}
+
+/* 깜빡이는 효과 */
+.box-live-price .live-indicator {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: #00ff41;
+  border-radius: 50%;
+  margin-left: 8px;
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0.3; }
+}
+
+/* 가격 변동 시 하이라이트 효과 */
+.box-live-price.highlight {
+  animation: highlight 0.8s ease-out;
+}
+
+@keyframes highlight {
+  0% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: rgba(0, 255, 65, 0.1);
+  }
+  100% {
+    background-color: transparent;
+  }
+}

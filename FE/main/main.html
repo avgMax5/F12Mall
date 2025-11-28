@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F12_ALL</title>
+    <link rel="icon" href="/favicon.png" />
+    <link rel="stylesheet" href="/fonts.css">
+    <link rel="stylesheet" href="/main/css/main.css">
+    <link rel="stylesheet" href="/main/css/media.css">
+</head>
+
+<body>
+    <iframe src="/common/background/cyber-background.html" frameborder="0" style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+      "></iframe>
+    <div id="wrapper">
+        <div id="include-header"></div>
+        <div class="width">
+            <!-- 상단 영역 -->
+            <div class="section-top">
+                <!-- container-left -->
+                <div class="container-left">
+                    <div class="box-header">
+                        <h2 class="box-top-title">Top 5 Surging</h2>
+                    </div>
+                    <div class="box-surging-body border-shadow">
+                        <ul class="surging-list" id="surging"></ul>
+                    </div>
+                </div>
+                <!-- container-right -->
+                <div class="container-right">
+                    <div class="box-header">
+                        <h2 class="box-top-title">Top 5 Coin</h2>
+                    </div>
+                    <div class="box-carousel-body border-shadow">
+                        <div class="carousel-track">
+                            <div class="carousel-slide carousel-cap-cards" id="price"></div>
+                            <div class="carousel-slide carousel-empty-slide"></div>
+                            <!-- banner -->
+                            <div class="carousel-slide carousel-banner"></div>
+                        </div>
+                        <div class="carousel-indicator">
+                            <span class="dot active"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section-bottom border-shadow">
+                <!-- container-top -->
+                <div class="container-top">
+                    <form class="box-search">
+                        <input type="text" class="search-input" id="search-input" name="search-input" />
+                        <div class="search-divider"></div>
+                        <button type="submit" class="search-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <circle cx="11" cy="11" r="7" />
+                                <line x1="16" y1="16" x2="21" y2="21" />
+                            </svg>
+                        </button>
+                    </form>
+                    <div id="sort-view-wrapper"></div>
+                </div>
+                <!-- container-top-mobile -->
+                <div class="container-top-mobile">
+                    <form class="box-search">
+                        <input type="text" class="search-input" id="search-input" name="search-input" />
+                        <div class="search-divider"></div>
+                        <button type="submit" class="search-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <circle cx="11" cy="11" r="7" />
+                                <line x1="16" y1="16" x2="21" y2="21" />
+                            </svg>
+                        </button>
+                    </form>
+                    <div class="mobile-sort-view">
+                        <div class="card-view active">
+                            <span>Card</span>
+                        </div>
+                        <div class="list-view">
+                            <span>List</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- container-bottom -->
+                <div class="container-bottom">
+                    <!-- card view -->
+                    <div class="box-grid-card" id="card-viewer"></div>
+                    <!-- list view -->
+                    <div class="box-coin-list">
+                        <div id="table-header-wrapper"></div>
+                        <div class="table-body" id="list-viewer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="/config.js"></script>
+    <script type="module" src="/hook/auth/postLogout.js"></script>
+    <script type="module" src="/common/header/header.js"></script>
+    <script type="module" src="/hook/trade/getAllCoins.js"></script>
+    <script type="module" src="/main/js/main.js"></script>
+</body>
+
+</html>
