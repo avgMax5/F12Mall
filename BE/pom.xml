@@ -86,7 +86,7 @@
 		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
-			<version>1.4</version> <!-- 또는 호환되는 최신 버전 -->
+			<version>1.6.0</version> <!-- 또는 호환되는 최신 버전 -->
 		</dependency>
 
 		<!-- AWS SDK for S3 (MinIO는 S3 호환) -->
