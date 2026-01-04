@@ -167,7 +167,7 @@
 		<dependency>
 			<groupId>org.yaml</groupId>
 			<artifactId>snakeyaml</artifactId>
-			<version>1.33</version> <!-- 또는 안정적인 최신 버전 -->
+			<version>2.0</version> <!-- 또는 안정적인 최신 버전 -->
 		</dependency>
 
 		<!-- Swagger -->
